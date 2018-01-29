@@ -1,0 +1,35 @@
+@import "variable.styl"
+
+body, html
+  line-height: 1
+  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif
+  user-select: none
+  -webkit-tap-highlight-color: transparent
+  background: $color-background
+  color: $color-grey500
+  text-align: center
+  box-sizing: border-box
+  @media screen and (max-device-width:424px)
+    font-size: 70%
+
+@media (-webkit-min-device-pixel-ratio: 1.5),(min-device-pixel-ratio: 1.5)
+  html
+    font-size 70%
+  .border-1px
+    &::before
+      -webkit-transform scaleY(0.7)
+      transform scaleY(0.7)
+    &::after
+      -webkit-transform scaleY(0.7)
+      transform scaleY(0.7)
+@media (-webkit-min-device-pixel-ratio: 2),(min-device-pixel-ratio: 2)
+  html
+    font-size 70%
+  .border-1px
+    &::before
+      -webkit-transform scaleY(0.5)
+      transform scaleY(0.5)
+    &::after
+      -webkit-transform scaleY(0.7)
+      transform scaleY(0.7)
+ 
