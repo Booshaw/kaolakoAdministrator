@@ -12,23 +12,23 @@
       <div class="search">
         <Form ref="formUser" :model="formSearch" inline>
           <FormItem>
-            <Cascader :data="city" v-model="formSearch.seletCity" size="small" filterable placeholder="选择所在地"></Cascader>
+            <Cascader :data="city" v-model="formSearch.selectCity" size="small" filterable placeholder="选择所在地"></Cascader>
           </FormItem>
           <FormItem>
             <Select v-model="formSearch.adept" placeholder="选择主治" size="small">
-                <Option value="beijing">New York</Option>
-                <Option value="shanghai">London</Option>
-                <Option value="shenzhen">Sydney</Option>
+                <Option value="wangyisheng">王医生</Option>
+                <Option value="lidaoshi">李大师</Option>
+                <Option value="taylor">泰勒</Option>
             </Select>
         </FormItem>
         <FormItem>
             <Select v-model="formSearch.rating" placeholder="评级" size="small">
-                <Option value="beijing">New York</Option>
-                <Option value="shanghai">London</Option>
-                <Option value="shenzhen">Sydney</Option>
+                <Option value="1">1</Option>
+                <Option value="2">2</Option>
+                <Option value="3">3</Option>
             </Select>
         </FormItem>
-        <Button type="info" shape="circle" icon="ios-search" size="small">搜索</Button>
+        <Button type="info" shape="circle" icon="ios-search" size="small" @click="search">搜索</Button>
         </Form>
       </div>
        <!--team-->
@@ -70,7 +70,7 @@ export default {
     return {
       teamList: [], // team页列表数据
       formSearch: { // 查询表单数据
-        selectCity: '', // 选择的城市
+        selectCity: [], // 选择的城市
         adept: '', // 擅长的主治方向
         rating: '' // 健管团队的评分
       },
@@ -137,6 +137,9 @@ export default {
     },
     change(page) { // 分页插件获取点击page页码
       console.log(page)
+    },
+    search() {
+      console.log(this.formSearch)
     }
   }
 }

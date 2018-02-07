@@ -40,7 +40,7 @@
       </div>
       <!--service-->
       <div class="j-service-wrapper">
-        <row type="flex" align="middle" class="title">
+        <row class="title">
           <i-col span="22" class="title-wrapper">
             <span class="title">服务项目</span>
           </i-col>
@@ -65,7 +65,7 @@
 
       <!--therapeutic schedule-->
       <div class="j-therapeutic-schedule">
-        <row type="flex" align="middle">
+        <row>
           <i-col span="22" class="title-wrapper">
             <span class="title">诊疗智库</span>
           </i-col>
@@ -118,7 +118,7 @@
       </div>
       <!--articles-->
       <div class="j-article-wrapper">
-          <row type="flex" align="middle">
+          <row>
             <i-col span="22" class="title-wrapper">
               <span class="title">健康讲堂</span>
             </i-col>
@@ -130,7 +130,7 @@
             <ul>
               <li v-for="(item, index) in articles" :key="index">
                 <i-col :lg="8" :xs="24" :md="24" :sm="24" class="articles-category">
-                  <row type="flex" align="middle" class="title">
+                  <row class="title">
                     <i-col span="20">
                       <p class="text">{{item.precaution_title}}</p>
                     </i-col>
@@ -233,9 +233,10 @@ export default {
     margin-top 3.75rem
     @media screen and (max-width: 1024px )
       width 100%
+      padding 0.5rem
      .j-team
       @media screen and (max-width: 420px )
-        padding 1rem
+        // padding 0.5rem
         margin-top 1rem
       .j-team-wrapper
         position relative
@@ -316,8 +317,9 @@ export default {
           font-size 0.875rem
     .j-article-wrapper
       margin-top 6.23rem
+      // margin-bottom 6.23rem
       @media screen and (max-width: 420px )
-        padding 1rem
+        padding 0.5rem
         margin-top 2rem
       .title-wrapper
         text-align left

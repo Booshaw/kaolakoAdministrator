@@ -33,7 +33,7 @@
       </row>
     </div>
     <row class="detail-content" type="flex" justify="space-between">
-      <i-col :lg="17" :md="17" :sm="24">
+      <i-col :lg="18" :md="18" :sm="24">
         <div class="content-wrapper" v-html="article.cparagraph">
 
         </div>

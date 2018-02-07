@@ -1,7 +1,7 @@
 <template>
   <div class="footer-wrapper">
     <div class="footer-container">
-      <row type="flex" justify="space-around">
+      <row>
         <i-col :lg="6" :xs="12" :md="11" :sm="10" class="footer-item">
           <ul>
             <li class="title">公众服务</li>
@@ -67,15 +67,15 @@ export default {
     width 70%
     margin 0 auto
     border-bottom 1px solid #82d5ff
-    @media screen and (max-width: 420px )
+    @media screen and (max-device-width: 768px )
       display none
     .footer-item
       padding 1rem
       text-align left
-      font-size 14px
+      font-size 0.875rem
       color #ccefff
       .title
-        font-size 16px
+        font-size 1rem
         color #ffffff
         margin-bottom 1.875rem
       li

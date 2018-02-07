@@ -5,8 +5,8 @@
     </div>
     <div class="content">
       <keep-alive>
-      <router-view></router-view>
-    </keep-alive>
+        <router-view></router-view>
+      </keep-alive>
     </div>
     <div class="footer">
       <jfooter></jfooter>
@@ -38,4 +38,5 @@ export default {
     flex 1 0 auto
   .footer
     flex-shrink 0
+    margin-top 2rem
 </style>

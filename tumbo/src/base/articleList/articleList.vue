@@ -53,12 +53,13 @@ export default {
     .item-digest-wrapper
       margin-top 0.625rem
       display flex
-      flex-direction row
+      // flex-direction row
       align-items center
       overflow hidden
       .img-link
+        float left
         cursor pointer
-        // flex 0 0 200px
+        flex 0 0 200px
         width 200px
         margin-right 1rem
         @media screen and (max-device-width: 420px)
@@ -70,6 +71,7 @@ export default {
             width 150px
             height 92px
       .item-digest
+        // padding-right 0.5rem
         font-size 0.875rem
         line-height 2rem
         color #787d82

@@ -20,7 +20,8 @@
               <i-input type="password" v-model="token" placeholder="密码"></i-input>
             </FormItem>
             <FormItem>
-              <Button type="primary" long @click.stop="login">登录</Button>
+              <Button type="primary" long @click="login" class="login-btn">登录</Button>
+              <!-- <button @click="login" class="login-btn">登录</button> -->
             </FormItem>
           </Form>
           <div>
@@ -40,8 +41,8 @@ import * as types from '../../store/mutations-types'
 export default {
   data() {
     return {
-      token: '',
-      userType: '医生用户',
+      token: null,
+      userType: '家庭用户',
       formUser: {
         userName: '',
         password: ''
@@ -81,13 +82,14 @@ export default {
         let redirectUser = decodeURIComponent(
           this.$route.query.redirect || '/userInfo'
         )
+        // let redirectUser = this.$route.query.redirect || '/userInfo'
         let redirectDoctor = decodeURIComponent(
           this.$route.query.redirect || '/doctorInfo'
         )
         console.log(`token:${this.token}`)
         if (this.userType === '家庭用户') {
           this.$router.push({
-            path: redirectUser
+            path: '/userInfo'
           })
         } else {
           this.$router.push({
@@ -95,6 +97,11 @@ export default {
           })
         }
       }
+      //测试ipad safari
+      // this.$router.push({
+      //   path: '/userInfo'
+      // })
+       alert('safari登录测试')
     }
   }
 }
@@ -132,6 +139,8 @@ export default {
           .ivu-radio-wrapper
             font-size 1rem
             padding 0 2rem
+        .login-btn
+          cursor pointer
         .text
           padding-left 30%
           font-size 0.75rem

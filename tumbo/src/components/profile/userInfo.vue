@@ -11,7 +11,7 @@
       <div class="title">
         <Button type="ghost" shape="circle" size="small">添加家庭成员</Button>
       </div>
-      <row class="item" type="flex" justify="space-between" v-for="(item, index) in userList" :key="index">
+      <row class="item" v-for="(item, index) in userList" :key="index">
         <i-col :ls="12" :sm="12" :xs="24">
           <div class="left">
             <div class="head-img" @click.stop="toUserInfo(item)">
@@ -24,7 +24,7 @@
               <p>年龄:{{item.age}}岁</p>
               <p>电话:{{item.phone}}</p>
               <p>监管成员: <span v-for="(i, index1) in item.superviseList" :key="index1">{{i.superviseName}}</span>
-              <span class="invite" @click="showModel(item)">
+              <span class="invite" @click.stop="showModel(item)">
                 <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-addition"></use>
                 </svg>
@@ -52,7 +52,7 @@
             </div>
           </div>
           <div class="add-doctor-group" v-if="!item.doctorGroup">
-            <div class="group-item" @click="addDoctorGroup">
+            <div class="group-item" @click.stop="addDoctorGroup">
               <svg class="icon">
                 <use xlink:href="#icon-add"></use>
               </svg>
@@ -61,6 +61,7 @@
           </div>
         </i-col>
       </row>
+      <router-view></router-view>
     </div>
     <!--invite-model-->
     <Modal
@@ -115,7 +116,7 @@ export default {
     },
     toUserInfo(item) {
       this.$router.push({
-        path: 'user',
+        path: '/userInfo/profileUserInfo',
         query: { id: item.id }
       })
     },
@@ -168,7 +169,7 @@ export default {
       transition all 0.3s
       font-size 0.875rem
       // border-radius 4px
-      @media screen and (min-width: 768px)
+      @media screen and (min-device-width: 1200px)
         &:hover
           box-shadow 0.5rem 0.5rem 0.5rem 0 rgba(7, 17, 27, 0.1)
           margin-bottom 1rem
@@ -178,6 +179,7 @@ export default {
         display flex
         .head-img
           padding-right 1rem
+          cursor pointer
           img
             display block
             width 100px

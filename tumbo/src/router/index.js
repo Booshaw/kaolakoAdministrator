@@ -15,6 +15,7 @@ import Articles from 'components/articles/articles'
 import PreventDisease from 'components/articles/preventDisease/preventDisease'
 import Treatment from 'components/articles/treatment/treatment'
 import ArticleDetail from 'base/articleDetail/articleDetail'
+import ProfileUserInfo from 'components/profile/profileInfo/profileUserInfo'
 
 Vue.use(Router)
 const routes = [
@@ -105,6 +106,14 @@ const routes = [
     meta: {
       requireAuth: true
     }
+  },
+  {
+    name: 'profileUserInfo',
+    path: '/userInfo/profileUserInfo',
+    component: ProfileUserInfo
+    // meta: {
+    //   requireAuth: true
+    // }
   },
   // 测试路由
   {

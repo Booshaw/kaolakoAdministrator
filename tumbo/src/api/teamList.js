@@ -36,3 +36,9 @@ export function getUserList() {
     return Promise.resolve(res.data)
   })
 }
+export function getPatientDetail() {
+  const url = 'https://easy-mock.com/mock/5a0a4bd2b31e3216824d4b95/api/GetPatientDetail'
+  return axios.get(url).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}

@@ -168,7 +168,7 @@ export default {
     // position absolute
     display none
     // height 3rem
-    @media screen and (max-device-width: 1200px)
+    @media screen and (max-width: 1200px)
       display block
     .logo-mobile
       font-size 2rem
@@ -181,7 +181,7 @@ export default {
       fill currentColor
       // overflow hidden
       // display block
-      @media screen and (max-device-width: 1200px)
+      @media screen and (max-width: 1200px)
         display block
         // margin-top 0.5rem
   .nav-items
