@@ -38,6 +38,7 @@
 <script>
 /* eslint-disable */
 import * as types from '../../store/mutations-types'
+// import { sendLogin } from 'api/login'
 export default {
   data() {
     return {
@@ -76,32 +77,51 @@ export default {
   },
   methods: {
     login() {
-      if (this.token) {
-        this.$store.commit(types.LOGIN, this.token)
-        this.$store.commit(types.USERTYPE, this.userType)
-        let redirectUser = decodeURIComponent(
-          this.$route.query.redirect || '/userInfo'
-        )
-        // let redirectUser = this.$route.query.redirect || '/userInfo'
-        let redirectDoctor = decodeURIComponent(
-          this.$route.query.redirect || '/doctorInfo'
-        )
-        console.log(`token:${this.token}`)
-        if (this.userType === '家庭用户') {
-          this.$router.push({
-            path: '/userInfo'
-          })
-        } else {
-          this.$router.push({
-            path: redirectDoctor
-          })
-        }
-      }
-      //测试ipad safari
-      // this.$router.push({
-      //   path: '/userInfo'
+      // sendLogin().then((res) => {
+      //   console.log(res)
+      //   // if (this.token) {
+      //   //   this.$store.commit(types.LOGIN, this.token)
+      //   //   this.$store.commit(types.USERTYPE, this.userType)
+      //   //   let redirectUser = decodeURIComponent(
+      //   //     this.$route.query.redirect || '/userInfo'
+      //   //   )
+      //   //   // let redirectUser = this.$route.query.redirect || '/userInfo'
+      //   //   let redirectDoctor = decodeURIComponent(
+      //   //     this.$route.query.redirect || '/doctorInfo'
+      //   //   )
+      //   //   console.log(`token:${this.token}`)
+      //   //   if (this.userType === '家庭用户') {
+      //   //     this.$router.push({
+      //   //       path: '/userInfo'
+      //   //     })
+      //   //   } else {
+      //   //     this.$router.push({
+      //   //       path: redirectDoctor
+      //   //     })
+      //   //   }
+      //   // }
       // })
-       alert('safari登录测试')
+      if (this.token) {
+          this.$store.commit(types.LOGIN, this.token)
+          this.$store.commit(types.USERTYPE, this.userType)
+          let redirectUser = decodeURIComponent(
+            this.$route.query.redirect || '/userInfo'
+          )
+          // let redirectUser = this.$route.query.redirect || '/userInfo'
+          let redirectDoctor = decodeURIComponent(
+            this.$route.query.redirect || '/doctorInfo'
+          )
+          console.log(`token:${this.token}`)
+          if (this.userType === '家庭用户') {
+            this.$router.push({
+              path: '/userInfo'
+            })
+          } else {
+            this.$router.push({
+              path: redirectDoctor
+            })
+          }
+        }
     }
   }
 }

@@ -5,7 +5,8 @@ import router from '../router'
 
 // axios 配置
 axios.defaults.timeout = 5000;
-axios.defaults.baseURL = '';
+axios.defaults.baseURL = '/api'
+// axios.defaults.baseURL = 'https://easy-mock.com/mock/5a0a4bd2b31e3216824d4b95/api'
 
 // http request 拦截器
 axios.interceptors.request.use(
@@ -18,7 +19,6 @@ axios.interceptors.request.use(
     err => {
         return Promise.reject(err);
     });
-
 // http response 拦截器
 axios.interceptors.response.use(
     response => {

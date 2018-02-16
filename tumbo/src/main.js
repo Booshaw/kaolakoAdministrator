@@ -9,6 +9,7 @@ import 'iview/dist/styles/iview.css'
 import 'common/stylus/index.styl'
 import axios from './utils/request'
 import fastclick from 'fastclick'
+import * as filters from './utils/filter'
 Vue.prototype.axios = axios
 Vue.config.productionTip = false
 Vue.use(iView)
@@ -19,4 +20,7 @@ new Vue({
   router,
   store,
   render: h => h(App)
+})
+Object.keys(filters).forEach((key) => { // 全局注册过滤器
+  Vue.filter(key, filters[key])
 })

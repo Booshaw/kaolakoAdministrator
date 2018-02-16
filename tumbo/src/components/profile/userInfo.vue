@@ -18,7 +18,7 @@
               <img :src="item.headImage" alt="JIAHUAN">
             </div>
             <div class="info">
-              <Badge :count="item.tips" v-if="item.tips">
+              <Badge :count="item.tips">
                 <a href="#" class="name">{{item.name}}</a>
               </Badge>
               <p>年龄:{{item.age}}岁</p>

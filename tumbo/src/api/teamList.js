@@ -42,3 +42,9 @@ export function getPatientDetail() {
     return Promise.resolve(res.data)
   })
 }
+export function getTest() {
+  const url = 'http://dsn.apizza.cc/mock/76bcc78d0f3435281618769325b6d739/getPersonalHistory'
+  return axios.get(url).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
