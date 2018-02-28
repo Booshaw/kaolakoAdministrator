@@ -12,7 +12,7 @@
         <Button type="ghost" shape="circle" size="small">添加家庭成员</Button>
       </div>
       <row class="item" v-for="(item, index) in userList" :key="index">
-        <i-col :ls="12" :sm="12" :xs="24">
+        <i-col :lg="12" :sm="12" :xs="24">
           <div class="left">
             <div class="head-img" @click.stop="toUserInfo(item)">
               <img :src="item.headImage" alt="JIAHUAN">
