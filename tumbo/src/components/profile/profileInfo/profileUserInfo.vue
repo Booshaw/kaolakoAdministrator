@@ -79,7 +79,7 @@
         <h2 class="title">个人史
         </h2>
         <div class="base">
-           <Form :label-width="120" style="text-align: left" inline>
+           <Form :label-width="80" style="text-align: left" inline>
             <FormItem v-for="(item, index) in personalHistory" :label="item.diseaseName" :key="index" v-if="!((item.diseaseKey === 'smokingHistory') || (item.diseaseKey === 'alcoholHistory'))" style="width:100%">
               <i-input v-model="item.detail.value">
               </i-input>
@@ -171,12 +171,12 @@
                 <Option v-for="(item, index) in disease" :value="item.id" :key="index">{{ item.diseaseName }}</Option>
               </Select>
             </FormItem>
-            <FormItem label="家中有无相关疾病记载">
+            <FormItem label="家中有无相关疾病">
               <Select v-model="familyHistory.familyDisease" multiple>
                 <Option v-for="(item, index) in disease" :value="item.id" :key="index">{{ item.diseaseName }}</Option>
               </Select>
             </FormItem>
-            <FormItem label="家中有无传染病及遗传病史">
+            <FormItem label="家中有无传染/遗传病史">
               <Select v-model="familyHistory.familyGeneticDisease" multiple>
                 <Option v-for="(item, index) in disease" :value="item.id" :key="index">{{ item.diseaseName }}</Option>
               </Select>
@@ -188,8 +188,8 @@
         <h2 class="title">婚育史
         </h2>
         <div class="base">
-          <Form :label-width="90" style="text-align: left">
-            <Row>
+          <Form :label-width="60" style="text-align: left">
+            <Row v-if="this.basicInformation.gender == '1'">
               <i-col :lg="6" :xs="24">
                 <FormItem label="经期持续时间">
                   <i-input v-model="obstericalHistory.menstruationDuration">
@@ -212,7 +212,7 @@
                 </FormItem>
               </i-col>
             </Row>
-            <Row>
+            <Row v-if="this.basicInformation.gender == '1'">
               <FormItem label="月经颜色异常描述">
                 <i-input v-model="obstericalHistory.menstruationUnusualColor" placeholder="如无异常请忽略此项"></i-input>
               </FormItem>
@@ -225,17 +225,19 @@
               <FormItem label="月经是否规律">
                 <i-input v-model="obstericalHistory.menstruationUnusualCycle" placeholder="如无异常请忽略此项"></i-input>
               </FormItem>
-              <FormItem label="配偶健康状况">
-                <Select v-model="obstericalHistory.spouseDisease" multiple not-found-text="下滑更多选项">
-                  <Option v-for="(item, index) in disease" :value="item.id" :key="index">{{ item.diseaseName }}</Option>
-                </Select>
-              </FormItem>
-              <FormItem label="子女健康状况">
-                <Select v-model="obstericalHistory.childrenDisease" multiple not-found-text="下滑更多选项">
-                  <Option v-for="(item, index) in disease" :value="item.id" :key="index">{{ item.diseaseName }}</Option>
-                </Select>
-              </FormItem>
-            </Row>
+              </Row>
+              <Row>
+                <FormItem label="配偶健康状况">
+                  <Select v-model="obstericalHistory.spouseDisease" multiple not-found-text="下滑更多选项">
+                    <Option v-for="(item, index) in disease" :value="item.id" :key="index">{{ item.diseaseName }}</Option>
+                  </Select>
+                </FormItem>
+                <FormItem label="子女健康状况">
+                  <Select v-model="obstericalHistory.childrenDisease" multiple not-found-text="下滑更多选项">
+                    <Option v-for="(item, index) in disease" :value="item.id" :key="index">{{ item.diseaseName }}</Option>
+                  </Select>
+                </FormItem>
+              </Row>
           </Form>
         </div>
       </div>
@@ -243,7 +245,7 @@
         <div class="record">
           <h2 class="title">健康档案</h2>
           <div v-for="(item, index) in medicalRecord" :key="index" class="record-item">
-            <Form :label-width="100">
+            <Form :label-width="70">
               <Row>
                 <i-col :lg="6" :xs="24">
                   <FormItem label="档案类型">
@@ -275,7 +277,25 @@
                 <Button v-for="(r, index2) in item.project" @click="selectMedical(r)" :key="index2" shape="circle" size="small" style="margin-right:0.4rem">{{r.title}}</Button>
                 <Button icon="plus-round" size="small" shape="circle" @click.stop="addMedicalRecordProject(index)"></Button>
               </FormItem>
+              <FormItem label="描述" v-if="item.miaosu">
+                <i-input v-model="item.miaosu" type="textarea"></i-input>
+              </FormItem>
+              <FormItem label="初步诊断" v-if="item.chubuzhenduan">
+                <i-input v-model="item.chubuzhenduan" type="textarea"></i-input>
+              </FormItem>
+              <FormItem label="最终诊断" v-if="item.zuizongzhenduan">
+                <i-input v-model="item.zuizongzhenduan" type="textarea"></i-input>
+              </FormItem>
+              <FormItem label="治疗方案" v-if="item.zhiliaofangan">
+                <i-input v-model="item.zhiliaofangan" type="textarea"></i-input>
+              </FormItem>
+              <FormItem label="目前情况及出院注意事项" v-if="item.muqianqingkuangjichuyuanzhuyishixiang">
+                <i-input v-model="item.muqianqingkuangjichuyuanzhuyishixiang" type="textarea"></i-input>
+              </FormItem>
             </Form>
+          </div>
+          <div class="add-mecical-record-wrapper">
+            <Button type="primary" @click="addMedicalRecord">新增健康档案</Button>
           </div>
         </div>
       </div>
@@ -310,29 +330,37 @@
       v-model="addMedicalRecordProjectModel"
       title="添加检查项目"
       @on-ok="updateAddMedicalRecordProjectModel">
-      <Form inline>
+      <Form>
         <FormItem style="width:100%">
           <Select v-model="addMedicalData.id" placeholder="选择检查数据项目,向下滚动查看更多" @on-change="queryProjectDataList(addMedicalData.id)">
             <Option v-for="(item, index4) in projectList" :value="item.id" :key="index4">{{item.title}}</Option>
           </Select>
         </FormItem>
-        <Row v-for="(item, index5) in addMedicalData.lists" :key="index5" v-if="addMedicalData.id">
-          <FormItem style="width:45%">
-            <i-input v-model="item.value">
-              <span slot="prepend">{{item.notes}}</span>
-            </i-input>
-          </FormItem>
-          <FormItem style="width:20%">
-            <i-input v-model="item.valueMin" placeholder="最小值">
-                <span slot="prepend">min</span>
-            </i-input>
-          </FormItem>
-          <FormItem style="width:20%">
-            <i-input v-model="item.valueMax" placeholder="最大值">
-                <span slot="prepend">max</span>
-            </i-input>
-          </FormItem>
-          <FormItem><span>{{item.unit}}</span></FormItem>
+        <Row v-for="(item, index5) in addMedicalData.lists" :key="index5" v-if="addMedicalData.id" style="margin-bottom:1rem; background-color:#f8f8f9;padding:0.4rem;border-radius:0.4rem">
+          <i-col :lg="8" :xs="24">
+            <FormItem>
+              <i-input v-model="item.value">
+                <span slot="prepend">{{item.notes}}</span>
+              </i-input>
+            </FormItem>
+          </i-col>
+          <i-col :lg="7" :xs="10">
+            <FormItem>
+              <i-input v-model="item.valueMin" placeholder="最小值">
+                  <span slot="prepend">min</span>
+              </i-input>
+            </FormItem>
+          </i-col>
+          <i-col :lg="7" :xs="10">
+            <FormItem>
+              <i-input v-model="item.valueMax" placeholder="最大值">
+                  <span slot="prepend">max</span>
+              </i-input>
+            </FormItem>
+          </i-col>
+          <i-col :lg="2" :xs="4">
+            <FormItem><span>{{item.unit}}</span></FormItem>
+          </i-col>
         </Row>
       </Form>
       <Upload
@@ -345,6 +373,55 @@
             <p>上传影像检查</p>
         </div>
     </Upload>
+    </Modal>
+    <Modal v-model="addMedicalDataModel"
+      title="新增健康档案"
+      @on-ok="uploadAddMedicalRecord">
+      <Form :label-width="40">
+        <Row>
+          <i-col :lg="7" :xs="24">
+            <FormItem label="档案类型">
+              <Select v-model="medicalRecordData.type">
+                <Option value ="1">体检报告</Option>
+                <Option value ="2">门诊记录</Option>
+                <Option value ="3">住院记录</Option>
+              </Select>
+            </FormItem>
+          </i-col>
+          <i-col :lg="7" :xs="24">
+            <FormItem label="时间">
+              <DatePicker v-model="medicalRecordData.date" type="date" placeholder="选择日期" format="yyyy-MM-dd"></DatePicker>
+            </FormItem>
+          </i-col>
+          <i-col :lg="10" :xs="24">
+            <FormItem label="机构">
+              <i-input v-model="medicalRecordData.organization">
+              </i-input>
+            </FormItem>
+          </i-col>
+        </Row>
+        <FormItem label="慢性病">
+          <Select v-model="medicalRecordData.disease" multiple not-found-text="下滑更多选项" placeholder="若不慢性病可忽略此项,可下拉多选">
+              <Option v-for="(i, index1) in disease" :value="i.id" :key="index1">{{ i.diseaseName }}</Option>
+            </Select>
+        </FormItem>
+        <FormItem label="描述">
+          <i-input v-model="medicalRecordData.miaosu" type="textarea"></i-input>
+        </FormItem>
+        <FormItem label="初步诊断" v-if="medicalRecordData.type !== '1'">
+          <i-input v-model="medicalRecordData.chubuzhenduan" type="textarea"></i-input>
+        </FormItem>
+        <FormItem label="最终诊断" v-if="medicalRecordData.type == '3'" >
+          <i-input v-model="medicalRecordData.zuizongzhendaun" type="textarea"></i-input>
+        </FormItem>
+        <FormItem label="治疗方案" v-if="medicalRecordData.type == '3'">
+          <i-input v-model="medicalRecordData.zhiliaofangan" type="textarea"></i-input>
+        </FormItem>
+        <FormItem label="注意事项" v-if="medicalRecordData.type == '3'">
+          <i-input v-model="medicalRecordData.muqianqingkuangjichuyuanzhuyishixiang" type="textarea"></i-input>
+        </FormItem>
+      </Form>
+
     </Modal>
   </div>
 </template>
@@ -365,7 +442,8 @@ export default {
       obstericalHistory: [], // 婚育史初始数据
       medicalRecord: [], // 健康档案初始数据
       medicalModel: false, // 检查项目弹窗
-      addMedicalRecordProjectModel: false,
+      addMedicalRecordProjectModel: false, // 添加健康档案检查项目弹窗
+      addMedicalDataModel: false, // 新增健康档案弹窗
       selectMedicalData: [], // 点击检查项目传送给子组件的数据
       medicalRecordIndex: '', // 点击添加按钮记录index值
       addMedicalData: {},
@@ -400,6 +478,21 @@ export default {
       diseaseName: null,
       diseaseHospital: null,
       diseaseTime: null,
+      //
+      // 添加健康档案初始数据
+
+      medicalRecordData: {
+        type: '1',
+        data: null,
+        roganization: null,
+        project: [],
+        disease: [],
+        miaosu: null,
+        chubuzhenduan: null,
+        zuizongzhenduan: null,
+        zhiliaofangan: null,
+        muqianqingkuangjichuyuanzhuyishixiang: null
+      },
       info: [
         {
           value: null,
@@ -724,6 +817,16 @@ export default {
       console.log(this.medicalRecord)
       this.medicalRecordIndex = ''
     },
+    // 新增健康档案
+    addMedicalRecord() {
+      this.addMedicalDataModel = true
+    },
+    // 提交新增健康档案
+    uploadAddMedicalRecord() {
+      var obj = {}
+      obj = JSON.parse(JSON.stringify(this.medicalRecordData))
+      this.medicalRecord.push(obj)
+    },
     _getPatientDetail() {
       getPatientDetail().then(res => {
         this.patientDetail = res.data
@@ -832,6 +935,8 @@ export default {
           padding-bottom 1rem
         .record-item
           width 90%
+          @media screen and (max-width: 420px)
+            width 100%
           margin 1rem auto
           padding 1rem
           background-color #f8f9f9
