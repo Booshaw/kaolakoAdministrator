@@ -16,6 +16,7 @@ import PreventDisease from 'components/articles/preventDisease/preventDisease'
 import Treatment from 'components/articles/treatment/treatment'
 import ArticleDetail from 'base/articleDetail/articleDetail'
 import ProfileUserInfo from 'components/profile/profileInfo/profileUserInfo'
+import ProfileDoctorInfo from 'components/profile/profileInfo/profileDoctor'
 
 Vue.use(Router)
 const routes = [
@@ -103,9 +104,15 @@ const routes = [
     name: 'doctorInfo',
     path: '/doctorInfo',
     component: DoctorInfo,
+    redirect: '/doctorInfo/d',
     meta: {
       requireAuth: true
-    }
+    },
+    children: [{
+      name: '',
+      path: 'd',
+      component: ProfileDoctorInfo
+    }]
   },
   {
     name: 'profileUserInfo',

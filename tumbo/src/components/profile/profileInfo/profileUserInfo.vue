@@ -9,8 +9,13 @@
       </div>
       <div class="add-patient-wrapper">
         <h2 class="title">基本资料
+          <Tooltip content="点击修改资料" placement="top-start">
+            <svg class="update-icon" aria-hidden="true" @click.stop="checkBasicInformation = true">
+              <use xlink:href="#icon-setup"></use>
+            </svg>
+          </Tooltip>
         </h2>
-        <div class="base">
+        <div class="base" v-if="checkBasicInformation">
           <Form :label-width="60" inline style="text-align: left;">
           <FormItem label="姓名">
             <i-input v-model="basicInformation.name"></i-input>
@@ -52,7 +57,7 @@
             <i-input v-model="basicInformation.email"></i-input>
           </FormItem>
           <FormItem label="出生日期">
-            <DatePicker v-model="basicInformation.birthDate" type="date" placeholder="选择日期" format="yyyy-MM-dd"></DatePicker>
+            <DatePicker v-model="basicInformation.birthDate" type="date" placeholder="选择日期"></DatePicker>
           </FormItem>
           <FormItem label="户籍地址">
             <Cascader :data="cityData" trigger="hover"></Cascader>
@@ -74,11 +79,57 @@
           </FormItem>
         </Form>
         </div>
+        <div class="base" v-if="!checkBasicInformation">
+          <Row>
+            <i-col :lg="5" :md="4" :sm="12" :xs="24">
+              <p><span>姓名:</span>{{basicInformation.name}}</p>
+              <p><span>年龄:</span>{{basicInformation.age}}岁</p>
+              <p><span>身高:</span>{{basicInformation.height}}cm</p>
+            </i-col>
+            <i-col :lg="5" :md="4" :sm="12" :xs="24">
+              <p><span>性别:</span>{{basicInformation.gender | genderFilter}}</p>
+              <p><span>名族:</span>{{basicInformation.ethnicity | ethnicityFilter}}</p>
+              <p><span>体重:</span>{{basicInformation.weight}}Kg</p>
+            </i-col>
+            <i-col :lg="5" :md="7" :sm="12" :xs="24">
+              <p><span>学历:</span>{{basicInformation.degree | degreeFilter}}</p>
+              <p><span>电话:</span>{{basicInformation.phone}}</p>
+              <p><span>出生日期:</span>{{basicInformation.birthDate | parseTime('{y}-{m}-{d}')}}</p>
+            </i-col>
+            <i-col :lg="9" :md="9" :sm="12" :xs="24">
+              <p><span>邮箱:</span>{{basicInformation.email}}</p>
+              <p><span>紧急联系电话:</span>{{basicInformation.emergencyCall}}</p>
+              <p><span>身份证:</span>{{basicInformation.idCard}}</p>
+            </i-col>
+          </Row>
+          <Row>
+            <i-col :lg="24">
+              <p><span>户籍地址:</span>{{basicInformation.address}}</p>
+              <p><span>现居地址:</span>{{basicInformation.addressNow}}</p>
+              <p><span>工作单位:</span>{{basicInformation.unit}}</p>
+            </i-col>
+          </Row>
+        </div>
+        <div v-if="checkBasicInformation">
+          <Poptip
+          confirm
+          transfer
+          title="您确认提交修改吗?"
+          @on-cancel="cancelUpload"
+          @on-ok="uploadBasicInformation">
+            <Button type="primary" icon="checkmark-round">提交修改</Button>
+          </Poptip>
+        </div>
       </div>
       <div class="add-patient-wrapper">
         <h2 class="title">个人史
+          <Tooltip content="点击修改个人史" placement="top-start">
+            <svg class="update-icon" aria-hidden="true" @click.stop="checkPersonalHistory = true">
+              <use xlink:href="#icon-setup"></use>
+            </svg>
+          </Tooltip>
         </h2>
-        <div class="base">
+        <div class="base" v-if="checkPersonalHistory">
            <Form :label-width="80" style="text-align: left" inline>
             <FormItem v-for="(item, index) in personalHistory" :label="item.diseaseName" :key="index" v-if="!((item.diseaseKey === 'smokingHistory') || (item.diseaseKey === 'alcoholHistory'))" style="width:100%">
               <i-input v-model="item.detail.value">
@@ -110,16 +161,44 @@
             </FormItem>
           </Form>
         </div>
+        <div class="base" v-if="!checkPersonalHistory">
+          <div v-for="(item, index) in personalHistory" :key="index">
+            <p class="info"><span class="title-info">{{item.diseaseName}}:</span> <span class="text" v-html="item.detail.value"></span></p>
+            <p class="info"><span v-if="item.diseaseKey === 'smokingHistory'" class="text">吸烟{{item.detail.years}}年,{{item.detail.daily}}支/天,已戒{{item.detail.quit}}月</span></p>
+            <p class="info"><span v-if="item.diseaseKey === 'alcoholHistory'" class="text">饮酒{{item.detail.years}}年,{{item.detail.daily}}克/天,已戒{{item.detail.quit}}月</span></p>
+          </div>
+        </div>
+        <div v-if="checkPersonalHistory">
+          <Poptip
+          confirm
+          transfer
+          title="您确认提交修改吗?"
+          @on-ok="uploadBasicInformation"
+          @on-cancel="cancelUpload">
+            <Button type="primary" icon="checkmark-round">提交修改</Button>
+          </Poptip>
+        </div>
       </div>
       <div class="add-patient-wrapper">
-        <h2 class="title">既往史
+         <h2 class="title">既往史
+          <Tooltip content="点击修改既往史" placement="top-start">
+            <svg class="update-icon" aria-hidden="true" @click.stop="checkPastMedicalHistory = true">
+              <use xlink:href="#icon-setup"></use>
+            </svg>
+          </Tooltip>
         </h2>
-        <div class="base">
+        <div class="base" v-if="checkPastMedicalHistory">
           <Form :label-width="50" inline>
             <FormItem v-for="(item, index) in pastMedicalHistory" :key="index" :label="item.diseaseName">
-              <DatePicker type="datetime" v-model="item.detail.diseaseTime" icon="ios-clock-outline" placeholder="选择确诊时间" format="yyyy-MM-dd"></DatePicker>
-              <i-input v-model="item.detail.diseaseHospital" icon="ios-world-outline" placeholder="输入确诊机构" style="width: 10rem">
-              </i-input>
+              <Row style="background-color:#f8f9f9;padding:0.5rem;border-radius:0.2rem">
+                <i-col :lg="9" :xs="24" style="margin-bottom:0.5rem">
+                  <DatePicker type="datetime" v-model="item.detail.diseaseTime" icon="ios-clock-outline" placeholder="选择确诊时间" format="yyyy-MM-dd"></DatePicker>
+                </i-col>
+                <i-col :lg="15" :xs="24">
+                  <i-input v-model="item.detail.diseaseHospital" icon="ios-world-outline" placeholder="输入确诊机构">
+                  </i-input>
+                </i-col>
+              </Row>
             </FormItem>
             <FormItem label="添加既往史" style="width:100%">
               <Row>
@@ -141,12 +220,34 @@
             </FormItem>
           </Form>
         </div>
+        <div class="base" v-if="!checkPastMedicalHistory">
+          <ul>
+            <li v-for="(item, index) in pastMedicalHistory" :key="index">
+              <p class="info"><span class="title-info">{{item.diseaseName}}:</span>{{item.detail.diseaseTime  | parseTime('{y}-{m}-{d}') }} <span class="contect">确诊于</span>{{item.detail.diseaseHospital}}</p>
+            </li>
+          </ul>
+        </div>
+        <div v-if="checkPastMedicalHistory">
+          <Poptip
+          confirm
+          transfer
+          title="您确认提交修改吗?"
+          @on-ok="uploadPastMedicalHistory"
+          @on-cancel="cancelUpload">
+            <Button type="primary" icon="checkmark-round">提交修改</Button>
+          </Poptip>
+        </div>
       </div>
       <div class="add-patient-wrapper">
         <h2 class="title">家族史
+          <Tooltip content="点击修改家族史" placement="top-start">
+            <svg class="update-icon" aria-hidden="true" @click.stop="checkFamilyHistory = true">
+              <use xlink:href="#icon-setup"></use>
+            </svg>
+          </Tooltip>
         </h2>
-        <div class="base">
-          <Form :label-width="90" style="text-align: left" v-if="familyHistory">
+        <div class="base" v-if="checkFamilyHistory">
+          <Form :label-width="90" style="text-align: left">
             <Row>
               <FormItem label="母亲是否健在">
                 <RadioGroup v-model="familyHistory.isMomtherAlive">
@@ -183,11 +284,70 @@
             </FormItem>
           </Form>
         </div>
+        <div class="base" v-if="!checkFamilyHistory">
+          <ul class="disease-list">
+            <li>
+              <span class="f-title">母亲是否健在</span>
+              <RadioGroup v-model="familyHistory.isMomtherAlive">
+                <Radio label="1">是</Radio>
+                <Radio label="0">否</Radio>
+              </RadioGroup>
+            </li>
+          </ul>
+          <ul class="disease-list">
+            <span class="f-title">母亲健康状况</span>
+            <li v-for="(item, index) in familyHistory.motherDisease" :key="index" >
+              <span class="label-wrapper">{{item | selectDiseaseArray}}</span>
+            </li>
+          </ul>
+          <ul class="disease-list">
+            <li>
+              <span class="f-title">父亲是否健在</span>
+              <RadioGroup v-model="familyHistory.isFatherAlive">
+                <Radio label="1">是</Radio>
+                <Radio label="0">否</Radio>
+              </RadioGroup>
+            </li>
+          </ul>
+          <ul class="disease-list">
+            <span class="f-title">父亲健康状况</span>
+            <li v-for="(item, index) in familyHistory.fatherDisease" :key="index" >
+              <span class="label-wrapper">{{item | selectDiseaseArray}}</span>
+            </li>
+          </ul>
+          <ul class="disease-list">
+            <span class="f-title">家中有无相关疾病记载</span>
+            <li v-for="(item, index) in familyHistory.familyDisease" :key="index">
+              <span class="label-wrapper">{{item | selectDiseaseArray}}</span>
+            </li>
+          </ul>
+          <ul class="disease-list">
+            <span class="f-title">家中有无传染病及遗传病史</span>
+            <li v-for="(item, index) in familyHistory.familyGeneticDisease" :key="index">
+              <span class="label-wrapper">{{item | selectDiseaseArray}}</span>
+            </li>
+          </ul>
+        </div>
+        <div v-if="checkFamilyHistory">
+          <Poptip
+          confirm
+          transfer
+          title="您确认提交修改吗?"
+          @on-ok="uploadFamilyHistory"
+          @on-cancel="cancelUpload">
+            <Button type="primary" icon="checkmark-round">提交修改</Button>
+          </Poptip>
+        </div>
       </div>
       <div class="add-patient-wrapper">
         <h2 class="title">婚育史
+          <Tooltip content="点击修改婚育史" placement="top-start">
+            <svg class="update-icon" aria-hidden="true" @click.stop="checkObstericalHistory = true">
+              <use xlink:href="#icon-setup"></use>
+            </svg>
+          </Tooltip>
         </h2>
-        <div class="base">
+        <div class="base" v-if="checkObstericalHistory">
           <Form :label-width="60" style="text-align: left">
             <Row v-if="this.basicInformation.gender == '1'">
               <i-col :lg="6" :xs="24">
@@ -239,6 +399,48 @@
                 </FormItem>
               </Row>
           </Form>
+        </div>
+        <div class="base" v-if="!checkObstericalHistory">
+          <Row v-if="this.basicInformation.gender == '1'">
+            <p class="info"><span class="title-info">月经持续:</span>{{obstericalHistory.menstruationDuration}}天</p>
+            <p class="info"><span class="title-info">经期开始:</span>{{obstericalHistory.menstruationBeginAge}}岁</p>
+            <p class="info"><span class="title-info">绝经时间:</span>{{obstericalHistory.menstruationEndAge}}岁</p>
+            <p class="info"><span class="title-info">月经颜色异常描述:</span>{{obstericalHistory.menstruationUnusualColor}}</p>
+            <ul>
+              <li>
+                <span class="title-info">是否痛经</span>
+                <RadioGroup v-model="obstericalHistory.isDysmenorrhea">
+                  <Radio label="1">是</Radio>
+                  <Radio label="0">否</Radio>
+                </RadioGroup>
+              </li>
+            </ul>
+            <p class="info"><span class="title-info">月经是否不规律:</span>{{obstericalHistory.menstruationUnusualCycle}}</p>
+            </Row>
+            <Row>
+              <ul class="disease-list">
+                <span class="f-title">配偶健康状况</span>
+                <li v-for="(item, index) in obstericalHistory.spouseDisease" :key="index" >
+                  <span class="label-wrapper">{{item | selectDiseaseArray}}</span>
+                </li>
+              </ul>
+              <ul class="disease-list">
+                <span class="f-title">子女健康状况</span>
+                <li v-for="(item, index) in obstericalHistory.childrenDisease " :key="index" >
+                  <span class="label-wrapper">{{item | selectDiseaseArray}}</span>
+                </li>
+              </ul>
+            </Row>
+        </div>
+        <div v-if="checkObstericalHistory">
+          <Poptip
+          confirm
+          transfer
+          title="您确认提交修改吗?"
+          @on-ok="uploadObstericalHistory"
+          @on-cancel="cancelUpload">
+            <Button type="primary" icon="checkmark-round">提交修改</Button>
+          </Poptip>
         </div>
       </div>
       <div class="medical-record-wrapper">
@@ -337,21 +539,21 @@
           </Select>
         </FormItem>
         <Row v-for="(item, index5) in addMedicalData.lists" :key="index5" v-if="addMedicalData.id" style="margin-bottom:1rem; background-color:#f8f8f9;padding:0.4rem;border-radius:0.4rem">
-          <i-col :lg="8" :xs="24">
+          <i-col :lg="12" :xs="24">
             <FormItem>
               <i-input v-model="item.value">
                 <span slot="prepend">{{item.notes}}</span>
               </i-input>
             </FormItem>
           </i-col>
-          <i-col :lg="7" :xs="10">
+          <i-col :lg="5" :xs="10">
             <FormItem>
               <i-input v-model="item.valueMin" placeholder="最小值">
                   <span slot="prepend">min</span>
               </i-input>
             </FormItem>
           </i-col>
-          <i-col :lg="7" :xs="10">
+          <i-col :lg="5" :xs="10">
             <FormItem>
               <i-input v-model="item.valueMax" placeholder="最大值">
                   <span slot="prepend">max</span>
@@ -374,7 +576,8 @@
         </div>
     </Upload>
     </Modal>
-    <Modal v-model="addMedicalDataModel"
+    <Modal
+      v-model="addMedicalDataModel"
       title="新增健康档案"
       @on-ok="uploadAddMedicalRecord">
       <Form :label-width="40">
@@ -411,7 +614,7 @@
         <FormItem label="初步诊断" v-if="medicalRecordData.type !== '1'">
           <i-input v-model="medicalRecordData.chubuzhenduan" type="textarea"></i-input>
         </FormItem>
-        <FormItem label="最终诊断" v-if="medicalRecordData.type == '3'" >
+        <FormItem label="最终诊断" v-if="medicalRecordData.type == '3'">
           <i-input v-model="medicalRecordData.zuizongzhendaun" type="textarea"></i-input>
         </FormItem>
         <FormItem label="治疗方案" v-if="medicalRecordData.type == '3'">
@@ -421,12 +624,18 @@
           <i-input v-model="medicalRecordData.muqianqingkuangjichuyuanzhuyishixiang" type="textarea"></i-input>
         </FormItem>
       </Form>
-
+      <div>
+        <p style="text-align:center">如有检查数据,请在确认新增档案后点击+号添加</p>
+      </div>
     </Modal>
   </div>
 </template>
 <script>
 import { getPatientDetail } from 'api/teamList'
+import { upload } from 'api/upload'
+// import * as types from '../../../store/mutations-types'
+// import {mapGetters} from 'vuex'
+// import {mapMutations} from 'vuex'
 // import JModel from 'base/jhylModel/jhylModel'
 // import { parseTime } from 'utils/filter'
 export default {
@@ -435,11 +644,16 @@ export default {
       selectDiseaseList: [],
       patientDetail: {},
       personalHistoryInfo: [], // 手动编辑dom数据
-      basicInformation: [],
+      basicInformation: {}, // 个人基本信息
+      checkBasicInformation: false, // 个人基本信息数据变动后提交修改button的display
       personalHistory: [], // 个人史列表渲染dom数据
-      pastMedicalHistory: [],
-      familyHistory: [], // 家族史初始数据
-      obstericalHistory: [], // 婚育史初始数据
+      checkPersonalHistory: false, // 个人史数据变动后提交修改button的display
+      pastMedicalHistory: [], // 既往史
+      checkPastMedicalHistory: false, // 既往史数据变动后提交修改button的display
+      familyHistory: [], // 家族史
+      checkFamilyHistory: false, // 家族史初始数据变动后提交修改button的display
+      obstericalHistory: [], // 婚育史初始数据变动后提交修改button的display
+      checkObstericalHistory: false, // 婚育史
       medicalRecord: [], // 健康档案初始数据
       medicalModel: false, // 检查项目弹窗
       addMedicalRecordProjectModel: false, // 添加健康档案检查项目弹窗
@@ -792,6 +1006,89 @@ export default {
     this._getPatientDetail()
   },
   methods: {
+    // 输入框数据改变测试
+    // changeData(value) {
+    //   console.log(value.data)
+    // },
+    // 取消修改
+    cancelUpload() {
+      this.checkBasicInformation = false
+      this.checkPersonalHistory = false
+      this.checkPastMedicalHistory = false
+      this.checkFamilyHistory = false
+      this.checkObstericalHistory = false
+    },
+    // 基本信息修改确认提交
+    uploadBasicInformation () {
+      var url = 'https://easy-mock.com/mock/5a0a4bd2b31e3216824d4b95/api/login'
+      var params = {
+      }
+      upload(url, params).then(res => {
+        if (res.data.code === 200) {
+          this.$Message.info('点击了确定')
+        } else {
+          this.$Message.info('网络错误')
+          this.checkBasicInformation = false
+        }
+      })
+      },
+    // 个人史修改确认提交
+    uploadPersonalHistory () {
+      var url = 'https://easy-mock.com/mock/5a0a4bd2b31e3216824d4b95/api/login'
+      var params = {
+      }
+      upload(url, params).then(res => {
+        if (res.data.code === 200) {
+          this.$Message.info('点击了确定')
+        } else {
+          this.$Message.info('网络错误')
+          this.checkPersonalHistory = false
+        }
+      })
+      },
+      // 既往史修改确认提交
+    uploadPastMedicalHistory () {
+      var url = 'https://easy-mock.com/mock/5a0a4bd2b31e3216824d4b95/api/login'
+      var params = {
+      }
+      upload(url, params).then(res => {
+        if (res.data.code === 200) {
+          this.$Message.info('点击了确定')
+        } else {
+          this.$Message.info('网络错误')
+          this.checkPastMedicalHistory = false
+        }
+      })
+      },
+      // 家族史修改确认提交
+    uploadFamilyHistory () {
+      var url = 'https://easy-mock.com/mock/5a0a4bd2b31e3216824d4b95/api/login'
+      var params = {
+      }
+      upload(url, params).then(res => {
+        if (res.data.code === 200) {
+          this.$Message.info('点击了确定')
+        } else {
+          this.$Message.info('网络错误')
+          this.checkFamilyHistory = false
+        }
+      })
+      },
+      // 婚育史修改确认提交
+    uploadObstericalHistory () {
+      var url = 'https://easy-mock.com/mock/5a0a4bd2b31e3216824d4b95/api/login'
+      var params = {
+      }
+      upload(url, params).then(res => {
+        if (res.data.code === 200) {
+          this.$Message.info('点击了确定')
+        } else {
+          this.$Message.info('网络错误')
+          this.checkObstericalHistory = false
+        }
+      })
+      },
+    // 点击检查项目展示\修改列表
     selectMedical(r) {
       this.medicalModel = true
       this.selectMedicalData = r
@@ -830,6 +1127,7 @@ export default {
     _getPatientDetail() {
       getPatientDetail().then(res => {
         this.patientDetail = res.data
+        // this.setBasicInfoMation(res.data)
         this.basicInformation = res.data.basicInformation
         this.personalHistory = res.data.personalHistory
         this.pastMedicalHistory = res.data.pastMedicalHistory
@@ -858,8 +1156,91 @@ export default {
     }
   },
   computed: {
+    // ...mapGetters([
+    //     'basicInfoMationTest'
+    //   ])
+  },
+  watch: {
+    basicInformation: {
+      handler(newValue, oldValue) {
+        console.log(newValue + '监听了变化')
+        },
+      deep: true
+    }
   },
   filters: {
+    parseTime(time, cFormat) {
+      if (arguments.length === 0) {
+        return null
+      }
+      const format = cFormat || '{y}-{m}-{d} {h}:{i}:{s}'
+      let date
+      if (typeof time === 'object') {
+        date = time
+      } else {
+        if (('' + time).length === 10) time = parseInt(time) * 1000
+        date = new Date(time)
+      }
+      const formatObj = {
+        y: date.getFullYear(),
+        m: date.getMonth() + 1,
+        d: date.getDate(),
+        h: date.getHours(),
+        i: date.getMinutes(),
+        s: date.getSeconds(),
+        a: date.getDay()
+      }
+      const timeStr = format.replace(/{(y|m|d|h|i|s|a)+}/g, (result, key) => {
+        let value = formatObj[key]
+        if (key === 'a') return ['一', '二', '三', '四', '五', '六', '日'][value - 1]
+        if (result.length > 0 && value < 10) {
+          value = '0' + value
+        }
+        return value || 0
+      })
+      return timeStr
+    },
+    selectDiseaseArray(value) {
+      // if (!value) {
+      //   return ''
+      // }
+      var diseaseDataList = [
+        '结核',
+        '疟疾',
+        '高血压',
+        '糖尿病',
+        '冠心病',
+        '脑卒中',
+        '肿瘤',
+        '房颤',
+        '血脂异常',
+        '其他心脏病'
+      ]
+      // console.log(label)
+      return diseaseDataList[value]
+    },
+    genderFilter(value) {
+      // if (!value) {
+      //   return ''
+      // }
+      var genderList = ['', '女', '男']
+      return genderList[value]
+    },
+    ethnicityFilter(value) {
+      // if (!value) {
+      //   return ''
+      // }
+      var ethnicityList = ['汉族', '少数民族']
+      return ethnicityList[value]
+    },
+    degreeFilter(value) {
+      var degreeList = [
+        '小学',
+        '初中',
+        '高中'
+      ]
+      return degreeList[value]
+    }
   }
 }
 </script>
@@ -913,9 +1294,10 @@ export default {
             padding-right 0.5rem
         .f-title
           margin-right 1rem
-        ul
+        .disease-list
           margin-bottom 0.5rem
           li
+            display inline
             margin-right 4px
         .label-wrapper
           padding 2px 4px
@@ -956,4 +1338,7 @@ export default {
     overflow hidden
     cursor pointer
     color #61dfe1
+.ivu-poptip-confirm .ivu-poptip-body .ivu-icon
+  left 0
+  padding-left 1rem
 </style>

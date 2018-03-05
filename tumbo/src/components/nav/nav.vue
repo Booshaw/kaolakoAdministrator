@@ -162,6 +162,7 @@ export default {
   color #5a5366
   padding 1rem 0
   background-color #ffffff
+  box-shadow 0.2rem 0.2rem 0.2rem 0 rgba(7, 17, 27, 0.1)
   @media screen and (max-width: 1200px)
     padding-top 1rem
   .j-nav
