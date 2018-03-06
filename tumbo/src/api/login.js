@@ -1,12 +1,7 @@
 import axios from 'axios'
-export function sendLogin() {
+export function sendLogin(params) {
   const url = '/login'
-  const data = {
-    username: 'user',
-    password: 'sdfasd',
-    usertype: 'doctor'
-  }
-  return axios.post(url, data).then((res) => {
-    return Promise.resolve(res.data)
+  return axios.post(url, params).then((res) => {
+    return Promise.resolve(res)
   })
 }

@@ -5,14 +5,14 @@ import router from '../router'
 
 // axios 配置
 axios.defaults.timeout = 5000;
+// axios.defaults.baseURL = '/api'
 axios.defaults.baseURL = '/api'
-// axios.defaults.baseURL = 'https://easy-mock.com/mock/5a0a4bd2b31e3216824d4b95/api'
 
 // http request 拦截器
 axios.interceptors.request.use(
     config => {
         if (store.state.token) {
-            config.headers.Authorization = `token ${store.state.token}`;
+            config.headers.authorization = `${store.state.token}`;
         }
         return config;
     },

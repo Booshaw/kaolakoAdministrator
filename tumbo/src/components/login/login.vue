@@ -12,12 +12,12 @@
               <Radio label="医生用户"></Radio>
             </RadioGroup>
           </div>
-          <Form ref="formUser" :model="formUser" :rules="rules">
+          <Form ref="formUser" :rules="rules">
             <FormItem prop="user">
-              <i-input type="text" v-model="formUser.userName" placeholder="用户名"></i-input>
+              <i-input type="text" v-model="username" placeholder="用户名"></i-input>
             </FormItem>
             <FormItem prop="password">
-              <i-input type="password" v-model="token" placeholder="密码"></i-input>
+              <i-input type="password" v-model="password" placeholder="密码"></i-input>
             </FormItem>
             <FormItem>
               <Button type="primary" long @click="login" class="login-btn">登录</Button>
@@ -38,18 +38,16 @@
 <script>
 /* eslint-disable */
 import * as types from '../../store/mutations-types'
-// import { sendLogin } from 'api/login'
+import { sendLogin } from 'api/login'
 export default {
   data() {
     return {
       token: null,
       userType: '家庭用户',
-      formUser: {
-        userName: '',
-        password: ''
-      },
+      username: null,
+      password: null,
       rules: {
-        userName: [
+        user: [
           {
             required: true,
             message: '请输入账号',
@@ -77,31 +75,17 @@ export default {
   },
   methods: {
     login() {
-      // sendLogin().then((res) => {
-      //   console.log(res)
-      //   // if (this.token) {
-      //   //   this.$store.commit(types.LOGIN, this.token)
-      //   //   this.$store.commit(types.USERTYPE, this.userType)
-      //   //   let redirectUser = decodeURIComponent(
-      //   //     this.$route.query.redirect || '/userInfo'
-      //   //   )
-      //   //   // let redirectUser = this.$route.query.redirect || '/userInfo'
-      //   //   let redirectDoctor = decodeURIComponent(
-      //   //     this.$route.query.redirect || '/doctorInfo'
-      //   //   )
-      //   //   console.log(`token:${this.token}`)
-      //   //   if (this.userType === '家庭用户') {
-      //   //     this.$router.push({
-      //   //       path: '/userInfo'
-      //   //     })
-      //   //   } else {
-      //   //     this.$router.push({
-      //   //       path: redirectDoctor
-      //   //     })
-      //   //   }
-      //   // }
-      // })
-      if (this.token) {
+      const params = {
+      username: this.username,
+      password: this.password
+      }
+      sendLogin(params).then((res) => {
+        // console.log(res.getAllResponseHeaders())
+        console.log(res)
+        if (res.data.code === '200') {
+          this.token = res.headers.authorization
+          console.log(this.token)
+          if (this.token) {
           this.$store.commit(types.LOGIN, this.token)
           this.$store.commit(types.USERTYPE, this.userType)
           let redirectUser = decodeURIComponent(
@@ -122,6 +106,29 @@ export default {
             })
           }
         }
+        }
+      })
+      // if (this.token) {
+      //     this.$store.commit(types.LOGIN, this.token)
+      //     this.$store.commit(types.USERTYPE, this.userType)
+      //     let redirectUser = decodeURIComponent(
+      //       this.$route.query.redirect || '/userInfo'
+      //     )
+      //     // let redirectUser = this.$route.query.redirect || '/userInfo'
+      //     let redirectDoctor = decodeURIComponent(
+      //       this.$route.query.redirect || '/doctorInfo'
+      //     )
+      //     console.log(`token:${this.token}`)
+      //     if (this.userType === '家庭用户') {
+      //       this.$router.push({
+      //         path: '/userInfo'
+      //       })
+      //     } else {
+      //       this.$router.push({
+      //         path: redirectDoctor
+      //       })
+      //     }
+      //   }
     }
   }
 }
