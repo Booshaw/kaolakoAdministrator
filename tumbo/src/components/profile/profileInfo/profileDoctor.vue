@@ -3,7 +3,7 @@
     <div class="title">
       <h3 class="text">会员消息</h3>
       <Row>
-        <i-col v-for="(item, index) in messageList.member" :key="index" :lg="5" class="item">
+        <i-col v-for="(item, index) in messageList.member" :key="index" :lg="5" :xs="11" class="item">
           <Badge dot :count="item.value">
             <a href="#">{{item.type}} <Icon type="ios-bell-outline" size="24"></Icon></a>
           </Badge>
@@ -13,7 +13,7 @@
     <div class="title">
       <h3 class="text">团队消息</h3>
       <Row>
-        <i-col v-for="(item, index) in messageList.team" :key="index" :lg="5" class="item">
+        <i-col v-for="(item, index) in messageList.team" :key="index" :lg="5" :xs="11" class="item">
           <Badge dot :count="item.value">
             <a href="#">{{item.type}} <Icon type="ios-bell-outline" size="24"></Icon></a>
           </Badge>
@@ -23,7 +23,7 @@
     <div class="title">
       <h3 class="text">平台消息</h3>
       <Row>
-        <i-col v-for="(item, index) in messageList.admin" :key="index" :lg="5" class="item">
+        <i-col v-for="(item, index) in messageList.admin" :key="index" :lg="5" :xs="11" class="item">
           <Badge dot :count="item.value">
             <a href="#">{{item.type}} <Icon type="ios-bell-outline" size="24"></Icon></a>
           </Badge>
@@ -100,8 +100,11 @@ export default {
         padding 2rem
         background #ffffff
         margin-right 0.5rem
+        // @media screen and (max-width:420px)
+        //   margin 1px
         text-align center
         border-radius 4px
+        margin-bottom 1.5rem
         &:hover
           box-shadow 0.2rem 0.2rem 0.2rem 0 rgba(7, 17, 27, 0.1)
 </style>

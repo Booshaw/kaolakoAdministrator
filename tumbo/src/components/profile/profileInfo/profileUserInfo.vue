@@ -18,95 +18,108 @@
         <div class="base" v-if="checkBasicInformation">
           <Form :label-width="60" inline style="text-align: left;">
           <FormItem label="姓名">
-            <i-input v-model="basicInformation.name"></i-input>
+            <i-input v-model="basicInformation.realName"></i-input>
           </FormItem>
           <FormItem label="性别">
             <Select v-model="basicInformation.gender">
-              <Option value ="1">女</Option>
-              <Option value ="2">男</Option>
+              <Option value = "1">女</Option>
+              <Option value = "2">男</Option>
             </Select>
           </FormItem>
-          <FormItem label="学历">
+          <FormItem label="婚否">
+            <Select v-model="basicInformation.marriageStatus">
+              <Option value = "1">是</Option>
+              <Option value = "0">否</Option>
+            </Select>
+          </FormItem>
+          <FormItem label="受教育年限">
             <Select v-model="basicInformation.degree">
-              <Option value="1">本科</Option>
-              <Option value="2">二年级</Option>
+              <Option :value="item.value" v-for="(item, index6) in dict.degree" :key="index6">{{item.descName}}</Option>
             </Select>
           </FormItem>
-          <FormItem label="名族">
+          <FormItem label="民族">
             <Select v-model="basicInformation.ethnicity">
-              <Option v-for="(item, index) in ethnicityDataList" :value="item.value" :key="index">{{item.key}}</Option>
+              <Option v-for="(item, index) in dict.ethnicity" :value="item.value" :key="index">{{item.descName}}</Option>
             </Select>
           </FormItem>
           <FormItem label="身高">
-            <i-input v-model="basicInformation.height" style="width: 80px">
+            <i-input v-model="basicInformation.height" style="width: 100px">
               <span slot="append">cm</span>
             </i-input>
           </FormItem>
           <FormItem label="体重">
-            <i-input v-model="basicInformation.weight" style="width: 80px">
+            <i-input v-model="basicInformation.weight" style="width: 100px">
               <span slot="append">kg</span>
             </i-input>
           </FormItem>
           <FormItem label="电话">
-            <i-input v-model="basicInformation.phone"></i-input>
+            <i-input v-model="basicInformation.telephone"></i-input>
           </FormItem>
           <FormItem label="紧急电话">
-            <i-input v-model="basicInformation.emergencyCall"></i-input>
+            <i-input v-model="basicInformation.emergencyPhone"></i-input>
           </FormItem>
           <FormItem label="邮箱">
             <i-input v-model="basicInformation.email"></i-input>
           </FormItem>
           <FormItem label="出生日期">
-            <DatePicker v-model="basicInformation.birthDate" type="date" placeholder="选择日期"></DatePicker>
+            <DatePicker v-model="basicInformation.birthday" type="date" placeholder="选择日期" format="yyyy-MM-dd"></DatePicker>
           </FormItem>
           <FormItem label="户籍地址">
-            <Cascader :data="cityData" trigger="hover"></Cascader>
+            <Cascader :data="dict.area" v-model="basicInformation.permanentAreaId" trigger="hover"></Cascader>
           </FormItem>
           <FormItem label="详细地址">
-            <i-input v-model="basicInformation.address"></i-input>
+            <i-input v-model="basicInformation.permanentAddress"></i-input>
           </FormItem>
           <FormItem label="现居地">
-            <Cascader :data="cityData" trigger="hover"></Cascader>
+            <Cascader :data="dict.area" v-model="basicInformation.presentAreaId" trigger="hover"></Cascader>
           </FormItem>
           <FormItem label="现居地址">
-            <i-input v-model="basicInformation.address"></i-input>
+            <i-input v-model="basicInformation.presentAddress"></i-input>
           </FormItem>
           <FormItem label="身份证">
-            <i-input v-model="basicInformation.idCard"></i-input>
+            <i-input v-model="basicInformation.idcardNumber"></i-input>
           </FormItem>
           <FormItem label="工作单位">
-            <i-input v-model="basicInformation.unit"></i-input>
+            <i-input v-model="basicInformation.company"></i-input>
           </FormItem>
         </Form>
         </div>
         <div class="base" v-if="!checkBasicInformation">
           <Row>
             <i-col :lg="5" :md="4" :sm="12" :xs="24">
-              <p><span>姓名:</span>{{basicInformation.name}}</p>
+              <p><span>姓名:</span>{{basicInformation.realName}}</p>
               <p><span>年龄:</span>{{basicInformation.age}}岁</p>
               <p><span>身高:</span>{{basicInformation.height}}cm</p>
             </i-col>
-            <i-col :lg="5" :md="4" :sm="12" :xs="24">
+            <i-col :lg="4" :md="4" :sm="12" :xs="24">
               <p><span>性别:</span>{{basicInformation.gender | genderFilter}}</p>
               <p><span>名族:</span>{{basicInformation.ethnicity | ethnicityFilter}}</p>
               <p><span>体重:</span>{{basicInformation.weight}}Kg</p>
             </i-col>
-            <i-col :lg="5" :md="7" :sm="12" :xs="24">
-              <p><span>学历:</span>{{basicInformation.degree | degreeFilter}}</p>
-              <p><span>电话:</span>{{basicInformation.phone}}</p>
-              <p><span>出生日期:</span>{{basicInformation.birthDate | parseTime('{y}-{m}-{d}')}}</p>
+            <i-col :lg="6" :md="7" :sm="12" :xs="24">
+              <p><span>受教育年限:</span>{{basicInformation.degree | degreeFilter}}</p>
+              <p><span>电话:</span>{{basicInformation.telephone}}</p>
+              <p><span>出生日期:</span>{{basicInformation.birthday | parseTime('{y}-{m}-{d}')}}</p>
             </i-col>
             <i-col :lg="9" :md="9" :sm="12" :xs="24">
               <p><span>邮箱:</span>{{basicInformation.email}}</p>
-              <p><span>紧急联系电话:</span>{{basicInformation.emergencyCall}}</p>
-              <p><span>身份证:</span>{{basicInformation.idCard}}</p>
+              <p><span>紧急联系电话:</span>{{basicInformation.emergencyPhone}}</p>
+              <p><span>身份证:</span>{{basicInformation.idcardNumber}}</p>
             </i-col>
           </Row>
           <Row>
             <i-col :lg="24">
-              <p><span>户籍地址:</span>{{basicInformation.address}}</p>
-              <p><span>现居地址:</span>{{basicInformation.addressNow}}</p>
-              <p><span>工作单位:</span>{{basicInformation.unit}}</p>
+              <p><span>户籍地址:</span>{{basicInformation.permanentAddress}}</p>
+            </i-col>
+          </Row>
+          <Row>
+            <i-col :lg="24">
+              <p><span>现居地址:</span>{{basicInformation.presentAddress}}</p>
+            </i-col>
+          </Row>
+          <Row>
+            <i-col :lg="24">
+              <p><span>工作单位:</span>{{basicInformation.company}}</p>
             </i-col>
           </Row>
         </div>
@@ -632,6 +645,7 @@
 </template>
 <script>
 import { getPatientDetail } from 'api/teamList'
+import { getDict, getPatientInfo } from 'api/getData'
 import { upload } from 'api/upload'
 // import * as types from '../../../store/mutations-types'
 // import {mapGetters} from 'vuex'
@@ -641,6 +655,7 @@ import { upload } from 'api/upload'
 export default {
   data() {
     return {
+      dict: {}, // 数据字典
       selectDiseaseList: [],
       patientDetail: {},
       personalHistoryInfo: [], // 手动编辑dom数据
@@ -1004,12 +1019,33 @@ export default {
   },
   created() {
     this._getPatientDetail()
+    this._getDict()
+    this._getPatientInfo()
   },
   methods: {
-    // 输入框数据改变测试
-    // changeData(value) {
-    //   console.log(value.data)
-    // },
+    // 获取个人信息
+    _getPatientInfo() {
+      const params = {
+        type: 0,
+        patientId: 1
+      }
+      getPatientInfo(params).then(res => {
+        this.basicInformation = res.data.patientDetail
+      })
+    },
+    // 获取字典数据列表
+    _getDict() {
+      const params = {
+        dictType: [
+          'area', 'ethnicity', 'degree', 'disease'
+        ],
+        diseaseType: 2
+      }
+      getDict(params).then(res => {
+        this.dict = res.data
+        console.log(this.dict)
+      })
+    },
     // 取消修改
     cancelUpload() {
       this.checkBasicInformation = false
@@ -1128,7 +1164,7 @@ export default {
       getPatientDetail().then(res => {
         this.patientDetail = res.data
         // this.setBasicInfoMation(res.data)
-        this.basicInformation = res.data.basicInformation
+        // this.basicInformation = res.data.basicInformation
         this.personalHistory = res.data.personalHistory
         this.pastMedicalHistory = res.data.pastMedicalHistory
         this.familyHistory = res.data.familyHistory
@@ -1152,13 +1188,9 @@ export default {
           diseaseHospital: diseaseHospital
         }
       })
-      // console.log(this.pastMedicalHistory)
     }
   },
   computed: {
-    // ...mapGetters([
-    //     'basicInfoMationTest'
-    //   ])
   },
   watch: {
     basicInformation: {
@@ -1173,7 +1205,10 @@ export default {
       if (arguments.length === 0) {
         return null
       }
-      const format = cFormat || '{y}-{m}-{d} {h}:{i}:{s}'
+      if (typeof time === 'string') {
+        return time
+      }
+      const format = cFormat || '{y}-{m}-{d}'
       let date
       if (typeof time === 'object') {
         date = time
@@ -1226,20 +1261,90 @@ export default {
       var genderList = ['', '女', '男']
       return genderList[value]
     },
-    ethnicityFilter(value) {
-      // if (!value) {
-      //   return ''
-      // }
-      var ethnicityList = ['汉族', '少数民族']
-      return ethnicityList[value]
-    },
     degreeFilter(value) {
       var degreeList = [
-        '小学',
-        '初中',
-        '高中'
+        '小学一年级',
+        '小学二年级',
+        '小学三年级',
+        '小学四年级',
+        '小学五年级',
+        '小学六年级',
+        '初一',
+        '初二',
+        '初三',
+        '高一',
+        '高二',
+        '高三',
+        '大一',
+        '大二',
+        '大三',
+        '大四'
       ]
-      return degreeList[value]
+      return degreeList[value - 1]
+    },
+    ethnicityFilter(value) {
+      var ethnicity = [
+        '汉族',
+        '壮族',
+        '满族',
+        '回族',
+        '苗族',
+        '维吾尔族',
+        '土家族',
+        '彝族',
+        '蒙古族',
+        '藏族',
+        '布依族',
+        '侗族',
+        '瑶族',
+        '朝鲜族',
+        '白族',
+        '哈尼族',
+        '哈萨克族',
+        '黎族',
+        '傣族',
+        '畲族',
+        '傈僳族',
+        '仡佬族',
+        '东乡族',
+        '高山族',
+        '拉祜族',
+        '水族',
+        '佤族',
+        '纳西族',
+        '羌族',
+        '土族',
+        '仫佬族',
+        '锡伯族',
+        '柯尔克孜族',
+        '达斡尔族',
+        '景颇族',
+        '毛南族',
+        '撒拉族',
+        '塔吉克族',
+        '阿昌族',
+        '普米族',
+        '鄂温克族',
+        '怒族',
+        '京族',
+        '基诺族',
+        '德昂族',
+        '保安族',
+        '俄罗斯族',
+        '裕固族',
+        '乌兹别克族',
+        '门巴族',
+        '鄂伦春族',
+        '独龙族',
+        '塔塔尔族',
+        '赫哲族',
+        '珞巴族',
+        '布朗族'
+        ]
+      if (!value) {
+        return ''
+      }
+      return ethnicity[value - 1].toString()
     }
   }
 }
@@ -1274,6 +1379,8 @@ export default {
         text-align left
         line-height 1.8
         font-size 1rem
+        span
+          margin-right 1rem
         .info
           word-wrap break-word
           width 100%

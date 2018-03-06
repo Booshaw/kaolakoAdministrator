@@ -27,18 +27,50 @@
     </div>
     <div class="content-wrapper">
       <Row>
-        <i-col :lg="2" :xs="2">
+        <i-col :lg="4" :xs="3">
           <div class="left">
-            <router-link exact  to="/doctorInfo/d" tag="li">最新提示</router-link>
-            <router-link exact  to="/" tag="li">我的团队</router-link>
-            <router-link exact  to="/" tag="li">诊疗智库</router-link>
-            <router-link exact  to="/" tag="li">会员列表</router-link>
-            <router-link exact  to="/" tag="li">随访统计</router-link>
-            <router-link exact  to="/" tag="li">健康报告</router-link>
-            <router-link exact  to="/" tag="li">个人中心</router-link>
+            <router-link exact  to="/doctorInfo/d" tag="li">
+              <span class="text">最新提示</span>
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-setup"></use>
+              </svg>
+            </router-link>
+            <router-link exact  to="/" tag="li">
+              <span class="text">我的团队</span>
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-setup"></use>
+              </svg>
+            </router-link>
+            <router-link exact  to="/" tag="li">
+              <span class="text">诊疗智库</span>
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-setup"></use>
+              </svg>
+            </router-link>
+             <router-link exact  to="/" tag="li">
+              <span class="text">会员列表</span>
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-setup"></use>
+              </svg>
+            </router-link> <router-link exact  to="/" tag="li">
+              <span class="text">随访统计</span>
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-setup"></use>
+              </svg>
+            </router-link> <router-link exact  to="/" tag="li">
+              <span class="text">健康报告</span>
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-setup"></use>
+              </svg>
+            </router-link> <router-link exact  to="/" tag="li">
+              <span class="text">个人中心</span>
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-setup"></use>
+              </svg>
+            </router-link>
           </div>
         </i-col>
-        <i-col :lg="22" :xs="22">
+        <i-col :lg="20" :xs="21">
           <div class="right">
             <router-view></router-view>
           </div>
@@ -98,8 +130,9 @@ export default {
     // position relative
     width 80%
     margin 1rem auto
-    @media screen and (max-width:420px)
+    @media screen and (max-width:1024px)
       width 100%
+      padding 1rem
     .left
       // width 6.875rem
       padding 1rem 0
@@ -114,4 +147,17 @@ export default {
         &.router-link-active
           color #61dfe1
           border-left 3px solid #61dfe1
+        .text
+          @media screen and (max-width:420px)
+            display none
+      .icon
+        width 1.5em
+        height 1.5em
+        vertical-align -0.4em
+        fill currentColor
+        overflow hidden
+        cursor pointer
+        // color #61dfe1
+    .right
+      margin 0 auto
 </style>
