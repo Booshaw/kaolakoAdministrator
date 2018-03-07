@@ -43,12 +43,12 @@
             </Select>
           </FormItem>
           <FormItem label="身高">
-            <i-input v-model="basicInformation.height" style="width: 100px">
+            <i-input v-model="basicInformation.height" style="width: 6rem">
               <span slot="append">cm</span>
             </i-input>
           </FormItem>
           <FormItem label="体重">
-            <i-input v-model="basicInformation.weight" style="width: 100px">
+            <i-input v-model="basicInformation.weight" style="width: 6rem">
               <span slot="append">kg</span>
             </i-input>
           </FormItem>
@@ -65,13 +65,13 @@
             <DatePicker v-model="basicInformation.birthday" type="date" placeholder="选择日期" format="yyyy-MM-dd"></DatePicker>
           </FormItem>
           <FormItem label="户籍地址">
-            <Cascader :data="dict.area" v-model="basicInformation.permanentAreaId" trigger="hover"></Cascader>
+            <Cascader :data="dict.area" v-model="basicInformation.permanentAreaId" trigger="hover" style="width:10rem"></Cascader>
           </FormItem>
           <FormItem label="详细地址">
             <i-input v-model="basicInformation.permanentAddress"></i-input>
           </FormItem>
           <FormItem label="现居地">
-            <Cascader :data="dict.area" v-model="basicInformation.presentAreaId" trigger="hover"></Cascader>
+            <Cascader :data="dict.area" v-model="basicInformation.presentAreaId" trigger="hover" style="width:10rem"></Cascader>
           </FormItem>
           <FormItem label="现居地址">
             <i-input v-model="basicInformation.presentAddress"></i-input>
@@ -90,6 +90,7 @@
               <p><span>姓名:</span>{{basicInformation.realName}}</p>
               <p><span>年龄:</span>{{basicInformation.age}}岁</p>
               <p><span>身高:</span>{{basicInformation.height}}cm</p>
+              <p><span>婚否:</span>{{basicInformation.marriageStatus | isOrFilter}}</p>
             </i-col>
             <i-col :lg="4" :md="4" :sm="12" :xs="24">
               <p><span>性别:</span>{{basicInformation.gender | genderFilter}}</p>
@@ -144,11 +145,11 @@
         </h2>
         <div class="base" v-if="checkPersonalHistory">
            <Form :label-width="80" style="text-align: left" inline>
-            <FormItem v-for="(item, index) in personalHistory" :label="item.diseaseName" :key="index" v-if="!((item.diseaseKey === 'smokingHistory') || (item.diseaseKey === 'alcoholHistory'))" style="width:100%">
+            <FormItem v-for="(item, index7) in personalHistory" :label="item.diseaseName" :key="index7" v-if="!((item.diseaseName === '吸烟史') || (item.diseaseName === '饮酒史'))" style="width:100%">
               <i-input v-model="item.detail.value">
               </i-input>
             </FormItem>
-            <FormItem v-for="(item, index) in personalHistory" :label="item.diseaseName" :key="index" v-if="item.diseaseKey === 'smokingHistory'">
+            <FormItem v-for="(item, index8) in personalHistory" :label="item.diseaseName" :key="index8" v-if="item.diseaseName === '吸烟史'">
               <i-input v-model="item.detail.years">
                 <span slot="append">年</span>
               </i-input>
@@ -160,7 +161,7 @@
                 <span slot="append">月</span>
               </i-input>
             </FormItem>
-            <FormItem v-for="(item, index) in personalHistory" :label="item.diseaseName" :key="index" v-if="item.diseaseKey === 'alcoholHistory'">
+            <FormItem v-for="(item, index9) in personalHistory" :label="item.diseaseName" :key="index9" v-if="item.diseaseName === '饮酒史'">
               <i-input v-model="item.detail.years">
                 <span slot="append">年</span>
               </i-input>
@@ -177,8 +178,8 @@
         <div class="base" v-if="!checkPersonalHistory">
           <div v-for="(item, index) in personalHistory" :key="index">
             <p class="info"><span class="title-info">{{item.diseaseName}}:</span> <span class="text" v-html="item.detail.value"></span></p>
-            <p class="info"><span v-if="item.diseaseKey === 'smokingHistory'" class="text">吸烟{{item.detail.years}}年,{{item.detail.daily}}支/天,已戒{{item.detail.quit}}月</span></p>
-            <p class="info"><span v-if="item.diseaseKey === 'alcoholHistory'" class="text">饮酒{{item.detail.years}}年,{{item.detail.daily}}克/天,已戒{{item.detail.quit}}月</span></p>
+            <p class="info"><span v-if="item.diseaseName === '吸烟史'" class="text">吸烟{{item.detail.years}}年,{{item.detail.daily}}支/天,已戒{{item.detail.quit}}月</span></p>
+            <p class="info"><span v-if="item.diseaseName === '饮酒史'" class="text">饮酒{{item.detail.years}}年,{{item.detail.daily}}克/天,已戒{{item.detail.quit}}月</span></p>
           </div>
         </div>
         <div v-if="checkPersonalHistory">
@@ -299,13 +300,7 @@
         </div>
         <div class="base" v-if="!checkFamilyHistory">
           <ul class="disease-list">
-            <li>
-              <span class="f-title">母亲是否健在</span>
-              <RadioGroup v-model="familyHistory.isMomtherAlive">
-                <Radio label="1">是</Radio>
-                <Radio label="0">否</Radio>
-              </RadioGroup>
-            </li>
+            <li><span class="f-title">母亲是否健在:</span>{{familyHistory.isMomtherAlive | isOrFilter}}</li>
           </ul>
           <ul class="disease-list">
             <span class="f-title">母亲健康状况</span>
@@ -314,13 +309,7 @@
             </li>
           </ul>
           <ul class="disease-list">
-            <li>
-              <span class="f-title">父亲是否健在</span>
-              <RadioGroup v-model="familyHistory.isFatherAlive">
-                <Radio label="1">是</Radio>
-                <Radio label="0">否</Radio>
-              </RadioGroup>
-            </li>
+            <li><span class="f-title">父亲是否健在:</span>{{familyHistory.isFatherAlive | isOrFilter}}</li>
           </ul>
           <ul class="disease-list">
             <span class="f-title">父亲健康状况</span>
@@ -391,7 +380,7 @@
               </FormItem>
               <FormItem label="是否痛经">
                 <RadioGroup v-model="obstericalHistory.isDysmenorrhea">
-                  <Radio label="1">是</Radio>
+                  <Radio label="1"><span style="padding-right:2rem">是</span></Radio>
                   <Radio label="0">否</Radio>
                 </RadioGroup>
               </FormItem>
@@ -419,16 +408,8 @@
             <p class="info"><span class="title-info">经期开始:</span>{{obstericalHistory.menstruationBeginAge}}岁</p>
             <p class="info"><span class="title-info">绝经时间:</span>{{obstericalHistory.menstruationEndAge}}岁</p>
             <p class="info"><span class="title-info">月经颜色异常描述:</span>{{obstericalHistory.menstruationUnusualColor}}</p>
-            <ul>
-              <li>
-                <span class="title-info">是否痛经</span>
-                <RadioGroup v-model="obstericalHistory.isDysmenorrhea">
-                  <Radio label="1">是</Radio>
-                  <Radio label="0">否</Radio>
-                </RadioGroup>
-              </li>
-            </ul>
-            <p class="info"><span class="title-info">月经是否不规律:</span>{{obstericalHistory.menstruationUnusualCycle}}</p>
+            <p class="info"><span class="title-info">是否痛经:</span>{{obstericalHistory.isDysmenorrhea | isOrFilter}}</p>
+            <p class="info"><span class="title-info">月经不规律:</span>{{obstericalHistory.menstruationUnusualCycle}}</p>
             </Row>
             <Row>
               <ul class="disease-list">
@@ -1031,6 +1012,7 @@ export default {
       }
       getPatientInfo(params).then(res => {
         this.basicInformation = res.data.patientDetail
+        this.personalHistory = res.data.patientDiseaseHistory
       })
     },
     // 获取字典数据列表
@@ -1165,7 +1147,7 @@ export default {
         this.patientDetail = res.data
         // this.setBasicInfoMation(res.data)
         // this.basicInformation = res.data.basicInformation
-        this.personalHistory = res.data.personalHistory
+        // this.personalHistory = res.data.personalHistory
         this.pastMedicalHistory = res.data.pastMedicalHistory
         this.familyHistory = res.data.familyHistory
         this.obstericalHistory = res.data.obstericalHistory
@@ -1281,6 +1263,13 @@ export default {
         '大四'
       ]
       return degreeList[value - 1]
+    },
+    isOrFilter(value) {
+      var degreeList = [
+        '否',
+        '是'
+      ]
+      return degreeList[value]
     },
     ethnicityFilter(value) {
       var ethnicity = [
