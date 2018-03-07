@@ -90,7 +90,6 @@
               <p><span>姓名:</span>{{basicInformation.realName}}</p>
               <p><span>年龄:</span>{{basicInformation.age}}岁</p>
               <p><span>身高:</span>{{basicInformation.height}}cm</p>
-              <p><span>婚否:</span>{{basicInformation.marriageStatus | isOrFilter}}</p>
             </i-col>
             <i-col :lg="4" :md="4" :sm="12" :xs="24">
               <p><span>性别:</span>{{basicInformation.gender | genderFilter}}</p>
@@ -98,13 +97,18 @@
               <p><span>体重:</span>{{basicInformation.weight}}Kg</p>
             </i-col>
             <i-col :lg="6" :md="7" :sm="12" :xs="24">
+              <p><span>婚否:</span>{{basicInformation.marriageStatus | isOrFilter}}</p>
               <p><span>受教育年限:</span>{{basicInformation.degree | degreeFilter}}</p>
               <p><span>电话:</span>{{basicInformation.telephone}}</p>
-              <p><span>出生日期:</span>{{basicInformation.birthday | parseTime('{y}-{m}-{d}')}}</p>
             </i-col>
             <i-col :lg="9" :md="9" :sm="12" :xs="24">
               <p><span>邮箱:</span>{{basicInformation.email}}</p>
+              <p><span>出生日期:</span>{{basicInformation.birthday | parseTime('{y}-{m}-{d}')}}</p>
               <p><span>紧急联系电话:</span>{{basicInformation.emergencyPhone}}</p>
+            </i-col>
+          </Row>
+          <Row>
+            <i-col :lg="24">
               <p><span>身份证:</span>{{basicInformation.idcardNumber}}</p>
             </i-col>
           </Row>
