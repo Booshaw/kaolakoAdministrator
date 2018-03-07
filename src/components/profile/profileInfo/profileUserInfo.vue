@@ -309,7 +309,7 @@
           <ul class="disease-list">
             <span class="f-title">母亲健康状况</span>
             <li v-for="(item, index) in familyHistory.motherDisease" :key="index" >
-              <span class="label-wrapper">{{item | selectDiseaseArray}}</span>
+              <span class="label-wrapper">{{diseaseNameFilter}}</span>
             </li>
           </ul>
           <ul class="disease-list">
@@ -1177,6 +1177,16 @@ export default {
     }
   },
   computed: {
+    diseaseNameFilter() {
+      if(this.dict) {
+        var arry = this.dict.disease
+          for (let i = 0; i < arry.length; i++) {
+            let obj = Object.keys(arry[i])
+            console.log(obj)
+          }
+      }
+      return 'jies'
+    }
   },
   watch: {
     basicInformation: {

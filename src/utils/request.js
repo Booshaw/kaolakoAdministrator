@@ -6,7 +6,7 @@ import router from '../router'
 // axios 配置
 axios.defaults.timeout = 5000;
 // axios.defaults.baseURL = '/api'
-axios.defaults.baseURL = '/api'
+axios.defaults.baseURL = 'http://192.168.0.6:9080/jiahuan'
 
 // http request 拦截器
 axios.interceptors.request.use(
