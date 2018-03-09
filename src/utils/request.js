@@ -26,9 +26,9 @@ axios.interceptors.response.use(
     },
     error => {
         if (error.response) {
-            switch (error.response.status) {
-                case 401:
-                    // 401 清除token信息并跳转到登录页面
+            switch (error.response.code) {
+                case 403:
+                    // 403 清除token信息并跳转到登录页面
                     store.commit(types.LOGOUT);
                     router.replace({
                         path: 'login',
@@ -36,8 +36,8 @@ axios.interceptors.response.use(
                     })
             }
         }
-        // console.log(JSON.stringify(error));//console : Error: Request failed with status code 402
-        return Promise.reject(error.response.data)
+        console.log(JSON.stringify(error)); // console : Error: Request failed with status code 402
+        return Promise.reject(error.response)
     });
 
 export default axios;
