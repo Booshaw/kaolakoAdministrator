@@ -1178,7 +1178,7 @@ export default {
   },
   computed: {
     diseaseNameFilter() {
-      if(this.dict) {
+      if (this.dict) {
         var arry = this.dict.disease
           for (let i = 0; i < arry.length; i++) {
             let obj = Object.keys(arry[i])

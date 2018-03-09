@@ -12,3 +12,15 @@ export function getPatientInfo(params) {
     return Promise.resolve(res.data)
   })
 }
+export function getDiseaseCategory(params) {
+  const url = debug ? '/common/checkup/category' : 'http://192.168.0.6:9080/jiahuan/common/checkup/category'
+  return axios.post(url, params).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+export function getDiseaseList(params) {
+  const url = debug ? '/common/checkup/list' : 'http://192.168.0.6:9080/jiahuan/common/checkup/list'
+  return axios.post(url, params).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
