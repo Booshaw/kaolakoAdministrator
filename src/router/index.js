@@ -117,10 +117,10 @@ const routes = [
   {
     name: 'profileUserInfo',
     path: '/userInfo/profileUserInfo',
-    component: ProfileUserInfo
-    // meta: {
-    //   requireAuth: true
-    // }
+    component: ProfileUserInfo,
+    meta: {
+      requireAuth: true
+    }
   },
   // 测试路由
   {

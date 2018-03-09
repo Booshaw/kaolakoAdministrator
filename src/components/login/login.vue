@@ -47,13 +47,13 @@ export default {
       username: null,
       password: null,
       rules: {
-        user: [
-          {
-            required: true,
-            message: '请输入账号',
-            trigger: 'blur'
-          }
-        ]
+        // user: [
+        //   {
+        //     required: true,
+        //     message: '请输入账号',
+        //     trigger: 'blur'
+        //   }
+        // ]
         // password: [
         //   {
         //     required: true,
