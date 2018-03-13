@@ -3,7 +3,7 @@
     <div class="content">
       <div class="breadcrumb">
         <Breadcrumb>
-          <BreadcrumbItem to="/userInfo">
+          <BreadcrumbItem to="/u">
             <Icon type="ios-home-outline"></Icon>我的家庭
           </BreadcrumbItem>
         </Breadcrumb>
@@ -19,11 +19,11 @@
             </div>
             <div class="info">
               <Badge :count="item.tips">
-                <a href="#" class="name">{{item.name}}</a>
+                <a href="#" class="name">{{item.realName}}</a>
               </Badge>
               <p>年龄:{{item.age}}岁</p>
-              <p>电话:{{item.phone}}</p>
-              <p>监管成员: <span v-for="(i, index1) in item.superviseList" :key="index1">{{i.superviseName}}</span>
+              <p>电话:{{item.telephone}}</p>
+              <p>监管成员: <span v-for="(i, index1) in item.managerList" :key="index1">{{i}}</span>
               <span class="invite" @click.stop="showModel(item)">
                 <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-addition"></use>
@@ -75,7 +75,7 @@
           <i-input v-model="invitedGuardianList.name" placeholder="请输入被邀请人的姓名"></i-input>
         </FormItem>
         <FormItem label="电话">
-          <i-input v-model="invitedGuardianList.phone" placeholder="请输入被邀请人的手机"></i-input>
+          <i-input v-model="invitedGuardianList.telephone" placeholder="请输入被邀请人的手机"></i-input>
         </FormItem>
         <!-- <FormItem>
           <Button type="primary">查询</Button>
@@ -85,7 +85,7 @@
   </div>
 </template>
 <script>
-import { getUserList } from 'api/teamList'
+import { getPatientList } from 'api/getData'
 export default {
   data() {
     return {
@@ -102,21 +102,21 @@ export default {
     }
   },
   mounted() {
-    this._getUserList()
+    this._getPatientList()
   },
   methods: {
     showModel(item) {
       this.invitedGuardian = true
     },
-    _getUserList() {
-      getUserList().then(res => {
-        this.userList = res.data.userList
-        // console.log(this.userList)
+    _getPatientList() {
+      getPatientList().then(res => {
+        this.userList = res.data
+        console.log(res.data)
       })
     },
     toUserInfo(item) {
       this.$router.push({
-        path: '/userInfo/profileUserInfo',
+        path: '/u/p',
         query: { id: item.id }
       })
     },
