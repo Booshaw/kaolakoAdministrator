@@ -4,9 +4,7 @@
       <jnav></jnav>
     </div>
     <div class="content">
-      <keep-alive>
-        <router-view></router-view>
-      </keep-alive>
+      <router-view></router-view>
     </div>
     <div class="footer">
       <jfooter></jfooter>
