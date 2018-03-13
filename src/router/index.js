@@ -94,7 +94,7 @@ const routes = [
   },
   {
     name: 'userInfo',
-    path: '/userInfo',
+    path: '/u',
     component: UserInfo,
     meta: {
       requireAuth: true
@@ -116,11 +116,11 @@ const routes = [
   },
   {
     name: 'profileUserInfo',
-    path: '/userInfo/profileUserInfo',
-    component: ProfileUserInfo,
-    meta: {
-      requireAuth: true
-    }
+    path: '/u/p',
+    component: ProfileUserInfo
+    // meta: {
+    //   requireAuth: true
+    // }
   },
   // 测试路由
   {

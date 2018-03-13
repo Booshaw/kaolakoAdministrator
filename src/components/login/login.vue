@@ -89,7 +89,7 @@ export default {
           this.$store.commit(types.LOGIN, this.token)
           this.$store.commit(types.USERTYPE, this.userType)
           let redirectUser = decodeURIComponent(
-            this.$route.query.redirect || '/userInfo'
+            this.$route.query.redirect || '/u'
           )
           // let redirectUser = this.$route.query.redirect || '/userInfo'
           let redirectDoctor = decodeURIComponent(
@@ -98,7 +98,7 @@ export default {
           console.log(`token:${this.token}`)
           if (this.userType === '家庭用户') {
             this.$router.push({
-              path: '/userInfo'
+              path: '/u'
             })
           } else {
             this.$router.push({
