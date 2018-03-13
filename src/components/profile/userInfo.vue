@@ -9,17 +9,91 @@
         </Breadcrumb>
       </div>
       <div class="title">
-        <Button type="ghost" shape="circle" size="small">添加家庭成员</Button>
+        <Button type="ghost" shape="circle" size="small" @click="addPatientModel = !addPatientModel"><span v-html="addPatientModel ? '取消添加' : '添加家庭成员'"></span></Button>
       </div>
-      <row class="item" v-for="(item, index) in userList" :key="index">
+      <Row v-if="addPatientModel" class="add-form-wrapper">
+        <Form ref="patientDetail" :label-width="80" :model="patientDetail" :rules="ruleValidate">
+          <FormItem label="姓名" prop="realName">
+            <i-input v-model="patientDetail.realName"></i-input>
+          </FormItem>
+          <FormItem label="身份证" prop="idcardNumber">
+            <i-input v-model="patientDetail.idcardNumber"></i-input>
+          </FormItem>
+          <FormItem label="性别" prop="gender">
+            <Select v-model="patientDetail.gender">
+              <Option value = "1">女</Option>
+              <Option value = "2">男</Option>
+            </Select>
+          </FormItem>
+          <FormItem label="身高" prop="height">
+            <i-input v-model="patientDetail.height">
+              <span slot="append">cm</span>
+            </i-input>
+          </FormItem>
+           <FormItem label="出生日期" prop="birthday">
+            <DatePicker v-model="patientDetail.birthday" type="date" placeholder="选择日期" format="yyyy-MM-dd" on-change="print"></DatePicker>
+          </FormItem>
+          <FormItem label="婚否">
+            <Select v-model="patientDetail.marriageStatus">
+              <Option value = "0">否</Option>
+              <Option value = "1">是</Option>
+              <Option value = "2">离异</Option>
+              <Option value = "3">丧偶</Option>
+            </Select>
+          </FormItem>
+          <FormItem label="教育年限">
+            <Select v-model="patientDetail.degree">
+              <Option :value="item.value" v-for="(item, index6) in dict.degree" :key="index6">{{item.descName}}</Option>
+            </Select>
+          </FormItem>
+          <FormItem label="民族">
+            <Select v-model="patientDetail.ethnicity">
+              <Option v-for="(item, index) in dict.ethnicity" :value="item.value" :key="index">{{item.descName}}</Option>
+            </Select>
+          </FormItem>
+          <FormItem label="体重">
+            <i-input v-model="patientDetail.weight">
+              <span slot="append">kg</span>
+            </i-input>
+          </FormItem>
+          <FormItem label="手机号">
+            <i-input v-model="patientDetail.telephone"></i-input>
+          </FormItem>
+          <FormItem label="紧急电话">
+            <i-input v-model="patientDetail.emergencyPhone"></i-input>
+          </FormItem>
+          <FormItem label="邮箱">
+            <i-input v-model="patientDetail.email"></i-input>
+          </FormItem>
+          <FormItem label="户籍地址">
+            <Cascader :data="dict.area" v-model="patientDetail.permanentAreaId" trigger="hover" style="width:10rem"></Cascader>
+          </FormItem>
+          <FormItem label="详细地址">
+            <i-input v-model="patientDetail.permanentAddress"></i-input>
+          </FormItem>
+          <FormItem label="现居地">
+            <Cascader :data="dict.area" v-model="patientDetail.presentAreaId" trigger="hover" style="width:12rem"></Cascader>
+          </FormItem>
+          <FormItem label="现居地址">
+            <i-input v-model="patientDetail.presentAddress"></i-input>
+          </FormItem>
+          <FormItem label="工作单位">
+            <i-input v-model="patientDetail.company"></i-input>
+          </FormItem>
+          <FormItem>
+            <Button type="primary" @click="uploadPatient('patientDetail')">提交</Button>
+          </FormItem>
+        </Form>
+      </Row>
+      <row class="item" v-for="(item, index) in patientList" :key="index">
         <i-col :lg="12" :sm="12" :xs="24">
           <div class="left">
             <div class="head-img" @click.stop="toUserInfo(item)">
               <img :src="item.headImage" alt="JIAHUAN">
             </div>
             <div class="info">
-              <Badge :count="item.tips">
-                <a href="#" class="name">{{item.realName}}</a>
+              <Badge dot>
+                <a href="#" class="name" @click="toUserInfo(item)">{{item.realName}}</a>
               </Badge>
               <p>年龄:{{item.age}}岁</p>
               <p>电话:{{item.telephone}}</p>
@@ -85,32 +159,134 @@
   </div>
 </template>
 <script>
-import { getPatientList } from 'api/getData'
+import { getDict, getPatientList } from 'api/getData'
+import { upload } from 'api/upload'
 export default {
   data() {
+    // 大陆身份证验证
+    const idCardPass = (rule, value, callback) => {
+      let reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
+      if (value === '') {
+        callback(new Error('身份证号不能为空'))
+      } else if (!reg.test(value)) {
+        callback(new Error('请输入正确的身份证号'))
+      }
+    }
     return {
-      userList: [],
+      loadingUpload: false, // button加载loading
+      addPatientModel: false, // 添加家庭成员model
+      patientDetail: {
+        age: '',
+        birthday: '',
+        company: '',
+        degree: '',
+        email: '',
+        emergencyPhone: '',
+        ethnicity: '',
+        gender: '',
+        height: '',
+        idcardNumber: '',
+        marriageStatus: '',
+        permanentAddress: '',
+        permanentAreaId: [],
+        presentAddress: '',
+        presentAreaId: [],
+        realName: '',
+        telephone: '',
+        weight: ''
+      },
+      dict: { // 数据字典初始定义
+        area: [],
+        degree: [],
+        disease: [],
+        ethnicity: []
+      },
+      patientList: [], // 家庭成员患者列表
       loading: true,
       invitedGuardian: false,
       invitedGuardianList: {
         name: '',
         phone: ''
       },
-      addItem: {
-        superviseName: ''
+      addItem: { // 邀请监管成员对象
+        superviseName: '' // 邀请监管成员姓名
+      },
+      // 表单验证
+      ruleValidate: {
+        realName: [
+          {required: true, message: '姓名不能为空', trigger: 'blur'}
+        ],
+        email: [
+          {required: true, message: '邮箱不能为空', trigger: 'blur'},
+          {type: 'email', message: '请输入正确的邮箱', trigger: 'blur'}
+        ],
+        birthday: [
+          { required: true, type: 'date', message: '请选择出生日期', trigger: 'change' }
+        ],
+        ethnicity: [
+          { required: true, message: '请选择民族', trigger: 'change' }
+        ],
+        telephone: [
+          { required: true, message: '请输入手机号', trigger: 'blur' }
+        ],
+        gender: [
+          { required: true, message: '请选择性别', trigger: 'change' }
+        ],
+        height: [
+          { required: true, message: '请输入身高', trigger: 'blur' }
+        ],
+        idcardNumber: [
+          {validator: idCardPass, trigger: 'blur'}
+        ]
       }
     }
   },
   mounted() {
     this._getPatientList()
+    this._getDict()
   },
   methods: {
+    // 提交新增家庭成员数据
+    uploadPatient(name) {
+      let url = '/patient/add'
+      let params = this.patientDetail
+       this.$refs[name].validate((valid) => {
+          if (valid) {
+            this.$Message.success('成功!')
+          } else {
+            this.$Message.error('错误!')
+          }
+      }).then(upload(url, params).then(res => {
+          if (res.code === '200') {
+            this.patientList.unshift(res.data)
+            this.$Message.info(`操作${res.message}`)
+            this.addPatientModel = false
+          } else {
+            this.$Message.error(`操作失败:${res.message}`)
+          }
+        }))
+    },
+    // 获取字典数据列表
+    _getDict() {
+      const params = {
+        dictType: [
+          'area', 'ethnicity', 'degree', 'disease'
+        ],
+        diseaseType: 0
+      }
+      getDict(params).then(res => {
+        this.dict.disease = res.data.disease.slice(6)
+        this.dict.area = res.data.area
+        this.dict.degree = res.data.degree
+        this.dict.ethnicity = res.data.ethnicity
+      })
+    },
     showModel(item) {
       this.invitedGuardian = true
     },
     _getPatientList() {
       getPatientList().then(res => {
-        this.userList = res.data
+        this.patientList = res.data
         console.log(res.data)
       })
     },
@@ -134,7 +310,7 @@ export default {
             top: 50
           })
         }
-        console.log(this.userList[0].superviseList)
+        console.log(this.patientList[0].superviseList)
       }, 1000)
     }
   },
@@ -163,6 +339,9 @@ export default {
       padding 0.5rem
       font-size 1rem
       border-bottom 1px solid #eeeeee
+    .add-form-wrapper
+      width 60%
+      margin 1rem auto
     .item
       padding 1rem
       background #ffffff
@@ -290,4 +469,7 @@ export default {
             font-size 0.875rem
             line-height 1rem
             display inline-block
+  .base
+    .title
+      float left
 </style>
