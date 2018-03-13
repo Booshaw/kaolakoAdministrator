@@ -3,7 +3,7 @@
     <div class="content-wrapper">
       <div class="bread-crumb">
         <Breadcrumb>
-          <BreadcrumbItem to="/userInfo">返回我的家庭</BreadcrumbItem>
+          <BreadcrumbItem to="/u">返回我的家庭</BreadcrumbItem>
           <BreadcrumbItem>成员详细</BreadcrumbItem>
         </Breadcrumb>
       </div>
@@ -98,12 +98,12 @@
               <p><span>名族:</span>{{basicInformation.ethnicity | ethnicityFilter}}</p>
               <p><span>体重:</span>{{basicInformation.weight}}Kg</p>
             </i-col>
-            <i-col :lg="5" :md="6" :sm="12" :xs="24">
+            <i-col :lg="6" :md="6" :sm="12" :xs="24">
               <p><span>婚否:</span>{{basicInformation.marriageStatus | isOrFilter}}</p>
               <p><span>受教育年限:</span>{{basicInformation.degree | degreeFilter}}</p>
               <p><span>电话:</span>{{basicInformation.telephone}}</p>
             </i-col>
-            <i-col :lg="9" :md="8" :sm="12" :xs="24">
+            <i-col :lg="8" :md="8" :sm="12" :xs="24">
               <p><span>邮箱:</span>{{basicInformation.email}}</p>
               <p><span>出生日期:</span>{{basicInformation.birthday | parseTime('{y}-{m}-{d}')}}</p>
               <p><span>紧急联系电话:</span>{{basicInformation.emergencyPhone}}</p>
@@ -138,7 +138,7 @@
           @on-cancel="cancelUpload"
           @on-ok="uploadBasicInformation">
             <Button type="primary" icon="checkmark-round" :loading="loading">
-              <span v-if="!loading">提交修改</span>
+              <span v-if="!loading">保存</span>
               <span v-else>Loading...</span>
             </Button>
           </Poptip>
@@ -199,7 +199,7 @@
           @on-ok="uploadPersonalHistory"
           @on-cancel="cancelUpload">
             <Button type="primary" icon="checkmark-round" :loading="loading">
-              <span v-if="!loading">提交修改</span>
+              <span v-if="!loading">保存</span>
               <span v-else>Loading...</span>
             </Button>
           </Poptip>
@@ -263,7 +263,7 @@
           @on-ok="uploadPastMedicalHistory"
           @on-cancel="cancelUpload">
             <Button type="primary" icon="checkmark-round" :loading="loading">
-              <span v-if="!loading">提交修改</span>
+              <span v-if="!loading">保存</span>
               <span v-else>Loading...</span>
             </Button>
           </Poptip>
@@ -367,7 +367,7 @@
           @on-ok="uploadFamilyHistory"
           @on-cancel="cancelUpload">
             <Button type="primary" icon="checkmark-round" :loading="loading">
-              <span v-if="!loading">提交修改</span>
+              <span v-if="!loading">保存</span>
               <span v-else>Loading...</span>
             </Button>
           </Poptip>
@@ -436,7 +436,7 @@
         </div>
         <div class="base" v-if="!checkObstericalHistory">
           <Row v-if="basicInformation.gender && basicInformation.gender === '1'">
-            <p class="info"><span class="title-info">月经持续:</span>{{obstericalHistory.menstruationDuration}}天</p>
+            <p class="info"><span class="title-info">月经持续:</span>{{obstericalHistory.menstruationDuration}} <span v-if="obstericalHistory.menstruationDuration">天</span></p>
             <p class="info"><span class="title-info">经期开始:</span>{{obstericalHistory.menstruationBeginAge}}{{(obstericalHistory.menstruationBeginAge) ? '岁' : '否认'}}</p>
             <p class="info"><span class="title-info">绝经时间:</span>{{obstericalHistory.menstruationEndAge}}{{(obstericalHistory.menstruationEndAge) ? '岁' : '否认'}}</p>
             <p class="info"><span class="title-info">月经颜色异常描述:</span>{{(obstericalHistory.menstruationUnusualColor) ? obstericalHistory.menstruationUnusualColor : '否认'}}</p>
@@ -466,7 +466,7 @@
           @on-ok="uploadObstericalHistory"
           @on-cancel="cancelUpload">
            <Button type="primary" icon="checkmark-round" :loading="loading">
-              <span v-if="!loading">提交修改</span>
+              <span v-if="!loading">保存</span>
               <span v-else>Loading...</span>
             </Button>
           </Poptip>
@@ -661,12 +661,12 @@
               </Select>
             </FormItem>
           </i-col>
-          <i-col :lg="8" :xs="24">
+          <i-col :lg="8" :xs="24" :md="12">
             <FormItem label="确诊时间">
               <DatePicker v-model="medicalRecordData.admissionDate" type="date" placeholder="选择日期" format="yyyy-MM-dd"></DatePicker>
             </FormItem>
           </i-col>
-          <i-col :lg="8" :xs="24">
+          <i-col :lg="8" :xs="24" :md="12">
              <FormItem label="出院时间">
               <DatePicker v-model="medicalRecordData.dischargeDate" type="date" placeholder="选择日期" format="yyyy-MM-dd"></DatePicker>
             </FormItem>
@@ -742,13 +742,84 @@ export default {
       personalHistoryInfo: [], // 手动编辑dom数据
       basicInformation: {}, // 个人基本信息
       checkBasicInformation: false, // 个人基本信息数据变动后提交修改button的display
-      personalHistory: [], // 个人史列表渲染dom数据
+      personalHistory: [
+        {
+          diseaseName: '疫区居住',
+          diseaseId: 1,
+          patientId: null,
+          detail: {
+            value: ''
+          }
+        },
+        {
+          diseaseName: '疫水、疫源接触史',
+          diseaseId: 2,
+          patientId: null,
+          detail: {
+            value: ''
+          }
+        },
+        {
+          diseaseName: '放射物、毒物接触史',
+          diseaseId: 3,
+          patientId: null,
+          detail: {
+            value: ''
+          }
+        },
+        {
+          diseaseName: '毒品接触史',
+          diseaseId: 4,
+          patientId: null,
+          detail: {
+            value: ''
+          }
+        },
+        {
+          diseaseName: '吸烟史',
+          diseaseId: 5,
+          patientId: null,
+          detail: {
+            years: null,
+            daily: null,
+            quit: null
+          }
+        },
+        {
+          diseaseName: '饮酒史',
+          diseaseId: 6,
+          patientId: null,
+          detail: {
+            years: null,
+            daily: null,
+            quit: null
+          }
+        }
+      ], // 个人史列表渲染dom数据
       checkPersonalHistory: false, // 个人史数据变动后提交修改button的display
       pastMedicalHistory: [], // 既往史
       checkPastMedicalHistory: false, // 既往史数据变动后提交修改button的display
-      familyHistory: [], // 家族史
+      familyHistory: {
+        familyDisease: [],
+        familyGeneticDisease: [],
+        fatherDisease: [],
+        isFatherAlive: null,
+        isMotherAlive: null,
+        motherDisease: [],
+        patientId: null
+        }, // 家族史
       checkFamilyHistory: false, // 家族史初始数据变动后提交修改button的display
-      obstericalHistory: {}, // 婚育史初始数据
+      obstericalHistory: {
+        childrenDisease: [],
+        isDysmenorrhea: null,
+        menstruationBeginAge: null,
+        menstruationDuration: null,
+        menstruationEndAge: null,
+        menstruationUnusualColor: null,
+        menstruationUnusualCycle: null,
+        patientId: null,
+        spouseDisease: null
+      }, // 婚育史初始数据
       addObstericalHistory: {
         childrenDisease: [], // 子女有无慢性病
         spouseDisease: [], // 配偶有无慢性病
@@ -968,7 +1039,9 @@ export default {
       getPatientInfo(params).then(res => {
         console.log(res.data)
         this.basicInformation = res.data.patientDetail
-        this.personalHistory = res.data.patientPersonalHistory
+        if (Object.keys(res.data.patientPersonalHistory).length !== 0) {
+          this.personalHistory = res.data.patientPersonalHistory
+        }
         this.familyHistory = res.data.patientFamilyHistory
         this.pastMedicalHistory = res.data.patientPastHistory
         this.obstericalHistory = res.data.patientObstetricalHistory
@@ -984,7 +1057,7 @@ export default {
         diseaseType: 0
       }
       getDict(params).then(res => {
-        this.dict.disease = res.data.disease
+        this.dict.disease = res.data.disease.slice(6)
         this.dict.area = res.data.area
         this.dict.degree = res.data.degree
         this.dict.ethnicity = res.data.ethnicity
@@ -1184,6 +1257,9 @@ export default {
           value: diseaseHospital
         }
       })
+      this.diseaseTime = null
+      this.diseaseId = null
+      this.diseaseHospital = null
     },
       //  疾病名称转换
     diseaseNameFilter(value) {
