@@ -93,7 +93,7 @@ export default {
           )
           // let redirectUser = this.$route.query.redirect || '/userInfo'
           let redirectDoctor = decodeURIComponent(
-            this.$route.query.redirect || '/doctorInfo'
+            this.$route.query.redirect || '/d'
           )
           console.log(`token:${this.token}`)
           if (this.userType === '家庭用户') {

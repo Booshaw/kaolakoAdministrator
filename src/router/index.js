@@ -102,25 +102,28 @@ const routes = [
   },
   {
     name: 'doctorInfo',
-    path: '/doctorInfo',
+    path: '/d',
     component: DoctorInfo,
-    redirect: '/doctorInfo/d',
+    redirect: '/d/p',
     meta: {
       requireAuth: true
     },
     children: [{
       name: '',
-      path: 'd',
-      component: ProfileDoctorInfo
+      path: 'p',
+      component: ProfileDoctorInfo,
+      meta: {
+        requireAuth: true
+      }
     }]
   },
   {
     name: 'profileUserInfo',
     path: '/u/p',
-    component: ProfileUserInfo
-    // meta: {
-    //   requireAuth: true
-    // }
+    component: ProfileUserInfo,
+    meta: {
+      requireAuth: true
+    }
   },
   // 测试路由
   {

@@ -104,7 +104,7 @@ export default {
       } else if (usertype === '医生用户') {
         this.isLogin = true
         this.$router.push({
-          path: '/doctorInfo',
+          path: '/d',
           activeClass: 'router-link-active'
         })
       } else {
