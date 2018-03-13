@@ -29,7 +29,7 @@
           </svg>
           </router-link>
           <router-link class="regin border-1px" to="/regist" tag="li" @click.native="hiddenNav" v-if="!token">注册</router-link>
-          <li @click="logout" v-if="token">logout</li>
+          <li @click="logout" v-if="token">退出</li>
         </ul>
       </div>
   </transition>
@@ -98,7 +98,7 @@ export default {
       if (usertype === '家庭用户' && token) {
         this.isLogin = true
         this.$router.push({
-          path: '/userInfo',
+          path: '/u',
           activeClass: 'router-link-active'
         })
       } else if (usertype === '医生用户') {
