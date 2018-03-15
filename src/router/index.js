@@ -15,8 +15,11 @@ import Articles from 'components/articles/articles'
 import PreventDisease from 'components/articles/preventDisease/preventDisease'
 import Treatment from 'components/articles/treatment/treatment'
 import ArticleDetail from 'base/articleDetail/articleDetail'
-import ProfileUserInfo from 'components/profile/profileInfo/profileUserInfo'
-import ProfileDoctorInfo from 'components/profile/profileInfo/profileDoctor'
+import ProfileUserInfo from 'components/profile/user/profileUserInfo'
+import ProfileDoctor from 'components/profile/doctor/profileDoctor/profileDoctor'
+import personalCenter from 'components/profile/doctor/personalCenter/personalCenter'
+import BasicProfile from 'components/profile/doctor/personalCenter/profile/profile'
+import TeamGroup from 'components/profile/doctor/team/team'
 
 Vue.use(Router)
 const routes = [
@@ -101,21 +104,46 @@ const routes = [
     }
   },
   {
-    name: 'doctorInfo',
+    name: 'doctorInfo', // 医生个人中心首页
     path: '/d',
     component: DoctorInfo,
-    redirect: '/d/p',
+    redirect: '/d/p', // 默认跳转到最新提示
     meta: {
       requireAuth: true
     },
     children: [{
-      name: '',
+      name: 'ProfileDoctor', // 医生端最新提示页,即默认页
       path: 'p',
-      component: ProfileDoctorInfo,
+      component: ProfileDoctor,
       meta: {
         requireAuth: true
       }
-    }]
+    },
+    {
+      name: 'team', // 医生端我的团队页
+      path: 't',
+      component: TeamGroup,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      name: 'personalCenter', // 医生端个人中心页
+      path: 'c',
+      component: personalCenter,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      name: 'profile', // 个人中心的基本信息
+      path: 'profile',
+      component: BasicProfile,
+      meta: {
+        requireAuth: true
+      }
+    }
+  ]
   },
   {
     name: 'profileUserInfo',
