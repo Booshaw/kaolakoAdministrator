@@ -36,3 +36,10 @@ export function getDiseaseList(params) {
     return Promise.resolve(res.data)
   })
 }
+// 获取医生个人信息
+export function getDoctorInformation(params) {
+  const url = debug ? '/doctor/get' : 'http://192.168.0.6:9080/jiahuan//doctor/get'
+  return axios.post(url, params).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
