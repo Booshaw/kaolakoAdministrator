@@ -29,13 +29,13 @@
       <Row>
         <i-col :lg="4" :xs="3">
           <div class="left">
-            <router-link exact  to="/doctorInfo/d" tag="li">
+            <router-link exact  to="/d/p" tag="li">
               <span class="text">最新提示</span>
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-setup"></use>
               </svg>
             </router-link>
-            <router-link exact  to="/" tag="li">
+            <router-link exact  to="/d/t" tag="li">
               <span class="text">我的团队</span>
                 <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-setup"></use>
@@ -62,7 +62,7 @@
                 <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-setup"></use>
               </svg>
-            </router-link> <router-link exact  to="/" tag="li">
+            </router-link> <router-link to="/d/c" tag="li">
               <span class="text">个人中心</span>
                 <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-setup"></use>
@@ -92,7 +92,7 @@ export default {
 <style lang="stylus">
 .d-info-wrapper
   font-size 1rem
-  background #f2f2f2
+  // background #f2f2f2
   .header
     padding 1rem
     background-color #5FC3E4
