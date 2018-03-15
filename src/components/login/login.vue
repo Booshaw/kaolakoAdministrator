@@ -46,6 +46,7 @@ export default {
       userType: '家庭用户',
       username: null,
       password: null,
+      passUserType: ['家庭用户','医生用户'],
       rules: {
         // user: [
         //   {
@@ -74,17 +75,20 @@ export default {
     this.$store.commit(types.TITLE, 'Login')
   },
   methods: {
+    
     login() {
+      let type = Object.values(this.passUserType).indexOf(this.userType) + 1
       const params = {
       username: this.username,
-      password: this.password
+      password: this.password,
+      userType: type
       }
       sendLogin(params).then((res) => {
         // console.log(res.getAllResponseHeaders())
-        console.log(res)
+        // console.log(res)
         if (res.data.code === '200') {
           this.token = res.headers.authorization
-          console.log(this.token)
+          // console.log(this.token)
           if (this.token) {
           this.$store.commit(types.LOGIN, this.token)
           this.$store.commit(types.USERTYPE, this.userType)
@@ -95,7 +99,7 @@ export default {
           let redirectDoctor = decodeURIComponent(
             this.$route.query.redirect || '/d'
           )
-          console.log(`token:${this.token}`)
+          // console.log(`token:${this.token}`)
           if (this.userType === '家庭用户') {
             this.$router.push({
               path: '/u'
@@ -106,6 +110,8 @@ export default {
             })
           }
         }
+        } else {
+        this.$Message.error(`操作失败:${res.data.message}`)
         }
       })
       // if (this.token) {
@@ -129,7 +135,11 @@ export default {
       //       })
       //     }
       //   }
-    }
+    },
+     passType(value) {
+       
+
+      },
   }
 }
 </script>
