@@ -1,3 +1,24 @@
+export function degreeFilter(value) {
+  var degreeList = [
+    '小学一年级',
+    '小学二年级',
+    '小学三年级',
+    '小学四年级',
+    '小学五年级',
+    '小学六年级',
+    '初一',
+    '初二',
+    '初三',
+    '高一',
+    '高二',
+    '高三',
+    '大一',
+    '大二',
+    '大三',
+    '大四'
+  ]
+  return degreeList[value - 1]
+}
 export function ethnicityFilter(value) {
   var ethnicity = [
     '汉族',
@@ -57,10 +78,10 @@ export function ethnicityFilter(value) {
     '珞巴族',
     '布朗族'
     ]
-    if (!value) {
-      return ''
-    }
-    return ethnicity[value - 1].toString()
+  if (!value) {
+    return ''
+  }
+  return ethnicity[value - 1].toString()
 }
 export function parseTime(time, cFormat) {
   if (arguments.length === 0) {
