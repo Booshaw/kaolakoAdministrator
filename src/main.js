@@ -10,8 +10,13 @@ import 'common/stylus/index.styl'
 import axios from './utils/request'
 import fastclick from 'fastclick'
 import * as filters from './utils/filter'
+import VueLazyLoad from 'vue-lazyload'
 Vue.prototype.axios = axios
 Vue.config.productionTip = false
+Vue.use(VueLazyLoad, {
+  loading: require('common/img/default.png'),
+  error: require('common/img/default.png')
+})
 Vue.use(iView)
 /* eslint-disable no-new */
 fastclick.attach(document.body)
