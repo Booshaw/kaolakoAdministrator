@@ -15,6 +15,10 @@
         <div class="t-content">
           <div class="team-info-wrapper">
             <img class="team-logo" v-lazy="doctorGroupInformation.logo.url" alt="健管团队">
+            <div class="team-title">
+              <p class="team-text">官方认证</p>
+              <h3 class="team-p">精品团队</h3>
+            </div>
           </div>
         </div>
       </div>
@@ -199,7 +203,7 @@ export default {
       width 90%
       margin 0 auto
       height 10rem
-      background url('/static/usernotloginbg.png')
+      background url('./usernotloginbg.png')
       background-size cover
       border-radius 0.625rem
       .add-title
@@ -234,7 +238,7 @@ export default {
       position relative
       width 100%
       height 20rem
-      background url('/static/team_bg.png') center
+      background url('./team_bg.png') center
       background-size cover
       .top-bg-mask
         width 100%
@@ -255,6 +259,21 @@ export default {
               border-radius 50%
               border 3px solid #ffffff
               margin-top 1rem
+            .team-title
+              position relative
+              margin -1.5rem auto 0
+              width 9rem
+              height 3.5rem
+              color #fff
+              background url('./flag-bg.png')
+              .team-text
+                opacity 0.7
+                font-size 0.625rem
+                line-height 1.25rem
+              .team-p
+                font-weight 700
+                font-size 1rem
+                line-height 1.2rem
 .upload-form-item
   .icon
     width 1.5em
