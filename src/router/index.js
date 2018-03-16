@@ -120,7 +120,7 @@ const routes = [
       }
     },
     {
-      name: 'team', // 医生端我的团队页
+      name: 'teamDoctor', // 医生端我的团队页
       path: 't',
       component: TeamGroup,
       meta: {
