@@ -199,7 +199,7 @@ export default {
       width 90%
       margin 0 auto
       height 10rem
-      background url('./usernotloginbg.png')
+      background url('/static/usernotloginbg.png')
       background-size cover
       border-radius 0.625rem
       .add-title
@@ -234,7 +234,7 @@ export default {
       position relative
       width 100%
       height 20rem
-      background url('./team_bg.png') center
+      background url('/static/team_bg.png') center
       background-size cover
       .top-bg-mask
         width 100%
