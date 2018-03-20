@@ -15,7 +15,7 @@
     <Row>
       <div class="p-content-wrapper" v-if="doctorInformation">
         <ul>
-          <li><span class="content-title">姓名:</span><span class="info">{{doctorInformation.nickName}}</span></li>
+          <li><span class="content-title">姓名:</span><span class="info">{{doctorInformation.realName}}</span></li>
           <li><span class="content-title">性别:</span><span class="info">{{doctorInformation.gender ==='1' ? '女' : '男'}}</span></li>
           <li><span class="content-title">学历:</span><span class="info">{{doctorInformation.degree | degreeFilterProfile}}</span></li>
           <li><span class="content-title">出生日期:</span><span class="info">{{doctorInformation.birthday | parseTime()}}</span></li>
@@ -30,7 +30,7 @@
       @on-ok="uploadDoctor">
       <Form :label-width="70" class="upload-form-item">
         <FormItem label="昵称:">
-          <i-input v-model="doctorInformation.nickName"></i-input>
+          <i-input v-model="doctorInformation.realName"></i-input>
         </FormItem>
         <FormItem label="性别:">
           <Select v-model="doctorInformation.gender">
@@ -83,7 +83,7 @@ export default {
   },
   methods: {
     uploadDoctor() {
-      let url = '/doctor/update'
+      let url = '/doctor/detail/update'
       let params = this.doctorInformation
       upload(url, params).then(res => {
         console.log(res)
@@ -93,7 +93,9 @@ export default {
       getDoctorInformation().then(res => {
         console.log(res.data)
         if (res.code === '200') {
-          this.doctorInformation = res.data.bnDoctor
+          this.doctorInformation = res.data
+        } else {
+          this.$Message.error(res.message)
         }
       })
     }
@@ -117,8 +119,7 @@ export default {
 </script>
 <style lang="stylus">
   .p-profile-wrapper
-    margin-top 1rem
-    margin-left 2rem
+    margin 2rem
     color #606266
     .title
       // border-bottom 1px solid #ffffff
