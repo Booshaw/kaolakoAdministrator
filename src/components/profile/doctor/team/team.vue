@@ -1,6 +1,6 @@
 <template>
   <div class="t-profile-wrapper">
-    <div class="add">
+    <!-- <div class="add">
       <h3 class="add-title">佳护安医疗</h3>
       <div class="add-btn">
         <span class="btn-note" @click="addDoctorGroupModal = !addDoctorGroupModal">新建团队</span>
@@ -9,7 +9,7 @@
           <span class="text">加入团队</span>
         </router-link>
       </div>
-    </div>
+    </div> -->
     <div class="t-top">
       <div class="top-bg-mask">
         <div class="t-content">
@@ -19,9 +19,65 @@
               <p class="team-text">官方认证</p>
               <h3 class="team-p">精品团队</h3>
             </div>
+            <p class="team-name">{{doctorGroupInfo.name}}</p>
+            <p class="team-area"><span v-for="(a, index) in doctorGroupInfo.serviceArea" :key="index">{{a}}</span></p>
+            <p class="team-sick"><span v-for="(item, index) in doctorGroupInfo.skilledDiseaseId" :key="index">{{diseaseNameFilter(item)}}</span></p>
+            <div class="team-score">
+              <ul>
+                <li>
+                  <p class="score">{{doctorGroupInfo.score}}</p>
+                  <p class="text">响应速度</p>
+                </li>
+                <li>
+                  <p class="score">{{0}}</p>
+                  <p class="text">服务态度</p>
+                </li>
+                  <li>
+                  <p class="score">{{0}}</p>
+                  <p class="text">专业程度</p>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
+    </div>
+    <div class=t-content>
+      <h2 class="t-intro">团队介绍</h2>
+        <div class="t-intro-wrapper">
+          <p>
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-barrage"></use>
+            </svg>
+          </p>
+          <p class="text">团队简介</p>
+          <p class="info">{{doctorGroupInfo.introduction}}</p>
+        </div>
+        <div class="t-intro-wrapper">
+          <p>
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-barrage"></use>
+            </svg>
+          </p>
+          <p class="text">团队荣誉</p>
+          <p class="info">{{doctorGroupInfo.honor}}</p>
+        </div>
+        <h2 class="t-intro">团队成员</h2>
+        <div class="t-team-list">
+          <ul>
+            <li v-for="(item, index) in doctorGroupInfo.doctorList" :key="index" @click="toDoctorInfo(item)">
+              <div class="item">
+                <img v-lazy="item.avatar" alt="佳护安">
+                <p class="name">{{item.realName}}</p>
+                <p class="profession">{{item.profession}}</p>
+                <p class="text">
+                  <span>{{item.roleName}}</span>
+                  <span>{{item.title}}</span>
+                </p>
+              </div>
+            </li>
+          </ul>
+        </div>
     </div>
     <Modal
       v-model="addDoctorGroupModal"
@@ -92,7 +148,7 @@
 </template>
 <script>
 // import {getDict, getPatientInfo, getDiseaseCategory, getDiseaseList} from 'api/getData'
-import {getDict} from 'api/getData'
+import {getDict, getDoctorGroupInformation} from 'api/getData'
 import {mapGetters} from 'vuex'
 // import { upload } from 'api/upload'
 export default {
@@ -111,7 +167,9 @@ export default {
           url: '',
           id: ''
         }
-      }, // 健管详细信息
+      },
+      doctorGroupInfo: { // 网络获取健管团队信息
+      },
        dict: { // 数据字典初始定义
         area: [],
         degree: [],
@@ -125,6 +183,13 @@ export default {
     this._getDoctorGroupInformation()
   },
   methods: {
+    // 跳转医生团员详情页
+    toDoctorInfo(item) {
+      this.$router.push({
+        path: `/team/detail`,
+        query: {id: item.id}
+      })
+    },
     // 医疗团队logo上传
     handleBeforeUpload() { // 上传前钩子
     },
@@ -146,6 +211,13 @@ export default {
     uploadDoctorGroup() {
     },
     _getDoctorGroupInformation () {
+      getDoctorGroupInformation().then(res => {
+        if (res.code === '200') {
+          this.doctorGroupInfo = res.data
+        } else {
+          this.$Message.error(res.message)
+        }
+      })
     },
     // 获取字典数据列表
     _getDict() {
@@ -170,6 +242,25 @@ export default {
     // 添加服务区域
     addServiceAreaId() {
       this.doctorGroupInformation.serviceAreaId.push(this.serviceItem)
+    },
+    //  疾病名称转换
+    diseaseNameFilter(value) {
+    if (value) {
+      if (this.dict.disease && this.dict.disease.length > 0) {
+      var arry = this.dict.disease
+        for (let i = 0; i < arry.length; i++) {
+          let obj = Object.values(arry[i])
+          if (obj[2] === value) {
+            // console.log(obj)
+            return obj[1]
+          }
+        }
+      } else {
+        return value
+      }
+    } else {
+      return ''
+    }
     }
   },
   computed: {
@@ -195,10 +286,11 @@ export default {
 }
 </script>
 <style lang="stylus">
+@import '~common/stylus/mixin'
   .t-profile-wrapper
-    margin-top 1rem
-    margin-left 2rem
+    margin 1rem
     color #606266
+    background #f2f2f2
     .add
       width 90%
       margin 0 auto
@@ -237,16 +329,18 @@ export default {
     .t-top
       position relative
       width 100%
-      height 20rem
+      height 30rem
       background url('./team_bg.png') center
       background-size cover
+      background-repeat no-repeat
       .top-bg-mask
         width 100%
-        height 20rem
+        height 30rem
         background rgba(0,0,0,0,6)
         .t-content
-          width 80%
+          width 100%
           margin 0 auto
+          height 100%
           .team-info-wrapper
             position relative
             margin 0 auto
@@ -258,22 +352,126 @@ export default {
               height 6.25rem
               border-radius 50%
               border 3px solid #ffffff
-              margin-top 1rem
+              margin-top 1rem auto
             .team-title
               position relative
               margin -1.5rem auto 0
-              width 9rem
+              width 12.5rem
               height 3.5rem
               color #fff
-              background url('./flag-bg.png')
-              .team-text
-                opacity 0.7
-                font-size 0.625rem
-                line-height 1.25rem
-              .team-p
-                font-weight 700
-                font-size 1rem
-                line-height 1.2rem
+              background url('./flag-bg.png') center
+              background-repeat no-repeat
+            .team-text
+              opacity 0.7
+              font-size 0.625rem
+              line-height 1.25rem
+              // padding 0.2rem
+            .team-p
+              font-weight 700
+              font-size 0.825rem
+              line-height 1.75rem
+            .team-name
+              font-size 1.5rem
+              margin 1rem
+              font-weight 700
+              color #ffffff
+              line-height 1.5rem
+            .team-area, .team-sick
+              font-size 0.875rem
+              margin-top 0.4rem
+              // font-weight 200
+              color #ffffff
+              line-height 1.5rem
+              span
+                display inline-block
+                margin 0 0.5rem
+            .team-score
+              position relative
+              margin 2rem auto 1.5rem
+              font-size 1rem
+              line-height 1.5rem
+              li
+                color #ffffff
+                margin 0 1rem
+                display inline-block
+                .score
+                  margin-bottom 0.5rem
+                  font-size 1.5rem
+                  line-height 1.5rem
+                .text
+                  font-size 0.875rem
+                  color rgba(255,255,255,0.6)
+    .t-content
+      // width 60%
+      margin 0 auto
+      .t-intro
+        font-size 1.5rem
+        line-height 1.5rem
+        font-weight 700
+        color #07111b
+        text-align center
+        margin 3rem 0
+      .t-intro-wrapper
+        font-size 0.875rem
+        padding 1rem
+        margin-bottom 1rem
+        text-align left
+        border-radius 4px
+        box-shadow 2px 4px 8px 0 rgba(7,17,27,.03)
+        background #ffffff
+        .icon
+          width 2em
+          height 2em
+          vertical-align -0.4em
+          fill currentColor
+          overflow hidden
+          color #2ca9e3
+        .text
+          color #ffffff
+          background #2ca9e3
+          display inline-block
+          padding 0.2rem
+          margin-top 0.5rem
+          border-radius 4px
+        .info
+          padding 1rem
+          // no-wrap(4,1.5rem)
+          line-height 1.5rem
+          font-size 0.875rem
+          color #93999f
+          word-wrap break-word
+      .t-team-list
+        width 100%
+        margin 0 auto
+        li
+          display inline-block
+          height 15rem
+          width 15rem
+          background #ffffff
+          margin 2rem
+          border-radius 50%
+          overflow hidden
+          background url('./usernotloginbg.png')
+          background-size cover
+          transition 0.1s all linear
+          &:hover
+            box-shadow 0 8px 12px 0 rgba(7,17,27,0.2)
+            cursor pointer
+          .name
+            color #303133
+            margin-bottom 0.5rem
+          .profession
+            color #909099
+            margin-bottom 00.5rem
+            font-size 0.875rem
+          .text
+            color #909099
+            font-size 0.875rem
+          img
+            margin-top 0.5rem
+            width 7.5rem
+            height 7.5rem
+            border-radius 50%
 .upload-form-item
   .icon
     width 1.5em
