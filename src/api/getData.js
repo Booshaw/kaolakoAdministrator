@@ -38,7 +38,21 @@ export function getDiseaseList(params) {
 }
 // 获取医生个人信息
 export function getDoctorInformation(params) {
-  const url = debug ? '/doctor/get' : 'http://192.168.0.6:9080/jiahuan//doctor/get'
+  const url = debug ? '/doctor/detail/get' : 'http://192.168.0.6:9080/jiahuan/doctor/detail/get'
+  return axios.post(url, params).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// 获取医疗团队详情
+export function getDoctorGroupInformation(params) {
+  const url = debug ? '/doctor/studio/get' : 'http://192.168.0.6:9080/jiahuan/doctor/studio/get'
+  return axios.post(url, params).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// 获取医疗团队会员列表
+export function getMemberList(params) {
+  const url = debug ? '/doctor/vip/member/list' : 'http://192.168.0.6:9080/jiahuan/doctor/vip/member/list'
   return axios.post(url, params).then((res) => {
     return Promise.resolve(res.data)
   })
