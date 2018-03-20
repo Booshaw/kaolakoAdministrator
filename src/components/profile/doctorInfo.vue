@@ -9,90 +9,78 @@
         </i-col>
         <i-col :lg="3" :xs="24">
           <div class="title">
-            <h2 class="text">王医生</h2>
-            <p>XXX工作室 </p>
+            <h2 class="text">{{profileInfo.realName}}</h2>
+            <p class="specal">{{profileInfo.speciality}} </p>
           </div>
         </i-col>
         <i-col :lg="16" :xs="24">
           <div class="desc">
             <ul>
               <li>评级:
-                <Rate disabled allow-half v-model="starCount"></Rate>
+                <Rate disabled allow-half v-model="profileInfo.score"></Rate>
               </li>
-              <li>会员:{{patient}}人</li>
+              <li>会员:{{profileInfo.vipCount}}人</li>
             </ul>
           </div>
         </i-col>
       </Row>
     </div>
     <div class="content-wrapper">
-      <Row>
-        <i-col :lg="4" :xs="3">
-          <div class="left">
-            <router-link exact  to="/d/p" tag="li">
-              <span class="text">最新提示</span>
-              <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-setup"></use>
-              </svg>
-            </router-link>
-            <router-link exact  to="/d/t" tag="li">
-              <span class="text">我的团队</span>
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-setup"></use>
-              </svg>
-            </router-link>
-            <router-link exact  to="/" tag="li">
-              <span class="text">诊疗智库</span>
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-setup"></use>
-              </svg>
-            </router-link>
-             <router-link exact  to="/" tag="li">
-              <span class="text">会员列表</span>
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-setup"></use>
-              </svg>
-            </router-link> <router-link exact  to="/" tag="li">
-              <span class="text">随访统计</span>
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-setup"></use>
-              </svg>
-            </router-link> <router-link exact  to="/" tag="li">
-              <span class="text">健康报告</span>
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-setup"></use>
-              </svg>
-            </router-link> <router-link to="/d/c" tag="li">
-              <span class="text">个人中心</span>
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-setup"></use>
-              </svg>
-            </router-link>
-          </div>
-        </i-col>
-        <i-col :lg="20" :xs="21">
-          <div class="right">
-            <router-view></router-view>
-          </div>
-        </i-col>
-      </Row>
+      <div class="top">
+        <router-link exact  to="/d/p" tag="li">
+          <span class="text">通知</span>
+        </router-link>
+        <router-link exact  to="/d/t" tag="li">
+          <span class="text">团队</span>
+        </router-link>
+        <router-link exact  to="/" tag="li">
+          <span class="text">智库</span>
+        </router-link>
+          <router-link exact  to="/d/m" tag="li">
+          <span class="text">会员</span>
+        </router-link> <router-link exact  to="/" tag="li">
+          <span class="text">随访</span>
+        </router-link> <router-link exact  to="/" tag="li">
+          <span class="text">报告</span>
+        </router-link> <router-link to="/d/c" tag="li">
+          <span class="text">个人</span>
+        </router-link>
+      </div>
+      <div class="line"></div>
+      <div class="bt">
+        <router-view></router-view>
+      </div>
     </div>
   </div>
 </template>
 <script>
+import {getDoctorInformation} from 'api/getData'
 export default {
   data () {
     return {
       starCount: 4,
-      patient: 200
+      patient: 200,
+      profileInfo: {}
+    }
+  },
+  created() {
+    this._getDoctorProfile()
+  },
+  methods: {
+    _getDoctorProfile() {
+      getDoctorInformation().then(res => {
+        this.profileInfo = res.data
+        console.log(this.profileInfo)
+      })
     }
   }
 }
 </script>
 <style lang="stylus">
+@import '~common/stylus/mixin'
 .d-info-wrapper
   font-size 1rem
-  // background #f2f2f2
+  background #f2f2f2
   .header
     padding 1rem
     background-color #5FC3E4
@@ -115,9 +103,12 @@ export default {
         font-size 1.5rem
         font-weight 700
         margin-bottom 1rem
-      p
-       font-size 0.8rem
-       margin-bottom 1rem
+      .specal
+        font-size 0.8rem
+        margin-bottom 1rem
+        font-size 0.875rem
+        line-height 1.2rem
+        no-wrap(1,1.2rem)
     .desc
       color #ffffff
       font-size 1rem
@@ -128,28 +119,29 @@ export default {
           margin 1rem
   .content-wrapper
     // position relative
-    width 80%
-    margin 1rem auto
+    width 60%
+    margin 2rem auto
     @media screen and (max-width:1024px)
       width 100%
       padding 1rem
-    .left
+    .top
       // width 6.875rem
       padding 1rem 0
-      @media screen and (max-width:420px)
-        left -6.875rem
+      border-bottom 2px solid #61dfe1
+      margin-bottom 2rem
       li
+        display inline-block
         line-height 1rem
         cursor pointer
-        margin-bottom 1.5rem
+        margin 0 1rem
+        padding 0
         &:hover
           color #61dfe1
         &.router-link-active
           color #61dfe1
-          border-left 3px solid #61dfe1
-        .text
-          @media screen and (max-width:420px)
-            display none
+          // border-bottom 3px solid #61dfe1
+        @media screen and (max-width:420px)
+          margin 0 0.5rem
       .icon
         width 1.5em
         height 1.5em
@@ -158,6 +150,6 @@ export default {
         overflow hidden
         cursor pointer
         // color #61dfe1
-    .right
+    .bt
       margin 0 auto
 </style>
