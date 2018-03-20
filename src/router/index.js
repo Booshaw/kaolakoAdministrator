@@ -20,6 +20,8 @@ import ProfileDoctor from 'components/profile/doctor/profileDoctor/profileDoctor
 import personalCenter from 'components/profile/doctor/personalCenter/personalCenter'
 import BasicProfile from 'components/profile/doctor/personalCenter/profile/profile'
 import TeamGroup from 'components/profile/doctor/team/team'
+import TeamDoctorDetail from 'components/team/teamDoctorDetail'
+import Member from 'components/profile/doctor/member/member'
 
 Vue.use(Router)
 const routes = [
@@ -35,6 +37,11 @@ const routes = [
     path: '/team',
     name: 'team',
     component: Team
+  },
+  {
+    path: '/team/detail',
+    name: 'detail',
+    component: TeamDoctorDetail
   },
   {
     path: '/service',
@@ -123,6 +130,14 @@ const routes = [
       name: 'teamDoctor', // 医生端我的团队页
       path: 't',
       component: TeamGroup,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      name: 'member', // 医生端会员列表页
+      path: 'm',
+      component: Member,
       meta: {
         requireAuth: true
       }
