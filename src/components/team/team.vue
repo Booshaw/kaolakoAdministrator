@@ -33,27 +33,15 @@
       </div>
        <!--team-->
       <div class="j-team">
-        <Row class="j-team-wrapper">
-          <i-col :lg="12" :xs="24" :sm="24" v-for="(item, index) in teamList" :key="index">
-            <div class="team">
-              <div class="left">
-                <img :src="item.teamImage" :alt="item.teamLeader">
-              </div>
-              <div class="right">
-                <ul class="right-item">
-                  <li class="leader">
-                    首席专家:{{item.teamLeader}}
-                  </li>
-                  <li class="action" v-html="item.action"></li>
-                  <li class="team-info-title">团队介绍:</li>
-                  <li class="team-desc">{{item.teamDesc}}</li>
-                  <li class="team-for">服务会员200名,团队成员10名</li>
-                  <li>5颗星</li>
-                </ul>
-              </div>
+        <ul>
+          <li v-for="(i, index1) in teamList" :key="index1">
+            <div class="j-team-item">
+              <img v-lazy="i.teamImage" alt="">
+              <p class="leader">首席专家:{{i.teamLeader}}</p>
+              <p class="intro">{{i.teamDesc}}</p>
             </div>
-          </i-col>
-        </Row>
+          </li>
+        </ul>
       </div>
        <!--page-->
       <div class="page-nav" v-show="teamList">
@@ -149,6 +137,7 @@ export default {
 .team-wrapper
   position relative
   width 100%
+  background #f2f2f2
   .head
     position relative
     img
@@ -187,7 +176,10 @@ export default {
       .ivu-form-item-content
         line-height 22px
     .j-team
+      position relative
       padding 1rem
+      text-align left
+      margin 0 auto
       // position relative
       // width 100%
       // height 0
@@ -198,85 +190,34 @@ export default {
       //   padding-left 1rem
       //   padding-right 1rem
       //   margin-top 1rem
-      .j-team-wrapper
-        position: relative
-        // top: 0
-        // left: 0
-        // width: 100%
-        // height: 100%
-        .team
-          margin-top 2.5rem
-          font-size 1rem
-          display -webkit-flex
-          display -webkit-box
-          display flex
-          display -moz-box
-          display -ms-flexbox
-          align-items top
-          // overflow hidden
-          .left
+      li
+        display inline-block
+        margin 2rem
+        width 18rem
+        height 18rem
+        text-align center
+        background url('./usernotloginbg.png') center
+        background-size cover
+        border-radius 0.4rem
+        transition 0.1s all linear
+        &:hover
+          box-shadow 0 8px 12px 0 rgba(7,17,27,0.2)
+          cursor pointer
+        .j-team-item
+          padding 1rem
+          img
+            width 7.5rem
+            height 7.5rem
+            border-radius 50%
+          .leader
+            text-align center
+            margin 1rem
+          .intro
+            text-align left
             font-size 1rem
-            flex 0 0 150px
-            // display inline-block
-            // overflow hidden
-            @media screen and (max-width: 420px )
-              width 92px
-              height 120px
-              flex 0 0 92px
-            img
-              display block
-              width 150px
-              height 200px
-              @media screen and (max-width: 420px )
-                width 92px
-                height 120px
-          .right
-            flex-grow 1
-            overflow hidden
-            .right-item
-              margin-bottom 0.8rem
-              margin-top 0.2rem
-              font-size 0.875rem
-              line-height 1rem
-              padding 0 1.125rem
-              text-align left
-              color #909399
-              line-height 2
-              .leader
-                font-size 1.125rem
-                color #303133
-                font-weight 200
-                line-height 1
-              .action
-                margin-top 1rem
-                line-height 1.5rem
-                font-size 0.875rem
-                no-wrap(2,1.5rem)
-              .team-info-title
-                font-size 1rem
-                color #303133
-                margin-top 1.25rem
-              .team-desc
-                line-height 1.8
-                no-wrap(2,1.5rem)
-              .team-for
-                padding-top 5px
-                line-height 2.5
-              .item-title
-                text-align right
-                line-height 1rem
-              .item-info-desc
-                overflow hidden
-                text-overflow ellipsis
-                white-space nowrap
-              .item-info-action
-                position relative
-                line-height 1.5rem
-                no-wrap(2,1.5rem)
-              .item-info
-                position relative
-                line-height 1.5rem
-                no-wrap(3,1.5rem)
+            line-height 1.5rem
+            no-wrap(3,1.6rem)
+            padding 0.5rem
     .page-nav
       // position relative
       margin-top 2rem
