@@ -10,7 +10,7 @@
       <Button type="info" shape="circle" icon="ios-search" size="small" @click.stop="getMemberList">搜索</Button>
     </div>
     <div class="m-table">
-      <Table :data="data" :columns="columns"></Table>
+      <Table :data="data" :columns="columns" size="small" @on-row-click="toMemberInfo"></Table>
     </div>
   </div>
 </template>
@@ -68,6 +68,13 @@ export default {
     this.getMemberList()
   },
   methods: {
+    // 跳转会员详情页
+    toMemberInfo(data) {
+      this.$router.push({
+        path: '/u/p',
+        query: { id: data.patientId }
+      })
+    },
     // 获取字典数据列表
     _getDict() {
       const params = {
