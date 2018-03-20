@@ -31,6 +31,7 @@ export default {
   height 100%
   min-height 100vh
   flex-direction column
+  background #f2f2f2
   .content
     margin-top 3.75rem
     flex 1 0 auto
