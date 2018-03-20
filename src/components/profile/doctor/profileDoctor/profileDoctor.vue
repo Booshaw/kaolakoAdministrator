@@ -86,8 +86,7 @@ export default {
 </script>
 <style lang="stylus">
   .d-profile-wrapper
-    margin-top 1rem
-    margin-left 2rem
+    margin 2rem
     text-align left
     .title
       margin-bottom 2rem
