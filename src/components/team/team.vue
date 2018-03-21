@@ -177,19 +177,10 @@ export default {
         line-height 22px
     .j-team
       position relative
-      padding 1rem
+      padding-left 1rem
+      padding-right 1.5rem
       text-align left
       margin 0 auto
-      // position relative
-      // width 100%
-      // height 0
-      // padding-top 60%
-      // overflow hidden
-      // @media screen and (max-width: 420px )
-      //   padding-top 240%
-      //   padding-left 1rem
-      //   padding-right 1rem
-      //   margin-top 1rem
       li
         display inline-block
         margin 2rem
@@ -200,6 +191,12 @@ export default {
         background-size cover
         border-radius 0.4rem
         transition 0.1s all linear
+        @media screen and (max-width: 420px )
+          margin 0.2rem
+          width 14rem
+        @media screen and (max-width: 420px )
+          margin 0.5rem
+          width 100%
         &:hover
           box-shadow 0 8px 12px 0 rgba(7,17,27,0.2)
           cursor pointer
