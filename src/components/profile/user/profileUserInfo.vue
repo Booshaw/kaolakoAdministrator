@@ -147,6 +147,10 @@
             </Button>
           </Poptip>
         </div>
+        <div class="add-follow-up" v-if="usertype === '医生用户'">
+          <Button type="info" shape="circle" @click="addFollowupModal = !addFollowupModal">创建随访</Button>
+          <div></div>
+        </div>
       </div>
       <div class="add-patient-wrapper">
         <h2 class="title">个人史
@@ -506,7 +510,7 @@
                   </FormItem>
                 </i-col>
               </Row>
-              <FormItem label="是否发现慢性病">
+              <FormItem label="是否新发现慢性病">
                 <Select v-model="item.newDisease" multiple not-found-text="下滑更多选项">
                     <Option v-for="(i, index1) in dict.disease" :value="i.id" :key="index1">{{ i.diseaseName }}</Option>
                   </Select>
@@ -594,7 +598,8 @@
       v-model="addMedicalRecordProjectModel"
       title="添加检查项目"
       @on-ok="addMedicalRecordCheckupData"
-      ok-text="保存">
+      ok-text="保存"
+      transfer>
       <Form>
         <FormItem style="width:100%">
           <Select v-model="addMedicalDataId" placeholder="选择检查数据项目,向下滚动查看更多" @on-change="queryDiseaseCategoryList(addMedicalDataId)">
@@ -652,7 +657,8 @@
     <Modal
       v-model="addMedicalDataModel"
       title="新增健康档案"
-      @on-ok="uploadAddMedicalRecord">
+      @on-ok="uploadAddMedicalRecord"
+      transfer>
       <Form :label-width="40" class="upload-form-item">
         <Row>
           <i-col :lg="6" :xs="24">
@@ -714,6 +720,48 @@
         <p style="text-align:center">如有检查数据,请在确认新增档案后点击+号添加</p>
       </div>
     </Modal>
+    <Modal
+      v-model="addFollowupModal"
+      title="新增随访计划"
+      @on-ok="uploadFollowup"
+      ok-text="保存"
+      transfer
+      loading>
+      <div class="followup-wrapper">
+        <Row>
+          <i-col span="18">
+            <DatePicker v-model="followupDefaultData.planDate" type="date" placeholder="选择随访日期" format="yyyy-MM-dd"></DatePicker>
+          </i-col>
+          <i-col span="5">
+            <Select v-model="followupDefaultData.ampm" placeholder="时间段">
+              <Option value="1">上午</Option>
+              <Option value="2">下午</Option>
+            </Select>
+          </i-col>
+        </Row>
+        <div style="margin-top:1rem">
+          <Select v-model="followupDefaultData.followDisease" multiple placeholder="选择随访疾病,可多选">
+            <Option v-for="(i, index1) in dict.disease" :value="i.id" :key="index1">{{ i.diseaseName }}</Option>
+          </Select>
+        </div>
+        <div style="margin-top:1rem">
+          <Select v-model="followupDefaultData.hospitalId" placeholder="选择随访医院">
+            <Option v-for="(i, index1) in dict.disease" :value="i.id" :key="index1">{{ i.diseaseName }}</Option>
+          </Select>
+        </div>
+        <div style="margin-top:1rem">
+          <Select v-model="followupDefaultData.departmentId" placeholder="选择科室">
+            <Option v-for="(i, index1) in dict.disease" :value="i.id" :key="index1">{{ i.diseaseName }}</Option>
+          </Select>
+        </div>
+        <div style="margin-top:1rem">
+          <i-input v-model="followupDefaultData.doctor" placeholder="随访医生"></i-input>
+        </div>
+        <div style="margin-top:1rem">
+          <i-input v-model="followupDefaultData.memo" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="随访注意事项"></i-input>
+        </div>
+      </div>
+    </Modal>
   </div>
 </template>
 <script>
@@ -728,6 +776,17 @@ import {mapGetters} from 'vuex'
 export default {
   data() {
     return {
+      addFollowupModal: false, // 随访Modal
+      followupDefaultData: {
+        patientId: this.$route.query.id,
+        planDate: null, // 随访日期
+        ampm: '', // 上午1下午2,默认1
+        followDisease: [], // 随访疾病
+        hospitalId: null, // 随访医院id
+        departmentId: null, // 科室id
+        doctor: '', // 医生姓名
+        memo: '' // 随访注意事项
+      }, // 创建随访初始数据
       defaultImgList: [], // 修改检查数据的上传文件初始列表
       defaultAddImgList: [], // 新增检查项目的上传文件初始列表
       loading: false, // loding加载
@@ -882,6 +941,36 @@ export default {
     // this._getPatientInfo()
   },
   methods: {
+    // 获取字典数据列表
+    _getDict() {
+      const params = {
+        dictType: [
+          'area', 'ethnicity', 'degree', 'disease'
+        ],
+        diseaseType: 0
+      }
+      getDict(params).then(res => {
+        this.dict.disease = res.data.disease
+        this.dict.area = res.data.area
+        this.dict.degree = res.data.degree
+        this.dict.ethnicity = res.data.ethnicity
+      })
+    },
+    // 创建随访
+    uploadFollowup() {
+      let url = '/doctor/follow/add'
+      let params = this.followupDefaultData
+      upload(url, params).then(res => {
+        this.loading = true
+        if (res.code === '200') {
+          this.addFollowupModal = false
+          this.loading = false
+          this.$Message.info(`操作${res.message}`)
+          } else {
+          this.$Message.error(res.message)
+        }
+      })
+    },
     // 文件上传
     handleBeforeUpload() { // 上传前钩子
     },
@@ -937,21 +1026,6 @@ export default {
         this.pastMedicalHistory = res.data.patientPastHistory
         // this.obstericalHistory = res.data.patientObstetricalHistory
         this.medicalRecord = res.data.patientHealthRecord
-      })
-    },
-    // 获取字典数据列表
-    _getDict() {
-      const params = {
-        dictType: [
-          'area', 'ethnicity', 'degree', 'disease'
-        ],
-        diseaseType: 0
-      }
-      getDict(params).then(res => {
-        this.dict.disease = res.data.disease.splice(6)
-        this.dict.area = res.data.area
-        this.dict.degree = res.data.degree
-        this.dict.ethnicity = res.data.ethnicity
       })
     },
     // 取消修改
