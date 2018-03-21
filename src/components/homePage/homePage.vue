@@ -7,7 +7,7 @@
     </div>
     <div class="content-wrapper">
       <!--team-->
-      <div class="j-team" v-show="teamList">
+      <!-- <div class="j-team" v-show="teamList">
         <row type="flex" align="middle">
           <i-col span="22" class="title-wrapper">
             <span class="title">健管团队</span>
@@ -37,15 +37,29 @@
             </div>
           </i-col>
         </Row>
+      </div> -->
+      <!--team-->
+      <div class="j-team">
+        <Row class="title">
+          <i-col span="22" class="title-wrapper">
+            <span class="title">服务项目</span>
+          </i-col>
+        </Row>
+        <Row>
+          <i-col :lg="5" :md="11" :xs="11" v-for="(i, index1) in teamList" :key="index1" class="item">
+            <div class="j-team-item">
+              <img v-lazy="i.teamImage" alt="">
+              <p class="leader">首席专家:{{i.teamLeader}}</p>
+              <p class="intro">{{i.teamDesc}}</p>
+            </div>
+          </i-col>
+        </Row>
       </div>
       <!--service-->
       <div class="j-service-wrapper">
         <row class="title">
           <i-col span="22" class="title-wrapper">
             <span class="title">服务项目</span>
-          </i-col>
-          <i-col span="2">
-            <span class="more">更多</span>
           </i-col>
         </row>
         <row class="item-wrapper">
@@ -117,47 +131,39 @@
         </row>
       </div>
       <!--articles-->
-      <div class="j-article-wrapper">
-          <row>
-            <i-col span="22" class="title-wrapper">
-              <span class="title">健康讲堂</span>
-            </i-col>
-            <!-- <i-col span="2">
-              <span class="more">更多</span>
-            </i-col> -->
-          </row>
-          <row>
-            <ul>
-              <li v-for="(item, index) in articles" :key="index">
-                <i-col :lg="8" :xs="24" :md="24" :sm="24" class="articles-category">
-                  <row class="title">
-                    <i-col span="20">
-                      <p class="text">{{item.precaution_title}}</p>
-                    </i-col>
-                    <i-col span="4">
-                      <span>更多</span>
-                    </i-col>
-                  </row>
-                <div class="articles">
-                  <div class="left">
-                    <svg class=" icon j-icon" aria-hidden="true">
-                      <use :xlink:href="item.icon"></use>
-                    </svg>
-                  </div>
-                  <div class="right">
-                    <ul v-for="(c, index1) in item.article" :key="index1">
-                      <li><p>{{c.ctitle}}</p></li>
-                    </ul>
-                    <!-- <svg class="icon j-icon-more" aria-hidden="true">
-                      <use xlink:href="#icon-unfold"></use>
-                    </svg> -->
-                  </div>
+      <!-- <div class="j-article-wrapper">
+        <row>
+          <i-col span="22" class="title-wrapper">
+            <span class="title">健康讲堂</span>
+          </i-col>
+        </row>
+        <row>
+          <ul>
+            <li v-for="(item, index) in articles" :key="index">
+              <i-col :lg="8" :xs="24" :md="24" :sm="24" class="articles-category">
+                <row class="title">
+                  <i-col span="20">
+                    <p class="text">{{item.precaution_title}}</p>
+                  </i-col>
+
+                </row>
+              <div class="articles">
+                <div class="left">
+                  <svg class=" icon j-icon" aria-hidden="true">
+                    <use :xlink:href="item.icon"></use>
+                  </svg>
                 </div>
-                </i-col>
-              </li>
-            </ul>
-          </row>
-      </div>
+                <div class="right">
+                  <ul v-for="(c, index1) in item.article" :key="index1">
+                    <li><p>{{c.ctitle}}</p></li>
+                  </ul>
+                </div>
+              </div>
+              </i-col>
+            </li>
+          </ul>
+        </row>
+      </div> -->
     </div>
     <div class="loading-wrapper" v-show="!category">
       <Spin fix></Spin>
@@ -234,77 +240,14 @@ export default {
     @media screen and (max-width: 1024px )
       width 100%
       padding 0.5rem
-     .j-team
-      @media screen and (max-width: 420px )
-        // padding 0.5rem
-        margin-top 1rem
-      .j-team-wrapper
-        position relative
-        .team
-          margin-top 2.5rem
-          // padding-top 1rem
-          font-size 1rem
-          display -webkit-flex
-          display -webkit-box
-          display flex
-          display -moz-box
-          display -ms-flexbox
-          align-items top
-          // overflow hidden
-          .left
-            font-size 1rem
-            flex 0 0 200px
-            // display inline-block
-            // overflow hidden
-            @media screen and (max-width: 420px )
-              width 120px
-              height 120px
-              flex 0 0 120px
-            img
-              display block
-              width 200px
-              height 250px
-              @media screen and (max-width: 420px )
-                width 120px
-                height 160px
-          .right
-            flex-grow 1
-            overflow hidden
-            .right-item
-              margin-bottom 0.8rem
-              margin-top 0.2rem
-              font-size 0.875rem
-              line-height 1rem
-              padding 0 1.125rem
-              text-align left
-              color #909399
-              line-height 2
-              .leader
-                padding-top 0.2rem
-                font-size 1.125rem
-                color #303133
-                font-weight 200
-                line-height 1
-              .action
-                margin-top 1rem
-                line-height 1.5rem
-                font-size 0.875rem
-                no-wrap(2,1.5rem)
-              .team-info-title
-                font-size 1rem
-                color #303133
-                margin-top 1.25rem
-              .team-desc
-                line-height 1.8
-                no-wrap(2,1.5rem)
-              .team-for
-                padding-top 5px
-                line-height 2.5
-      @media screen and (max-width: 420px )
-        padding 1rem
-        margin-top 2rem
+    .j-team
+      position relative
+      padding 1rem
+      text-align left
+      margin 0 auto
       .title-wrapper
         text-align left
+        margin-bottom 2.5rem
         .title
           display inline-block
           font-size 1.5rem
@@ -315,6 +258,33 @@ export default {
         .more
           text-align right
           font-size 0.875rem
+      .item
+        padding 0.5rem
+        margin 0.5rem
+        @media screen and (max-width: 1024px )
+          padding 0
+        .j-team-item
+          padding 0.5rem
+          text-align center
+          background url('./usernotloginbg.png') center
+          background-size cover
+          border-radius 0.4rem
+          transition 0.1s all linear
+          &:hover
+            box-shadow 0 8px 12px 0 rgba(7,17,27,0.2)
+          img
+            width 5.5rem
+            height 5.5rem
+            border-radius 50%
+          .leader
+            text-align center
+            margin 1rem
+          .intro
+            text-align left
+            font-size 0.875rem
+            line-height 1.5rem
+            no-wrap(3,1.6rem)
+            padding 0.5rem
     .j-article-wrapper
       margin-top 6.23rem
       // margin-bottom 6.23rem
@@ -402,7 +372,8 @@ export default {
           margin-top 2.5rem
           padding 0.5rem
           margin 0.5rem
-          border 1px solid #eeeeee
+          // border 1px solid #eeeeee
+          background #ffffff
           transition .3s all linear
           &:hover
             // box-shadow 2px 2px 2px #eeeeee
@@ -417,9 +388,9 @@ export default {
             padding 1rem
             font-size 1.125rem
           .desc
-            // position relative
+            padding 0.2rem
             font-size 0.875rem
-            line-height 1.5rem
+            line-height 1.4rem
             text-align left
             color #878d99
             no-wrap(3,1.4rem)
