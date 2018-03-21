@@ -2,9 +2,13 @@
   <div class="info-wrapper">
     <div class="content-wrapper">
       <div class="bread-crumb">
-        <Breadcrumb>
+        <Breadcrumb v-if="usertype === '家庭用户'">
           <BreadcrumbItem to="/u">返回我的家庭</BreadcrumbItem>
           <BreadcrumbItem>成员详细</BreadcrumbItem>
+        </Breadcrumb>
+        <Breadcrumb v-if="usertype === '医生用户'">
+          <BreadcrumbItem to="/d/m">返回我的会员</BreadcrumbItem>
+          <BreadcrumbItem>会员详情</BreadcrumbItem>
         </Breadcrumb>
       </div>
       <div class="add-patient-wrapper" v-if="basicInformation">
@@ -1179,7 +1183,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-        'token'
+        'token',
+        'usertype'
       ])
   },
   watch: {
