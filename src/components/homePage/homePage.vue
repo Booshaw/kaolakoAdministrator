@@ -39,14 +39,14 @@
         </Row>
       </div> -->
       <!--team-->
-      <div class="j-team">
+      <div class="h-team">
         <Row class="title">
           <i-col span="22" class="title-wrapper">
             <span class="title">服务项目</span>
           </i-col>
         </Row>
         <Row>
-          <i-col :lg="5" :md="11" :xs="11" v-for="(i, index1) in teamList" :key="index1" class="item">
+          <i-col :lg="5" :md="11" :sm="11" :xs="11" v-for="(i, index1) in teamList" :key="index1" class="item">
             <div class="j-team-item">
               <img v-lazy="i.teamImage" alt="">
               <p class="leader">首席专家:{{i.teamLeader}}</p>
@@ -240,7 +240,7 @@ export default {
     @media screen and (max-width: 1024px )
       width 100%
       padding 0.5rem
-    .j-team
+    .h-team
       position relative
       padding 1rem
       text-align left
@@ -263,8 +263,9 @@ export default {
         margin 0.5rem
         @media screen and (max-width: 1024px )
           padding 0
+          margin 0.2rem
         .j-team-item
-          padding 0.5rem
+          padding 0.2rem
           text-align center
           background url('./usernotloginbg.png') center
           background-size cover
