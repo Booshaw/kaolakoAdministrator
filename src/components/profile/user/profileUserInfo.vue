@@ -746,12 +746,12 @@
         </div>
         <div style="margin-top:1rem">
           <Select v-model="followupDefaultData.hospitalId" placeholder="选择随访医院">
-            <Option v-for="(i, index1) in dict.disease" :value="i.id" :key="index1">{{ i.diseaseName }}</Option>
+            <Option v-for="(i, index1) in dict.hospital" :value="i.id" :key="index1">{{ i.name }}</Option>
           </Select>
         </div>
         <div style="margin-top:1rem">
           <Select v-model="followupDefaultData.departmentId" placeholder="选择科室">
-            <Option v-for="(i, index1) in dict.disease" :value="i.id" :key="index1">{{ i.diseaseName }}</Option>
+            <Option v-for="(i, index1) in dict.department" :value="i.id" :key="index1">{{ i.name }}</Option>
           </Select>
         </div>
         <div style="margin-top:1rem">
@@ -794,10 +794,13 @@ export default {
       is: '是',
       not: '否',
       dict: { // 数据字典初始定义
-        area: [],
-        degree: [],
-        disease: [],
-        ethnicity: []
+        area: [], // 地区
+        degree: [], // 学位
+        disease: [], // 慢性病
+        ethnicity: [], // 民族
+        hospital: [], // 医院
+        title: [], // 职称
+        department: [] // 科室
       },
       selectDiseaseList: [],
       patientDetail: {},
@@ -945,15 +948,16 @@ export default {
     _getDict() {
       const params = {
         dictType: [
-          'area', 'ethnicity', 'degree', 'disease'
-        ],
-        diseaseType: 0
+          'area', 'ethnicity', 'degree', 'disease', 'hospital', 'department'
+        ]
       }
       getDict(params).then(res => {
         this.dict.disease = res.data.disease
         this.dict.area = res.data.area
         this.dict.degree = res.data.degree
         this.dict.ethnicity = res.data.ethnicity
+        this.dict.hospital = res.data.hospital
+        this.dict.department = res.data.department
       })
     },
     // 创建随访
