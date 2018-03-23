@@ -27,6 +27,7 @@
           <p class="memo">{{item.memo}}</p>
         </div>
         <div class="time-step">
+          <i class="step-notes">进度</i>
           <i :class="timeStepClass0(item.status)"></i>
           <i :class="timeStepClass1(item.status)"></i>
           <i :class="timeStepClass2(item.status)"></i>
@@ -106,7 +107,7 @@ export default {
       uploadFollowModal: false, // 修改随访modal
       options: {
         disabledDate (date) {
-          return date && date.valueOf() < Date.now() - 86400000;
+          return date && date.valueOf() < Date.now();
         }
       } // disable datePicker
     }
@@ -369,8 +370,10 @@ export default {
         position absolute
         top 1rem
         right 0
-        margin-top 1rem
+        margin-top 0.5rem
         width 1rem
+        .step-notes
+          font-size 0.625rem
         i
           display inline-block
           border-radius 50%
