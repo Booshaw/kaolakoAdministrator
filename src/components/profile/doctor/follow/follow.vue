@@ -45,11 +45,11 @@
         <Row>
           <i-col :lg="12" :sm="24" style="margin-bottom:0.5rem">
             <span>日期:</span>
-            <DatePicker v-model="followModalData.planDate" type="date" placeholder="选择随访日期" format="yyyy-MM-dd" style="width:80%"></DatePicker>
+            <DatePicker v-model="followModalData.planDate" :options="options" type="date" placeholder="选择随访日期" format="yyyy-MM-dd" style="width:80%"></DatePicker>
           </i-col>
           <i-col :lg="12" :sm="24">
             <span>时间:</span>
-            <Select v-model="followModalData.ampm" placeholder="时间段" style="width:80%" :options="options">
+            <Select v-model="followModalData.ampm" placeholder="时间段" style="width:80%">
               <Option value="1">上午</Option>
               <Option value="2">下午</Option>
             </Select>
@@ -104,7 +104,11 @@ export default {
         department: [] // 医院
       },
       uploadFollowModal: false, // 修改随访modal
-      options: {} // disable datePicker
+      options: {
+        disabledDate (date) {
+          return date && date.valueOf() < Date.now() - 86400000;
+        }
+      } // disable datePicker
     }
   },
   mounted() {
