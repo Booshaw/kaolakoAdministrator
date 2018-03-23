@@ -11,7 +11,7 @@
           <p class="follow-notes"><span class="text">{{item.nextFollowDay}}</span>
           </p>
         </span>
-        <div class="info-wrapper">
+        <div class="f-info-wrapper">
           <p class="name">{{item.realName}}
             <span class="gender-icon-female" v-if="item.gender === '1'">
               <Icon type="female"/>
@@ -335,7 +335,7 @@ export default {
             line-height 1.2rem
             font-weight 700
             color #ed3f14
-      .info-wrapper
+      .f-info-wrapper
         position relative
         padding 1rem
         border-bottom 1px solid #e4e7ed
