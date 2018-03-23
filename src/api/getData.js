@@ -57,3 +57,10 @@ export function getMemberList(params) {
     return Promise.resolve(res.data)
   })
 }
+// 获取医疗团队随访列表
+export function getFollowList(params) {
+  const url = debug ? '/doctor/follow/list' : 'http://192.168.0.6:9080/jiahuan/doctor/follow/list'
+  return axios.post(url, params).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}

@@ -22,6 +22,7 @@ import BasicProfile from 'components/profile/doctor/personalCenter/profile/profi
 import TeamGroup from 'components/profile/doctor/team/team'
 import TeamDoctorDetail from 'components/team/teamDoctorDetail'
 import Member from 'components/profile/doctor/member/member'
+import Follow from 'components/profile/doctor/follow/follow'
 
 Vue.use(Router)
 const routes = [
@@ -138,6 +139,14 @@ const routes = [
       name: 'member', // 医生端会员列表页
       path: 'm',
       component: Member,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      name: 'follow', // 医生端随访页
+      path: 'f',
+      component: Follow,
       meta: {
         requireAuth: true
       }
