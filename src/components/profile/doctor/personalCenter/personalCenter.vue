@@ -57,17 +57,20 @@ export default {
         {
           type: '身份证认证',
           value: '',
-          path: '/d/authenticate'
+          // path: '/d/authenticate'
+          path: '#'
         },
         {
           type: '执业认证',
           value: '9',
-          path: '/d/certificate'
+          // path: '/d/certificate'
+          path: '#'
         },
         {
           type: '账户安全',
           value: '',
-          path: '/d/bindsns'
+          // path: '/d/bindsns'
+          path: '#'
         }
       ],
       treasure: [

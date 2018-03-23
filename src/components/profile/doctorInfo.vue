@@ -4,7 +4,7 @@
       <Row class="header-wrapper">
         <i-col :lg="2" :xs="24">
           <div class="header-img">
-            <img src="./avatar.jpg" alt="" height="80px" width="80px">
+            <img v-lazy="profileInfo.avatar" alt="" height="80px" width="80px">
           </div>
         </i-col>
         <i-col :lg="3" :xs="24">

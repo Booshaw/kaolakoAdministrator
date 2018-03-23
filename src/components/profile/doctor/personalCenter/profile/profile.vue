@@ -78,7 +78,7 @@ export default {
       doctorInformation: {} // 医生基本信息
     }
   },
-  created() {
+  mounted() {
     this._getDoctorInformation()
   },
   methods: {
