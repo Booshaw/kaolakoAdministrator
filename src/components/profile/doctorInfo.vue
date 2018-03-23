@@ -33,16 +33,19 @@
         <router-link exact  to="/d/t" tag="li">
           <span class="text">团队</span>
         </router-link>
-        <router-link exact  to="/" tag="li">
+        <li>
           <span class="text">智库</span>
-        </router-link>
-          <router-link exact  to="/d/m" tag="li">
+        </li>
+        <router-link exact  to="/d/m" tag="li">
           <span class="text">会员</span>
-        </router-link> <router-link exact  to="/" tag="li">
+        </router-link>
+        <router-link exact  to="/d/f" tag="li">
           <span class="text">随访</span>
-        </router-link> <router-link exact  to="/" tag="li">
+        </router-link>
+        <li>
           <span class="text">报告</span>
-        </router-link> <router-link to="/d/c" tag="li">
+        </li>
+        <router-link to="/d/c" tag="li">
           <span class="text">个人</span>
         </router-link>
       </div>
