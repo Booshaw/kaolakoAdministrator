@@ -68,7 +68,7 @@
             <i-input v-model="basicInformation.email"></i-input>
           </FormItem>
           <FormItem label="出生日期">
-            <DatePicker v-model="basicInformation.birthday" type="date" placeholder="选择日期" format="yyyy-MM-dd" on-change="print"></DatePicker>
+            <DatePicker v-model="basicInformation.birthday" type="date" placeholder="选择日期" format="yyyy-MM-dd"></DatePicker>
           </FormItem>
           <FormItem label="户籍地址">
             <Cascader :data="dict.area" v-model="basicInformation.permanentAreaId" trigger="hover" style="width:10rem"></Cascader>
@@ -921,7 +921,7 @@ export default {
       medicalRecordData: {
         patientId: null,
         type: null,
-        admissionDate: null,
+        admissionDate: '',
         checkupList: [],
         description: null,
         diagnosis: null, // 诊断
