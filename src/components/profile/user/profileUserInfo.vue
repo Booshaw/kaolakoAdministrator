@@ -147,7 +147,7 @@
             </Button>
           </Poptip>
         </div>
-        <div class="add-follow-up" v-if="usertype === '医生用户'">
+        <div class="add-follow-up" v-if="usertype === '医生用户' && !checkBasicInformation">
           <Button type="info" shape="circle" @click="addFollowupModal = !addFollowupModal">创建随访</Button>
           <div></div>
         </div>
