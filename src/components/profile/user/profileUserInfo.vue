@@ -494,7 +494,7 @@
                 </i-col>
                 <i-col :lg="6" :xs="24">
                   <FormItem label="检查时间">
-                    <DatePicker v-model="item.admissionDate" type="date" placeholder="选择日期" format="yyyy-MM-dd"></DatePicker>
+                    <DatePicker v-model="item.admissionDate" type="date" placeholder="选择日期"></DatePicker>
                   </FormItem>
                 </i-col>
                 <i-col :lg="4" :xs="24">
@@ -672,12 +672,12 @@
           </i-col>
           <i-col :lg="8" :xs="24" :md="12">
             <FormItem label="确诊时间">
-              <DatePicker v-model="medicalRecordData.admissionDate" type="date" placeholder="选择日期" format="yyyy-MM-dd"></DatePicker>
+              <DatePicker v-model="medicalRecordData.admissionDate" type="date" placeholder="选择日期"></DatePicker>
             </FormItem>
           </i-col>
-          <i-col :lg="8" :xs="24" :md="12">
+          <i-col :lg="8" :xs="24" :md="12" v-if="medicalRecordData.type === '3'">
              <FormItem label="出院时间">
-              <DatePicker v-model="medicalRecordData.dischargeDate" type="date" placeholder="选择日期" format="yyyy-MM-dd"></DatePicker>
+              <DatePicker v-model="medicalRecordData.dischargeDate" type="date" placeholder="选择日期"></DatePicker>
             </FormItem>
           </i-col>
         </Row>
