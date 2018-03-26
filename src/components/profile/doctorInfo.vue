@@ -8,9 +8,9 @@
           </div>
         </i-col>
         <i-col :lg="3" :xs="24">
-          <div class="title">
+          <div class="d-title">
             <h2 class="text">{{profileInfo.realName}}</h2>
-            <p class="specal">{{profileInfo.speciality}} </p>
+            <p class="d-specal">{{profileInfo.speciality}} </p>
           </div>
         </i-col>
         <i-col :lg="16" :xs="24">
@@ -97,7 +97,7 @@ export default {
       img
         border 4px solid #f2f6fc
         border-radius 50%
-    .title
+    .d-title
       color #ffffff
       text-align center
       line-height 1rem
@@ -106,12 +106,13 @@ export default {
         font-size 1.5rem
         font-weight 700
         margin-bottom 1rem
-      .specal
+      .d-specal
         font-size 0.8rem
         margin-bottom 1rem
         font-size 0.875rem
         line-height 1.2rem
-        no-wrap(1,1.2rem)
+        text-align center
+        no-wrap(2,1.2rem)
     .desc
       color #ffffff
       font-size 1rem
