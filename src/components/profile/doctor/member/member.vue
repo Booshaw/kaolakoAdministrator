@@ -96,6 +96,7 @@ export default {
       getMemberList(params).then(res => {
         if (res.code === '200') {
           this.data = res.data
+          console.log(this.data)
         } else {
           this.$Message.error(res.message)
           this.data = []
@@ -116,4 +117,5 @@ export default {
         margin-right 1rem
     .m-table
       margin 2rem 0
+      line-height 1.5
 </style>
