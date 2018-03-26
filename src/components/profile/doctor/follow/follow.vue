@@ -366,6 +366,7 @@ export default {
         .memo
           font-size 1rem
           line-height 1.2rem
+          padding 0.5rem
       .time-step
         position absolute
         top 1rem
