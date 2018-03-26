@@ -32,8 +32,8 @@
           </FormItem>
           <FormItem label="婚否">
             <Select v-model="basicInformation.marriageStatus">
-              <Option value = "0">否</Option>
-              <Option value = "1">是</Option>
+              <Option value = "0">未婚</Option>
+              <Option value = "1">已婚</Option>
               <Option value = "2">离异</Option>
               <Option value = "3">丧偶</Option>
             </Select>
