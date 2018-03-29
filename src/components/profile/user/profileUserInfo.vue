@@ -511,8 +511,13 @@
                 </i-col>
               </Row>
               <FormItem label="是否新发现慢性病">
-                <Select v-model="item.newDisease" multiple not-found-text="下滑更多选项">
-                    <Option v-for="(i, index1) in dict.disease" :value="i.id" :key="index1">{{ i.diseaseName }}</Option>
+                <Select v-model="item.newDisease" multiple not-found-text="暂无数据">
+                    <Option v-for="(i, index1) in newDiseaseList" :value="i.id" :key="index1">{{ i.diseaseName }}</Option>
+                  </Select>
+              </FormItem>
+              <FormItem label="是否针对慢性病">
+                <Select v-model="item.targetDisease" multiple not-found-text="暂无数据">
+                    <Option v-for="(i, index1) in targetDiseaseList" :value="i.id" :key="index1">{{ i.diseaseName }}</Option>
                   </Select>
               </FormItem>
               <FormItem label="检查项目" v-model="item.checkupList">
@@ -600,14 +605,15 @@
       @on-ok="addMedicalRecordCheckupData"
       ok-text="保存"
       transfer>
-      <Form>
-        <FormItem style="width:100%">
-          <Select v-model="addMedicalDataId" placeholder="选择检查数据项目,向下滚动查看更多" @on-change="queryDiseaseCategoryList(addMedicalDataId)">
-            <Option v-for="(item, index4) in diseaseCategoryList" :value="item.id" :key="index4">{{item.name}}</Option>
-          </Select>
-        </FormItem>
-      </Form>
-      <Row class="update-title" v-if="addMedicalDataId">
+      <Row style="margin-bottom:1rem">
+        <i-col span="12">
+          <Cascader v-model="addMedicalDataId" :data="diseaseCategoryList" trigger="hover" @on-change="queryDiseaseCategoryList"></Cascader>
+        </i-col>
+        <i-col span="12">
+          <DatePicker v-model="checkupTime" icon="ios-clock-outline" placeholder="检查时间" format="yyyy-MM-dd"></DatePicker>
+        </i-col>
+      </Row>
+      <Row class="update-title" v-if="addMedicalDataId[0] === '1'">
         <i-col span="12">检查项目名称</i-col>
         <i-col span="3">检查值</i-col>
         <i-col span="3">最小值</i-col>
@@ -650,7 +656,7 @@
         action="http://192.168.0.6:9080/jiahuan/common/file/upload">
         <div style="padding: 20px 0">
           <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
-          <p>上传影像检查</p>
+          <p>上传图片</p>
         </div>
     </Upload>
     </Modal>
@@ -659,9 +665,9 @@
       title="新增健康档案"
       @on-ok="uploadAddMedicalRecord"
       transfer>
-      <Form :label-width="40" class="upload-form-item">
+      <Form :label-width="60" class="upload-form-item">
         <Row>
-          <i-col :lg="6" :xs="24">
+          <i-col :lg="8" :xs="24" :md="8" :sm="12">
             <FormItem label="档案类型">
               <Select v-model="medicalRecordData.type">
                 <Option value ="1">体检报告</Option>
@@ -670,35 +676,40 @@
               </Select>
             </FormItem>
           </i-col>
-          <i-col :lg="8" :xs="24" :md="12">
-            <FormItem label="确诊时间">
-              <DatePicker v-model="medicalRecordData.admissionDate" type="date" placeholder="选择日期"></DatePicker>
+          <i-col :lg="8" :xs="24" :md="8" :sm="12">
+            <FormItem :label="medicalRecordData.type === '3' ? '入院' : '确诊'">
+              <DatePicker v-model="medicalRecordData.admissionDate" type="date" :placeholder="medicalRecordData.type === '3' ? '入院时间' : '确诊时间'"></DatePicker>
             </FormItem>
           </i-col>
-          <i-col :lg="8" :xs="24" :md="12" v-if="medicalRecordData.type === '3'">
-             <FormItem label="出院时间">
-              <DatePicker v-model="medicalRecordData.dischargeDate" type="date" placeholder="选择日期"></DatePicker>
+          <i-col :lg="8" :xs="24" :md="8" :sm="12" v-if="medicalRecordData.type === '3'">
+             <FormItem label="出院">
+              <DatePicker v-model="medicalRecordData.dischargeDate" type="date" placeholder="出院日期"></DatePicker>
             </FormItem>
           </i-col>
         </Row>
         <Row>
-          <i-col :lg="6" :xs="24">
+          <i-col :lg="8" :xs="24">
             <FormItem label="医生">
               <i-input v-model="medicalRecordData.doctor">
               </i-input>
             </FormItem>
           </i-col>
-          <i-col :lg="18" :xs="24">
+          <i-col :lg="16" :xs="24">
             <FormItem label="机构">
               <i-input v-model="medicalRecordData.hospital">
               </i-input>
             </FormItem>
           </i-col>
         </Row>
-        <FormItem label="慢性病">
-          <Select v-model="medicalRecordData.newDisease" multiple not-found-text="下滑更多选项" placeholder="若无慢性病可忽略此项,可下拉多选">
-              <Option v-for="(i, index1) in dict.disease" :value="i.id" :key="index1">{{ i.diseaseName }}</Option>
-            </Select>
+        <FormItem label="是否新发现慢性病">
+          <Select v-model="medicalRecordData.newDisease" multiple not-found-text="暂无数据" placeholder="可下拉多选">
+            <Option v-for="(i, index1) in newDiseaseList" :value="i.id" :key="index1">{{ i.diseaseName }}</Option>
+          </Select>
+        </FormItem>
+        <FormItem label="是否针对慢性病">
+          <Select v-model="medicalRecordData.targetDisease" multiple not-found-text="暂无数据" placeholder="可下拉多选">
+            <Option v-for="(i, index1) in targetDiseaseList" :value="i.id" :key="index1">{{ i.diseaseName }}</Option>
+          </Select>
         </FormItem>
         <FormItem label="描述">
           <i-input v-model="medicalRecordData.description" type="textarea" :autosize="{minRows: 2,maxRows: 5}"></i-input>
@@ -802,6 +813,8 @@ export default {
         title: [], // 职称
         department: [] // 科室
       },
+      targetDiseaseList: [], // 针对慢病列表
+      newDiseaseList: [], // 新发现慢病列表
       selectDiseaseList: [],
       patientDetail: {},
       personalHistoryInfo: [], // 手动编辑dom数据
@@ -903,13 +916,14 @@ export default {
       addMedicalDataModel: false, // 新增健康档案弹窗
       selectMedicalData: [], // 点击检查项目传送给子组件的数据
       medicalRecordIndex: '', // 点击添加按钮记录index值
-      addMedicalDataId: null, // 新增检查项目分类id
+      addMedicalDataId: [], // 新增检查项目分类id
       addMedicalData: {
 
       }, // 新增检查项初始对象
       recordId: null, // 提价健康档案检查项的健康档案id
       diseaseCategoryList: [ // 添加检查项目列表数据
       ],
+      checkupTime: '', // 新增检查项目时间
       // 添加既往史临时存储数据对象
       diseaseId: null,
       diseaseName: null,
@@ -930,7 +944,8 @@ export default {
         dischargeNote: null, // 出院注意事项
         doctor: null, // 医生
         hospital: null, // 医院
-        newDisease: [], // 慢性病
+        newDisease: [], // 是否新发现慢病
+        targetDisease: [], // 是否针对发现慢病
         treatmentPlan: null // 治疗方案
       }
     }
@@ -1157,13 +1172,13 @@ export default {
         console.log(this.addRecordId)
     },
     // 获取检查项目详细字段
-    queryDiseaseCategoryList(addMedicalDataId) {
+    queryDiseaseCategoryList(id) {
       let params = {
-        categoryId: addMedicalDataId
+        categoryId: id.pop()
       }
       getDiseaseList(params).then(res => {
         this.addMedicalData = res.data
-        console.log(this.addMedicalData)
+        // console.log(this.addMedicalData)
       })
     },
     // 添加检查项目后的提交
@@ -1173,7 +1188,8 @@ export default {
         checkupCategoryId: this.addMedicalData.checkupCategoryId,
         checkupData: this.addMedicalData.checkupData,
         recordId: this.addRecordId,
-        image: this.addMedicalData.image
+        image: this.addMedicalData.image,
+        checkupTime: this.checkupTime
       }
       let url = '/patient/record/checkup/add'
       upload(url, params).then(res => {
@@ -1203,6 +1219,20 @@ export default {
     // 新增健康档案model
     addMedicalRecord() {
       this.addMedicalDataModel = true
+      this.targetDiseaseList = []
+      this.newDiseaseList = []
+      let obj = {}
+      obj = JSON.parse(JSON.stringify(this.dict.disease))
+      let pastObj = JSON.parse(JSON.stringify(this.pastMedicalHistory))
+      for (let i in pastObj) {
+        for (let j in obj) {
+          if (pastObj[i].diseaseId === obj[j].id) {
+            this.targetDiseaseList.push(obj[j])
+          } else {
+            this.newDiseaseList.push(obj[j])
+          }
+        }
+      }
     },
     // 提交新增健康档案
     uploadAddMedicalRecord() {
