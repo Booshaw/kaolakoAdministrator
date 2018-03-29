@@ -11,17 +11,15 @@
         <i-col :lg="17" :md="17" :sm="24">
           <div class="head-top">
             <div class="detail-path">
-              <span class="bread-link" @click.stop="back">健康讲堂</span><span>/文章标题</span>
+              <span class="bread-link" @click.stop="back">健康讲堂/</span>
             </div>
             <div class="detail-title-wrapper">
-              <h3 class="detail-title">{{article.ctitle}}</h3>
+              <h3 class="detail-title">{{article.title}}</h3>
               <div class="dc-profile">
                 <ul>
-                  <li>日期</li>
-                  <li>234浏览</li>
-                  <li>标签一</li>
-                  <li>高血脂</li>
-                  <li>二号标签</li>
+                  <li>{{article.publishTime}}</li>
+                  <li>{{article.viewCount}}浏览</li>
+                  <li v-for="(i, index) in article.tag" :key="index">{{i.name}}</li>
                 </ul>
               </div>
             </div>
@@ -34,19 +32,18 @@
     </div>
     <row class="detail-content" type="flex" justify="space-between">
       <i-col :lg="18" :md="18" :sm="24">
-        <div class="content-wrapper" v-html="article.cparagraph">
-
+        <div class="content-wrapper" v-html="article.content">
         </div>
       </i-col>
       <i-col :lg="6" :md="6" :sm="6" :xs="0">
         <div class="adv" >
           <h2 class="">精选推荐</h2>
           <ul>
-            <li v-for="(item, index) in popularArticle" :key="index">
+            <li v-for="(item, index) in popList" :key="index">
               <div class="item">
-                <a href=""><h3>{{item.ctitle}}</h3></a>
+                <h3 @click="toDetail(item)">{{item.title}}</h3>
               </div>
-              <div class="show-box"><span>774浏览</span></div>
+              <div class="show-box"><span>{{item.viewCount}}浏览</span></div>
             </li>
           </ul>
         </div>
@@ -55,23 +52,39 @@
   </div>
 </template>
 <script>
-import { getArticleDetail } from 'api/teamList'
+import { getArticleDetail, getArticleList } from 'api/getData'
 export default {
   data() {
     return {
-      article: [],
+      article: {},
       showAdv: true,
-      popularArticle: []
+      popList: []
     }
   },
   created() {
     this._getArticle()
+    this._getArticleList()
   },
   methods: {
     _getArticle() {
-      getArticleDetail().then(res => {
+      let params = {
+        id: this.$route.query.id
+      }
+      getArticleDetail(params).then(res => {
         this.article = res.data
         console.log(this.article)
+      })
+    },
+    _getArticleList() {
+      let params = {
+        recommend: 1,
+        category: 1,
+        page: 1,
+        pageSize: 10
+      }
+      getArticleList(params).then(res => {
+        this.popList = res.data.data
+        // console.log(this.popList)
       })
     },
     hiddenAdv() {
@@ -80,11 +93,19 @@ export default {
     },
     back() {
       this.$router.go(-1)
+    },
+    toDetail(item) {
+      this.$router.push({
+        path: `/a`,
+        query: { id: item.id }
+      })
+      this._getArticle()
     }
   }
 }
 </script>
 <style lang="stylus">
+@import '~common/stylus/mixin'
 .article-detal-wrapper
   .head-wrapper
     margin 0 auto
@@ -159,15 +180,14 @@ export default {
         font-size 16px
         font-weight 700
       h3
-        margin-top 15px
-        font-size 16px
+        margin-top 1rem
+        font-size 1rem
         color #14191e
         line-height 24px
-        text-overflow ellipsis
-        white-space nowrap
-        overflow hidden
+        no-wrap(2, 1.5rem)
         &:hover
           color #f01414
+          cursor pointer
       li
         line-height 1.5
         max-height 15em

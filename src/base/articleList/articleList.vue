@@ -1,21 +1,21 @@
 <template>
   <div class="article-list-wrapper">
     <div v-for="(item, index) in articleList" :key="index" class="aricle-lwrap">
-      <h3 class="item-title" @click="selectItem(item)">{{item.ctitle}}</h3>
+      <h3 class="item-title" @click="selectItem(item)">{{item.title}}</h3>
       <!--text-->
       <div class="item-digest-wrapper">
         <div class="img-link" v-if="item.image" @click="selectItem(item)">
           <img :src="item.image" alt="佳护安医疗">
         </div>
-        <p class="item-digest" @click="selectItem(item)">
-          {{item.cparagraph}}
+        <p class="item-digest">
+          {{item.summary}}
         </p>
       </div>
       <div class="item-btm">
         <ul class="l">
           <li class="hd-pic">{{item.author}}</li>
-          <li class="pass-time">{{item.publishDate}}</li>
-          <li class="count">774浏览</li>
+          <li class="pass-time">{{item.publishTime}}</li>
+          <li class="count">{{item.viewCount}}浏览</li>
         </ul>
       </div>
     </div>
@@ -39,6 +39,7 @@ export default {
 @import '~common/stylus/mixin'
 .article-list-wrapper
   position relative
+  margin-top 1rem
   .aricle-lwrap
     border-bottom 1px solid #d9dde1
     .item-title
@@ -76,7 +77,6 @@ export default {
         line-height 2rem
         color #787d82
         margin-top -5px
-        cursor pointer
         no-wrap(4,2rem)
     .item-btm
       font-size 0.875rem

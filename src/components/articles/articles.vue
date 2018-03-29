@@ -30,7 +30,7 @@
         <i-col :lg="6" :md="6" :sm="0" :xs="0">
           <div class="adv" >
             <h2 class="">精选推荐</h2>
-            <pop-list :popList="articles" @select="selectPop"></pop-list>
+            <pop-list :popList="popList" @select="selectPop"></pop-list>
           </div>
         </i-col>
       </row>
@@ -39,31 +39,31 @@
   </div>
 </template>
 <script>
-import { getArticleLists } from 'api/teamList'
+import { getArticleList } from 'api/getData'
 import PopList from 'base/popList/popList'
 export default {
   data() {
     return {
       articlesLabels: [], // label标签列表数据
-      articles: []
+      articles: [], // 文章列表
+      popList: [] // 热门推荐文章
     }
   },
   created() {
-    this._getArticlesLabelList() // 执行获取articles页数据
-    this._getArticles() // 获取文章列表
+    // this._getArticlesLabelList() // 执行获取articles页数据
+    this._getArticleList() // 获取文章列表
   },
   methods: {
-    _getArticlesLabelList() {
-      // 获取/articles页数据
-      getArticleLists().then(res => {
-        this.articlesLabels = res.data.articlesLabelLists
-        // console.log(this.articlesLabels)
-      })
-    },
-    _getArticles() {
-      getArticleLists().then(res => {
-        this.articles = res.data.articlesTest
-        // console.log(this.articles)
+    _getArticleList() {
+      let params = {
+        recommend: 1,
+        category: 1,
+        page: 1,
+        pageSize: 10
+      }
+      getArticleList(params).then(res => {
+        this.popList = res.data.data
+        console.log(this.popList)
       })
     },
     change(page) {

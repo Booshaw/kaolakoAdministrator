@@ -65,3 +65,17 @@ export function getFollowList(params) {
     return Promise.resolve(res.data)
   })
 }
+// 官网健康档案文章列表
+export function getArticleList(params) {
+  const url = debug ? '/web/article/list' : `${serverUrl}web/article/list`
+  return axios.post(url, params).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// 官网健康档案文章详情
+export function getArticleDetail(params) {
+  const url = debug ? '/web/article/get' : `${serverUrl}web/article/get`
+  return axios.post(url, params).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}

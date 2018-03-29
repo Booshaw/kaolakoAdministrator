@@ -3,9 +3,9 @@
     <ul>
       <li v-for="(item, index) in popList" :key="index" @click="selectPop">
         <div class="item">
-          <h3>{{item.ctitle}}</h3>
+          <h3>{{item.title}}</h3>
         </div>
-        <div class="show-box"><span>774浏览</span>
+        <div class="show-box"><span>{{item.viewCount}}浏览</span>
         </div>
       </li>
     </ul>
