@@ -23,7 +23,7 @@ import TeamGroup from 'components/profile/doctor/team/team'
 import TeamDoctorDetail from 'components/team/teamDoctorDetail'
 import Member from 'components/profile/doctor/member/member'
 import Follow from 'components/profile/doctor/follow/follow'
-
+import Patient from 'components/profile/doctor/patient/patient'
 Vue.use(Router)
 const routes = [
 {
@@ -31,13 +31,18 @@ const routes = [
     path: '/',
     component: HomePage,
     meta: {
-      title: '首页'
+      title: '首页',
+      keepAlive: true
     }
   },
   {
     path: '/team',
     name: 'team',
-    component: Team
+    component: Team,
+    meta: {
+      title: '健管团队',
+      keepAlive: true
+    }
   },
   {
     path: '/team/detail',
@@ -47,17 +52,29 @@ const routes = [
   {
     path: '/service',
     name: 'service',
-    component: Service
+    component: Service,
+    meta: {
+      title: '服务项目',
+      keepAlive: true
+    }
   },
   {
     path: '/evaluate',
     name: 'evaluate',
-    component: Evaluate
+    component: Evaluate,
+    meta: {
+      title: '健康评估',
+      keepAlive: true
+    }
   },
   {
     path: '/kb',
     name: 'kb',
-    component: Kb
+    component: Kb,
+    meta: {
+      title: '诊疗智库',
+      keepAlive: true
+    }
   },
   {
     path: '/articles',
@@ -155,6 +172,14 @@ const routes = [
       name: 'personalCenter', // 医生端个人中心页
       path: 'c',
       component: personalCenter,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      name: 'patient', // 医生端个人中心页
+      path: 'patient',
+      component: Patient,
       meta: {
         requireAuth: true
       }
