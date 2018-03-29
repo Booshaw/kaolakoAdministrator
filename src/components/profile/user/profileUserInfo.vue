@@ -483,27 +483,35 @@
           <div v-for="(item, index) in medicalRecord" :key="index" class="record-item">
             <Form :label-width="70">
               <Row>
-                <i-col :lg="6" :xs="24">
+                <i-col :lg="8" :xs="24">
                   <FormItem label="档案类型">
                     <Select v-model="item.type">
-                      <Option value ="1">体检报告</Option>
-                      <Option value ="2">住院记录</Option>
-                      <Option value ="3">门诊记录</Option>
+                      <Option value ="1">住院记录</Option>
+                      <Option value ="2">门诊记录</Option>
+                      <Option value ="3">体检报告</Option>
+                      <Option value ="3">随访记录</Option>
                     </Select>
                   </FormItem>
                 </i-col>
-                <i-col :lg="6" :xs="24">
-                  <FormItem label="检查时间">
-                    <DatePicker v-model="item.admissionDate" type="date" placeholder="选择日期"></DatePicker>
+                <i-col :lg="8" :xs="24">
+                  <FormItem :label="item.type === '1' ? '入院时间' : '确诊时间'">
+                    <DatePicker v-model="item.admissionDate" type="date" :placeholder="item.type === '1' ? '入院时间' : '确诊时间'"></DatePicker>
                   </FormItem>
                 </i-col>
-                <i-col :lg="4" :xs="24">
+                <i-col :lg="8" :xs="24" v-if="item.type === '1'">
+                  <FormItem label="出院时间">
+                    <DatePicker v-model="item.dischargeDate" type="date" placeholder="出院时间"></DatePicker>
+                  </FormItem>
+                </i-col>
+              </Row>
+              <Row>
+                <i-col :lg="6" :xs="24">
                   <FormItem label="医生">
                     <i-input v-model="item.doctor">
                     </i-input>
                   </FormItem>
                 </i-col>
-                <i-col :lg="8" :xs="24">
+                <i-col :lg="18" :xs="24">
                   <FormItem label="机构">
                     <i-input v-model="item.hospital">
                     </i-input>
@@ -670,18 +678,19 @@
           <i-col :lg="8" :xs="24" :md="8" :sm="12">
             <FormItem label="档案类型">
               <Select v-model="medicalRecordData.type">
-                <Option value ="1">体检报告</Option>
+                <Option value ="1">住院记录</Option>
                 <Option value ="2">门诊记录</Option>
-                <Option value ="3">住院记录</Option>
+                <Option value ="3">体检报告</Option>
+                <Option value ="4">随访记录</Option>
               </Select>
             </FormItem>
           </i-col>
           <i-col :lg="8" :xs="24" :md="8" :sm="12">
-            <FormItem :label="medicalRecordData.type === '3' ? '入院' : '确诊'">
-              <DatePicker v-model="medicalRecordData.admissionDate" type="date" :placeholder="medicalRecordData.type === '3' ? '入院时间' : '确诊时间'"></DatePicker>
+            <FormItem :label="medicalRecordData.type === '1' ? '入院' : '确诊'">
+              <DatePicker v-model="medicalRecordData.admissionDate" type="date" :placeholder="medicalRecordData.type === '1' ? '入院时间' : '确诊时间'"></DatePicker>
             </FormItem>
           </i-col>
-          <i-col :lg="8" :xs="24" :md="8" :sm="12" v-if="medicalRecordData.type === '3'">
+          <i-col :lg="8" :xs="24" :md="8" :sm="12" v-if="medicalRecordData.type === '1'">
              <FormItem label="出院">
               <DatePicker v-model="medicalRecordData.dischargeDate" type="date" placeholder="出院日期"></DatePicker>
             </FormItem>
@@ -714,16 +723,16 @@
         <FormItem label="描述">
           <i-input v-model="medicalRecordData.description" type="textarea" :autosize="{minRows: 2,maxRows: 5}"></i-input>
         </FormItem>
-        <FormItem label="初步诊断" v-if="medicalRecordData.type && medicalRecordData.type == '3'">
+        <FormItem label="初步诊断" v-if="medicalRecordData.type && medicalRecordData.type == '1'">
           <i-input v-model="medicalRecordData.firstDiagnosis" type="textarea" :autosize="{minRows: 2,maxRows: 5}"></i-input>
         </FormItem>
-        <FormItem label="诊断" v-if="medicalRecordData.type && medicalRecordData.type !== '1'">
+        <FormItem label="诊断">
           <i-input v-model="medicalRecordData.diagnosis" type="textarea" :autosize="{minRows: 2,maxRows: 5}"></i-input>
         </FormItem>
-        <FormItem label="治疗方案" v-if="medicalRecordData.type && medicalRecordData.type == '3'">
+        <FormItem label="治疗方案" v-if="medicalRecordData.type && medicalRecordData.type == '1'">
           <i-input v-model="medicalRecordData.treatmentPlan" type="textarea" :autosize="{minRows: 2,maxRows: 5}"></i-input>
         </FormItem>
-        <FormItem label="注意事项" v-if="medicalRecordData.type && medicalRecordData.type == '3'">
+        <FormItem label="注意事项" v-if="medicalRecordData.type && medicalRecordData.type == '1'">
           <i-input v-model="medicalRecordData.dischargeNote" type="textarea" :autosize="{minRows: 2,maxRows: 5}"></i-input>
         </FormItem>
       </Form>
