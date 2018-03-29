@@ -14,7 +14,7 @@
     </div>
     <transition name="slide">
       <div class="nav-items" v-show="toggleNav" ref="toggle">
-        <ul>
+        <ul class="ul-wrapper">
           <router-link class="logo border-1px" to="/" tag="li" @click.native="hiddenNav">JIAHUAN</router-link>
           <router-link class="border-1px" to="/" exact tag="li" @click.native="hiddenNav">首页</router-link>
           <router-link class="border-1px" to="/team" tag="li" @click.native="hiddenNav">健管团队</router-link>
@@ -190,10 +190,20 @@ export default {
     @media screen and (max-width: 1200px)
       background-color #ffffff
       // top 2rem
-    ul
+    .ul-wrapper
+      width 80%
+      margin 0 auto
       display flex
       align-items center
+      @media screen and (max-width: 1980px)
+        width 80%
+        margin 0 auto
+      @media screen and (max-width: 1360px)
+        width 95%
+        margin 0 auto
       @media screen and (max-width: 1200px)
+        width 100%
+        margin 0 auto
         display block
       li
         display inline-block
