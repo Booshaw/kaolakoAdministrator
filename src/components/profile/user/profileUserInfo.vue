@@ -952,12 +952,15 @@ export default {
   },
   created() {
     this._getDict()// 获取数据字典
-    this._getPatientInfo()
+    // this._getPatientInfo()
     // this._getPatientDetail()
   },
   mounted() {
-    // this._getPatientInfo()
+    this._getPatientInfo()
   },
+  // activated() {
+  //   this._getPatientInfo()
+  // },
   methods: {
     // 获取字典数据列表
     _getDict() {
