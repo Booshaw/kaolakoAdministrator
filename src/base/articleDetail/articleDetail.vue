@@ -83,7 +83,7 @@ export default {
         pageSize: 10
       }
       getArticleList(params).then(res => {
-        this.popList = res.data.data
+        this.popList = res.data.pageData
         // console.log(this.popList)
       })
     },

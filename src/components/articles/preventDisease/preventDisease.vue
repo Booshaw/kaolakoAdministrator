@@ -1,8 +1,11 @@
 <template>
-  <div>
+  <div class="prevent-wrapper">
     <article-list :articleList="articles" @select="selectArticle"></article-list>
-    <div class="pages-wrapper">
+    <div class="pages-wrapper" v-if="pageShow">
       <Page :total="totalRecord" size="small" transfer show-elevator show-sizer @on-change="pageNum" @on-page-size-change="pageSizeNum"></Page>
+    </div>
+    <div v-if="!pageShow" class="error-loading">
+      <p>Opps....加载失败</p>
     </div>
   </div>
 </template>
@@ -15,10 +18,11 @@ export default {
       articles: [],
       totalRecord: null,
       page: 1,
-      pageSize: 10
+      pageSize: 10,
+      pageShow: false
     }
   },
-  mounted() {
+  created() {
     // this._getArticlesLabelList() // 执行获取articles页数据
     this._getArticleList() // 获取文章列表
   },
@@ -30,9 +34,9 @@ export default {
         pageSize: this.pageSize
       }
       getArticleList(params).then(res => {
-        this.articles = res.data.data
+        this.articles = res.data.pageData
         this.totalRecord = res.data.totalRecord
-        console.log(this.totalRecord)
+        this.pageShow = true
       })
     },
     selectArticle(item) {
@@ -56,8 +60,12 @@ export default {
 }
 </script>
 <style lang="stylus">
-.pages-wrapper
-  width 80%
-  margin 0 auto
-  margin-top 2rem
+.prevent-wrapper
+  .pages-wrapper
+    width 80%
+    margin 0 auto
+    margin-top 2rem
+  .error-loading
+    width 50%
+    margin 20% auto
 </style>
