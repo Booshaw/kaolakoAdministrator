@@ -35,7 +35,11 @@ export default {
                     align: 'center',
                     render: (h, params) => {
                       return h('div', [
-                        h('strong', params.row.realName),
+                        h('strong', {
+                          style: {
+                            cursor: 'pointer'
+                          }
+                        }, params.row.realName),
                         h('Icon', {
                           props: {
                             type: params.row.gender === '1' ? 'female' : 'male'
