@@ -195,12 +195,8 @@ export default {
       margin 0 auto
       display flex
       align-items center
-      @media screen and (max-width: 1980px)
-        width 80%
-        margin 0 auto
-      @media screen and (max-width: 1360px)
+      @media screen and (max-width: 1500px)
         width 95%
-        margin 0 auto
       @media screen and (max-width: 1200px)
         width 100%
         margin 0 auto
