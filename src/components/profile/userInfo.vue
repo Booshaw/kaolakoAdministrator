@@ -292,7 +292,7 @@ export default {
     },
     toUserInfo(item) {
       this.$router.push({
-        path: '/u/p',
+        path: `/u/p`,
         query: { id: item.id }
       })
     },
