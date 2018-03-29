@@ -49,6 +49,7 @@ export default {
       line-height 1.5rem
       color #14191e
       cursor pointer
+      display inline-block
       &:hover
         color #ec1500
     .item-digest-wrapper
