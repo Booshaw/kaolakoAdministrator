@@ -19,13 +19,13 @@
         <Button type="primary" icon="search" @click="searchTalbe">搜索</Button>
       </i-col>
     </Row>
-    <div class="table-wrapper">
+    <div class="table-wrapper" v-if="pageShow">
       <Table :columns="tableColumns" :data="tableData" ref="table"></Table>
       <div class="export">
         <Button type="info" size="small" @click="exportTable"><Icon type="ios-download-outline"></Icon> <span style="padding-left:0.2rem">导出数据</span> </Button>
       </div>
     </div>
-    <div class="page-nav" v-show="pageShow">
+    <div class="page-nav" v-if="pageShow">
       <Page :total="total" size="small" show-total show-elevator show-sizer :page-size-opts="pageSizeOptions" @on-change="change"></Page>
     </div>
   </div>
@@ -42,7 +42,7 @@ export default {
       valueMax: ''
     },
     total: 0,
-    pageShow: true,
+    pageShow: false,
     page: 1,
     pageSize: 10,
     searchItemList: [
@@ -171,6 +171,7 @@ export default {
           this.tableColumns = res.data.tableColumns
           this.tableData = res.data.pageData
           this.total = res.data.totalRecord
+          this.pageShow = true
           if (res.data.totalRecord > 40) {
             this.pageSizeOptions.push(res.data.totalRecord)
           }
