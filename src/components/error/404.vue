@@ -1,7 +1,7 @@
 <template>
-  <div class="error-wrappr">
+  <div class="error-wrapper">
     <div class="back-wrapper">
-      <img src="./404.jpeg" alt="" @click.stop="toHome" class="point">
+      <img src="./error.jpeg" alt="" @click.stop="toHome" class="point">
     </div>
   </div>
 </template>
@@ -21,13 +21,14 @@ export default {
 </script>
 <style lang="stylus">
 .error-wrapper
+  display flex
   width 100%
-  background-color #fffcf5
-  background-size cover
+  height 100%
+  background-color #007bc1
+  // background url('./error.jpeg') center
+  // background-size cover
   .back-wrapper
-    width 20%
     margin 0 auto
-    top 45%
-    .point
+    &:hover
       cursor pointer
 </style>
