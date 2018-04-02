@@ -42,9 +42,9 @@
         <router-link exact  to="/d/f" tag="li">
           <span class="text">随访</span>
         </router-link>
-        <li>
-          <span class="text">报告</span>
-        </li>
+        <router-link exact  to="/d/patient" tag="li">
+          <span class="text">患者</span>
+        </router-link>
         <router-link to="/d/c" tag="li">
           <span class="text">个人</span>
         </router-link>
@@ -123,7 +123,7 @@ export default {
           margin 1rem
   .content-wrapper
     // position relative
-    width 60%
+    width 70%
     margin 2rem auto
     @media screen and (max-width:1024px)
       width 100%

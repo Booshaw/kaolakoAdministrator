@@ -79,3 +79,10 @@ export function getArticleDetail(params) {
     return Promise.resolve(res.data)
   })
 }
+// 患者查询数据列表
+export function getPatient(params) {
+  const url = debug ? '/doctor/patient/imported/list' : `${serverUrl}doctor/patient/imported/list`
+  return axios.post(url, params).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
