@@ -1,5 +1,6 @@
 <template>
   <div class="info-wrapper">
+    <jnav></jnav>
     <div class="content-wrapper">
       <div class="bread-crumb">
         <Breadcrumb v-if="usertype === '家庭用户'">
@@ -786,10 +787,13 @@
         </div>
       </div>
     </Modal>
+    <jfooter></jfooter>
   </div>
 </template>
 <script>
 // import { getPatientDetail } from 'api/teamList'
+import Jnav from 'components/nav/nav'
+import Jfooter from 'base/footer/footer'
 import {getDict, getPatientInfo, getDiseaseCategory, getDiseaseList} from 'api/getData'
 import { upload } from 'api/upload'
 // import * as types from '../../../store/mutations-types'
@@ -1462,13 +1466,17 @@ export default {
       }
       return ethnicity[value - 1].toString()
     }
+  },
+  components: {
+    Jnav,
+    Jfooter
   }
 }
 </script>
 <style lang="stylus">
 .info-wrapper
   position relative
-  margin-top 3.25rem
+  margin-top 4.25rem
   // text-align left
   .content-wrapper
     width 70%

@@ -328,7 +328,7 @@ export default {
 <style lang="stylus">
 .user-info-wrapper
   width 100%
-  margin-top -1.5rem
+  margin-top 3.75rem
   .content
     width 70%
     margin 0 auto

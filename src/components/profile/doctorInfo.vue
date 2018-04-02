@@ -90,6 +90,7 @@ export default {
 <style lang="stylus">
 @import '~common/stylus/mixin'
 .d-info-wrapper
+  margin-top 3.75rem
   font-size 1rem
   background #f2f2f2
   .header

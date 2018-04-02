@@ -1,5 +1,6 @@
 <template>
   <div class="article-detal-wrapper">
+    <jnav></jnav>
     <div class="head-wrapper">
       <div class="adv" v-if="showAdv">
         <span>动态广告位</span>
@@ -49,9 +50,12 @@
         </div>
       </i-col>
     </row>
+    <jfooter></jfooter>
   </div>
 </template>
 <script>
+import Jfooter from 'base/footer/footer'
+import Jnav from 'components/nav/nav'
 import { getArticleDetail, getArticleList } from 'api/getData'
 export default {
   data() {
@@ -101,6 +105,10 @@ export default {
       })
       this._getArticle()
     }
+  },
+  components: {
+    Jnav,
+    Jfooter
   }
 }
 </script>
@@ -108,7 +116,7 @@ export default {
 @import '~common/stylus/mixin'
 .article-detal-wrapper
   .head-wrapper
-    margin 0 auto
+    margin-top 3.75rem
     background #f3f5f7
     box-shadow 0px 2px 10px 0px rgba(0, 0, 0, 0.1), 0 1px rgba(0, 0, 0, 0.1)
     .adv
