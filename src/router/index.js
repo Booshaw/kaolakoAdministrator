@@ -24,6 +24,7 @@ import TeamDoctorDetail from 'components/team/teamDoctorDetail'
 import Member from 'components/profile/doctor/member/member'
 import Follow from 'components/profile/doctor/follow/follow'
 import Patient from 'components/profile/doctor/patient/patient'
+import Error404 from 'components/error/404'
 Vue.use(Router)
 const routes = [
 {
@@ -202,11 +203,16 @@ const routes = [
       requireAuth: true
     }
   },
-  // 测试路由
+  // 文章详情
   {
     name: 'articleDetail',
     path: '/a',
     component: ArticleDetail
+  },
+  {
+    name: 'error',
+    path: '*',
+    component: Error404
   }
 ]
 // 页面刷新时,重新赋值token
