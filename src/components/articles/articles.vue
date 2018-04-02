@@ -66,13 +66,15 @@ export default {
       }
       getArticleList(params).then(res => {
         this.popList = res.data.pageData
-        console.log(this.popList)
+        // console.log(this.popList)
       })
     },
     change(page) {
-      console.log(page)
+      this.page = page
+      this._getArticleList()
     },
     selectPop(item) {
+      // console.log(item)
       this.$router.push({
         path: `/a`,
         query: { id: item.id }

@@ -1,7 +1,7 @@
 <template>
   <div class="pop-wrapper">
     <ul>
-      <li v-for="(item, index) in popList" :key="index" @click="selectPop">
+      <li v-for="(item, index) in popList" :key="index" @click="selectPop(item)">
         <div class="item">
           <h3>{{item.title}}</h3>
         </div>
