@@ -1240,14 +1240,18 @@ export default {
       let obj = {}
       obj = JSON.parse(JSON.stringify(this.dict.disease))
       let pastObj = JSON.parse(JSON.stringify(this.pastMedicalHistory))
-      for (let i in pastObj) {
+      if (pastObj.length > 0) {
         for (let j in obj) {
-          if (pastObj[i].diseaseId === obj[j].id) {
-            this.targetDiseaseList.push(obj[j])
-          } else {
-            this.newDiseaseList.push(obj[j])
+          for (let i in pastObj) {
+            if (pastObj[i].diseaseId === obj[j].id) {
+              this.targetDiseaseList.push(obj[j])
+            } else {
+              this.newDiseaseList.push(obj[j])
+            }
           }
         }
+      } else {
+        this.newDiseaseList = obj
       }
     },
     // 提交新增健康档案
