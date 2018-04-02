@@ -1,7 +1,7 @@
 <template>
   <div class="error-wrappr">
     <div class="back-wrapper">
-      <img src="./404.jpeg" alt="" @click.stop="toHome">
+      <img src="./404.jpeg" alt="" @click.stop="toHome" class="point">
     </div>
   </div>
 </template>
@@ -28,4 +28,6 @@ export default {
     width 20%
     margin 0 auto
     top 45%
+    .point
+      cursor pointer
 </style>
