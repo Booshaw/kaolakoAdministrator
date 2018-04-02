@@ -1,5 +1,6 @@
 <template>
   <div class="evaluate-wrapper">
+    <jnav></jnav>
     <div class="head">
       <img src="./evaluate_bg.png" alt="健康评估">
       <div class="text-wrapper">
@@ -22,10 +23,13 @@
         </row>
       </div>
     </div>
+    <jfooter></jfooter>
   </div>
 </template>
 <script>
+import Jfooter from 'base/footer/footer'
 import { getIndex } from 'api/teamList'
+import Jnav from 'components/nav/nav'
 export default {
   data() {
     return {
@@ -47,6 +51,10 @@ export default {
       // 分页插件获取点击page页码
       console.log(page)
     }
+  },
+  components: {
+    Jnav,
+    Jfooter
   }
 }
 </script>

@@ -1,5 +1,6 @@
 <template>
   <div class="d-info-wrapper">
+    <jnav></jnav>
     <div class="header">
       <Row class="header-wrapper">
         <i-col :lg="2" :xs="24">
@@ -54,9 +55,12 @@
         <router-view></router-view>
       </div>
     </div>
+    <jfooter></jfooter>
   </div>
 </template>
 <script>
+import Jnav from 'components/nav/nav'
+import Jfooter from 'base/footer/footer'
 import {getDoctorInformation} from 'api/getData'
 export default {
   data () {
@@ -76,6 +80,10 @@ export default {
         console.log(this.profileInfo)
       })
     }
+  },
+  components: {
+    Jnav,
+    Jfooter
   }
 }
 </script>

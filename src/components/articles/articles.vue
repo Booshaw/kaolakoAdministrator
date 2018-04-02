@@ -1,5 +1,6 @@
 <template>
   <div class="articles-wrapper">
+    <jnav></jnav>
     <div class="head">
       <img src="./articles_bg.png" alt="健康讲堂">
       <div class="text-wrapper">
@@ -35,11 +36,13 @@
         </i-col>
       </row>
     </div>
-     <!--articles-->
+     <jfooter></jfooter>
   </div>
 </template>
 <script>
+import Jfooter from 'base/footer/footer'
 import { getArticleList } from 'api/getData'
+import Jnav from 'components/nav/nav'
 import PopList from 'base/popList/popList'
 export default {
   data() {
@@ -77,7 +80,9 @@ export default {
     }
   },
   components: {
-    PopList
+    PopList,
+    Jnav,
+    Jfooter
   }
 }
 </script>

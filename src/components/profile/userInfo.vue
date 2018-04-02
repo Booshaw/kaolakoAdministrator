@@ -1,5 +1,6 @@
 <template>
   <div class="user-info-wrapper">
+    <jnav></jnav>
     <div class="content">
       <div class="breadcrumb">
         <Breadcrumb>
@@ -156,9 +157,12 @@
         </FormItem> -->
       </Form>
     </Modal>
+    <jfooter></jfooter>
   </div>
 </template>
 <script>
+import Jnav from 'components/nav/nav'
+import Jfooter from 'base/footer/footer'
 import { getDict, getPatientList } from 'api/getData'
 import { upload } from 'api/upload'
 export default {
@@ -314,7 +318,11 @@ export default {
       }, 1000)
     }
   },
-  computed: {}
+  computed: {},
+  components: {
+    Jnav,
+    Jfooter
+  }
 }
 </script>
 <style lang="stylus">

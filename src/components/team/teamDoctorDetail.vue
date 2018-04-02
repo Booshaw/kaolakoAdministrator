@@ -1,5 +1,6 @@
 <template>
   <div class="team-info-wrapper">
+    <jnav></jnav>
     <div class="t-info-header-wrapper">
       <img class="avatar" v-lazy="doctorDetail.avatar" alt="JIAHUAN">
       <p class="name">{{doctorDetail.realName}}</p>
@@ -24,9 +25,12 @@
       </div>
       <Button type="ghost" shape="circle" class="back" @click.stop="back()">返回团队</Button>
     </div>
+    <jfooter></jfooter>
   </div>
 </template>
 <script>
+import Jnav from 'components/nav/nav'
+import Jfooter from 'base/footer/footer'
 import {getDoctorInformation} from 'api/getData'
 /* eslint-disable */
 export default {
@@ -61,6 +65,10 @@ export default {
         // console.log(this.profileInfo)
       })
     }
+  },
+  components: {
+    Jnav,
+    Jfooter
   }
 }
 </script>

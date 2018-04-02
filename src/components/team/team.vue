@@ -1,5 +1,6 @@
 <template>
   <div class="team-wrapper">
+    <jnav></jnav>
     <div class="head">
       <img src="./team_bg.png" alt="健管理团队">
       <div class="text-wrapper">
@@ -48,9 +49,12 @@
         <Page :total="100" size="small" show-total  @on-change="change"></Page>
       </div>
     </div>
+    <jfooter></jfooter>
   </div>
 </template>
 <script>
+import Jnav from 'components/nav/nav'
+import Jfooter from 'base/footer/footer'
 /* eslint-disable */
 import { getIndex } from 'api/teamList'
 export default {
@@ -129,6 +133,10 @@ export default {
     search() {
       console.log(this.formSearch)
     }
+  },
+  components: {
+    Jnav,
+    Jfooter
   }
 }
 </script>

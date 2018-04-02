@@ -1,5 +1,6 @@
 <template>
   <div class="regin-wrapper">
+    <jnav></jnav>
     <row class="regin-content">
       <i-col :lg="16" :md="16" :sm="24" :xs="24" class="left">
         <img class="img-responsive" src="./bg_regin.png" alt="xxx">
@@ -44,9 +45,12 @@
         </div>
       </i-col>
     </row>
+    <jfooter></jfooter>
   </div>
 </template>
 <script>
+import Jnav from 'components/nav/nav'
+import Jfooter from 'base/footer/footer'
 import * as types from '../../store/mutations-types'
 import { regist } from 'api/regist'
 export default {
@@ -143,6 +147,10 @@ export default {
     handleReset(name) {
       this.$refs[name].resetFields()
     }
+  },
+  components: {
+    Jnav,
+    Jfooter
   }
 }
 </script>

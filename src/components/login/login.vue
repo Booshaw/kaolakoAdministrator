@@ -1,5 +1,6 @@
 <template>
   <div class="login-wrapper">
+    <jnav></jnav>
     <row class="login-content">
       <i-col :lg="16" :md="16" :sm="24" :xs="24" class="left">
         <img class="img-responsive" src="./bg_login.png" alt="xxx">
@@ -33,10 +34,13 @@
         </div>
       </i-col>
     </row>
+    <jfooter></jfooter>
   </div>
 </template>
 <script>
 /* eslint-disable */
+import Jnav from 'components/nav/nav'
+import Jfooter from 'base/footer/footer'
 import * as types from '../../store/mutations-types'
 import { sendLogin } from 'api/login'
 export default {
@@ -75,7 +79,6 @@ export default {
     this.$store.commit(types.TITLE, 'Login')
   },
   methods: {
-    
     login() {
       let type = Object.values(this.passUserType).indexOf(this.userType) + 1
       const params = {
@@ -135,11 +138,11 @@ export default {
       //       })
       //     }
       //   }
-    },
-     passType(value) {
-       
-
-      },
+    }
+  },
+  components: {
+    Jnav,
+    Jfooter
   }
 }
 </script>

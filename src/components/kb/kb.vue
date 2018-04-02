@@ -1,5 +1,6 @@
 <template>
   <div class="knowledge-wrapper">
+    <jnav></jnav>
     <div class="head">
       <img src="../../../static/knowledge_base.png" alt="诊疗智库">
       <div class="text-wrapper">
@@ -25,9 +26,12 @@
         </row>
       </div>
     </div>
+    <jfooter></jfooter>
   </div>
 </template>
 <script>
+import Jnav from 'components/nav/nav'
+import Jfooter from 'base/footer/footer'
 import { getIndex } from 'api/teamList'
 export default {
   data() {
@@ -46,6 +50,10 @@ export default {
         console.log(this.knowledge)
       })
     }
+  },
+  components: {
+    Jnav,
+    Jfooter
   }
 }
 </script>

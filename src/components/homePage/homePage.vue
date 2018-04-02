@@ -1,5 +1,6 @@
 <template>
   <div class="homepage-wrapper">
+    <jnav></jnav>
     <div class="slider-wrapper">
       <div class="slider-content">
         <j-slider :banner="category"></j-slider>
@@ -165,12 +166,15 @@
         </row>
       </div> -->
     </div>
+    <jfooter></jfooter>
     <div class="loading-wrapper" v-show="!category">
       <Spin fix></Spin>
     </div>
   </div>
 </template>
 <script>
+import Jnav from 'components/nav/nav'
+import Jfooter from 'base/footer/footer'
 import JSlider from 'base/slider/slider'
 import JCategory from 'base/category/category'
 import { getIndex } from 'api/teamList'
@@ -198,7 +202,9 @@ export default {
   },
   components: {
     JSlider,
-    JCategory
+    JCategory,
+    Jnav,
+    Jfooter
   }
 }
 </script>
