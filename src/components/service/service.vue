@@ -12,14 +12,16 @@
      <!--service-->
       <div class="j-service-wrapper">
         <row class="item-wrapper" type="flex" justify="center" >
-          <i-col :lg="5" :md="11" :sm="11" :xs="11" class="item" v-for="(item, index) in service" :key="index">
-            <a href="#">
+          <i-col :lg="6" :md="12" :sm="12" :xs="12" class="item" v-for="(item, index) in service" :key="index">
+            <div class="box">
+              <a href="#">
               <svg class=" icon j-icon" aria-hidden="true">
                 <use :xlink:href="item.icon"></use>
               </svg>
               <p class="title">{{item.ctitle}}</p>
               <p class="desc">{{item.cparagraph}}</p>
             </a>
+            </div>
           </i-col>
         </row>
       </div>
@@ -105,30 +107,33 @@ export default {
       .item-wrapper
         margin-top 2.5rem
         .item
-          margin-top 2.5rem
-          padding 0.625rem
-          margin 0.625rem
-          border 1px solid #eeeeee
-          transition 0.3s all linear
-          &:hover
-            // box-shadow 2px 2px 2px #eeeeee
-            box-shadow 0 8px 16px 0 rgba(7, 17, 27, 0.1)
-          .j-icon
-            width 4rem
-            height 4rem
-            vertical-align -0.09rem
-            color #61dfe1
-            border-radius 4px
-            fill currentColor
-            overflow hidden
-          .title
-            padding 1rem
-            font-size 1.125rem
-          .desc
-            // position relative
-            font-size 0.875rem
-            line-height 1.5rem
-            text-align left
-            color #878d99
-            no-wrap(3, 1.5rem)
+          padding 0.5rem
+          .box
+            margin-top 2.5rem
+            padding 0.625rem
+            margin 0.625rem
+            border 1px solid #eeeeee
+            transition 0.3s all linear
+            &:hover
+              // box-shadow 2px 2px 2px #eeeeee
+              box-shadow 0 8px 16px 0 rgba(7, 17, 27, 0.1)
+            .j-icon
+              width 4rem
+              height 4rem
+              vertical-align -0.09rem
+              color #61dfe1
+              border-radius 4px
+              fill currentColor
+              overflow hidden
+            .title
+              padding 1rem
+              font-size 1.125rem
+            .desc
+              // position relative
+              font-size 0.875rem
+              line-height 1.5rem
+              text-align left
+              color #878d99
+              margin 0.5rem
+              no-wrap(3, 1.5rem)
 </style>

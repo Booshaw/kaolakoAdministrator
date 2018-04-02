@@ -43,11 +43,11 @@
       <div class="h-team">
         <Row class="title">
           <i-col span="22" class="title-wrapper">
-            <span class="title">服务项目</span>
+            <span class="title">健管团队</span>
           </i-col>
         </Row>
         <Row>
-          <i-col :lg="5" :md="11" :sm="11" :xs="11" v-for="(i, index1) in teamList" :key="index1" class="item">
+          <i-col :lg="6" :md="12" :sm="12" :xs="12" v-for="(i, index1) in teamList" :key="index1" class="item">
             <div class="j-team-item">
               <img v-lazy="i.teamImage" alt="">
               <p class="leader">首席专家:{{i.teamLeader}}</p>
@@ -64,14 +64,16 @@
           </i-col>
         </row>
         <row class="item-wrapper">
-          <i-col :lg="5" :md="11" :sm="11" :xs="11" class="item" v-for="(item, index) in service" :key="index">
-            <a href="#">
+          <i-col :lg="6" :md="12" :sm="12" :xs="12" class="item" v-for="(item, index) in service" :key="index">
+            <div class="box">
+              <a href="#">
               <svg class=" icon j-icon" aria-hidden="true">
                 <use :xlink:href="item.icon"></use>
               </svg>
               <p class="title">{{item.ctitle}}</p>
               <p class="desc">{{item.cparagraph}}</p>
             </a>
+            </div>
           </i-col>
         </row>
       </div>
@@ -86,48 +88,60 @@
           </i-col>
         </row>
         <row class="item-wrapper">
-          <i-col :lg="3" :md="11" :sm="11" :xs="11" class="item">
-            <a href="#">
+          <i-col :lg="4" :md="12" :sm="12" :xs="12" class="item">
+            <div class="box">
+              <a href="#">
               <svg class=" icon j-icon" aria-hidden="true">
                 <use xlink:href="#icon-accessory"></use>
               </svg>
               <p>诊治指南库</p>
             </a>
-          </i-col><i-col :lg="3" :md="11" :sm="11" :xs="11" class="item">
-            <a href="#">
+            </div>
+          </i-col><i-col :lg="4" :md="12" :sm="12" :xs="12" class="item">
+            <div class="box">
+              <a href="#">
               <svg class=" icon j-icon" aria-hidden="true">
                 <use xlink:href="#icon-label"></use>
               </svg>
               <p>典型病例</p>
             </a>
-          </i-col><i-col :lg="3" :md="11" :sm="11" :xs="11" class="item">
-            <a href="#">
+            </div>
+          </i-col><i-col :lg="4" :md="12" :sm="12" :xs="12" class="item">
+            <div class="box">
+              <a href="#">
               <svg class=" icon j-icon" aria-hidden="true">
                 <use xlink:href="#icon-manage"></use>
               </svg>
               <p>问诊表库</p>
             </a>
-          </i-col><i-col :lg="3" :md="11" :sm="11" :xs="11" class="item">
-            <a href="#">
+            </div>
+          </i-col><i-col :lg="4" :md="12" :sm="12" :xs="12" class="item">
+            <div class="box">
+              <a href="#">
               <svg class=" icon j-icon" aria-hidden="true">
                 <use xlink:href="#icon-accessory"></use>
               </svg>
               <p>用药手册</p>
             </a>
-          </i-col><i-col :lg="3" :md="11" :sm="11" :xs="11" class="item">
-            <a href="#">
+            </div>
+          </i-col><i-col :lg="4" :md="12" :sm="12" :xs="12" class="item">
+            <div class="box">
+              <a href="#">
               <svg class=" icon j-icon" aria-hidden="true">
                 <use xlink:href="#icon-workbench"></use>
               </svg>
               <p>随访模板库</p>
             </a>
-          </i-col><i-col :lg="3" :md="11" :sm="11" :xs="11" class="item">
-            <a href="#">
+            </div>
+          </i-col><i-col :lg="4" :md="12" :sm="12" :xs="12" class="item">
+            <div class="box">
+              <a href="#">
               <svg class=" icon j-icon" aria-hidden="true">
                 <use xlink:href="#icon-accessory"></use>
               </svg>
               <p>医学计算器</p>
             </a>
+            </div>
           </i-col>
         </row>
       </div>
@@ -248,12 +262,12 @@ export default {
       padding 0.5rem
     .h-team
       position relative
-      padding 1rem
       text-align left
       margin 0 auto
       .title-wrapper
         text-align left
         margin-bottom 2.5rem
+        padding 1rem
         .title
           display inline-block
           font-size 1.5rem
@@ -266,10 +280,6 @@ export default {
           font-size 0.875rem
       .item
         padding 0.5rem
-        margin 0.5rem
-        @media screen and (max-width: 1024px )
-          padding 0
-          margin 0.2rem
         .j-team-item
           padding 0.2rem
           text-align center
@@ -283,6 +293,7 @@ export default {
             width 5.5rem
             height 5.5rem
             border-radius 50%
+            margin 1rem
           .leader
             text-align center
             margin 1rem
@@ -290,8 +301,9 @@ export default {
             text-align left
             font-size 0.875rem
             line-height 1.5rem
-            no-wrap(3,1.6rem)
-            padding 0.5rem
+            no-wrap(3,1.5rem)
+            // padding 1rem
+            margin 0.5rem
     .j-article-wrapper
       margin-top 6.23rem
       // margin-bottom 6.23rem
@@ -376,31 +388,33 @@ export default {
         margin-top 2.5rem
         overflow hidden
         .item
-          margin-top 2.5rem
           padding 0.5rem
-          margin 0.5rem
-          // border 1px solid #eeeeee
-          background #ffffff
-          transition .3s all linear
-          &:hover
-            // box-shadow 2px 2px 2px #eeeeee
-            box-shadow: 0 8px 16px 0 rgba(7, 17, 27, 0.1)
-          .j-icon
-              width 4rem
-              height 4rem
-              vertical-align -0.09rem
-              color #61dfe1
-              border-radius 4px
-          .title
-            padding 1rem
-            font-size 1.125rem
-          .desc
-            padding 0.2rem
-            font-size 0.875rem
-            line-height 1.4rem
-            text-align left
-            color #878d99
-            no-wrap(3,1.4rem)
+          .box
+            // margin-top 2.5rem
+            padding 0.5rem
+            // margin 0.5rem
+            // border 1px solid #eeeeee
+            background #ffffff
+            transition .3s all linear
+            &:hover
+              // box-shadow 2px 2px 2px #eeeeee
+              box-shadow: 0 8px 16px 0 rgba(7, 17, 27, 0.1)
+            .j-icon
+                width 4rem
+                height 4rem
+                vertical-align -0.09rem
+                color #61dfe1
+                border-radius 4px
+            .title
+              padding 1rem
+              font-size 1.125rem
+            .desc
+              padding 0.2rem
+              font-size 0.875rem
+              line-height 1.4rem
+              text-align left
+              color #878d99
+              no-wrap(3,1.4rem)
     .j-therapeutic-schedule
       margin-top 6.23rem
       @media screen and (max-width: 420px )
@@ -419,15 +433,14 @@ export default {
       .item-wrapper
         margin-top 2rem
         .item
-          // margin-top 2.5rem
-          // padding 0.625rem
-          margin 0.625rem
-          border 1px solid #eeeeee
-          transition .3s all linear
-          p
-            display inline-block
-            line-height 3rem
-          &:hover
-            // box-shadow 2px 2px 2px #eeeeee
-            box-shadow: 0 8px 16px 0 rgba(7, 17, 27, 0.1)
+          padding 1rem
+          .box
+            border 1px solid #eeeeee
+            transition .3s all linear
+            p
+              display inline-block
+              line-height 3rem
+            &:hover
+              // box-shadow 2px 2px 2px #eeeeee
+              box-shadow: 0 8px 16px 0 rgba(7, 17, 27, 0.1)
 </style>
