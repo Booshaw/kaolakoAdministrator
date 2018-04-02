@@ -554,13 +554,13 @@
     </div>
     <Modal
       v-model="medicalModel"
-      title="修改"
+      :title="selectMedicalData.checkupName"
       @on-ok="updateMedicalRecordCheckupData"
       width="768"
       transfer
       ok-text="保存">
       <!-- <JModel :data="selectMedicalData"></JModel> -->
-      <Row class="update-title">
+      <Row class="update-title" v-if="selectMedicalData.checkupData && selectMedicalData.checkupData.length > 0">
         <i-col span="12">检查项目名称</i-col>
         <i-col span="3">检查值</i-col>
         <i-col span="3">最小值</i-col>
@@ -573,6 +573,10 @@
         <i-input v-model="item0.valueMin" class="value-input" size="small"></i-input>
         <i-input v-model="item0.valueMax" class="value-input" size="small"></i-input>
         <span class="unit-i">{{item0.unit}}</span>
+      </Row>
+      <Row style="margin:2rem 0;">
+        <span style="margin-right:1rem;">描述:</span>
+        <i-input v-model="selectMedicalData.description" type="textarea" :autosize="{minRows: 2,maxRows: 5}" style="width:90%;"></i-input>
       </Row>
       <Row>
         <div v-for="(img, index10) in selectMedicalData.image" :key="index10" class="img-list">
@@ -961,11 +965,11 @@ export default {
   },
   created() {
     this._getDict()// 获取数据字典
-    // this._getPatientInfo()
+    this._getPatientInfo()
     // this._getPatientDetail()
   },
   mounted() {
-    this._getPatientInfo()
+    // this._getPatientInfo()
   },
   // activated() {
   //   this._getPatientInfo()
