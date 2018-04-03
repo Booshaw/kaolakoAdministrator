@@ -146,6 +146,7 @@ export default {
   position relative
   width 100%
   background #f2f2f2
+  margin-top 3.75rem
   .head
     position relative
     img
