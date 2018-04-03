@@ -19,7 +19,7 @@
         <Button type="primary" icon="search" @click="searchTalbe">搜索</Button>
       </i-col>
     </Row>
-    <div class="table-wrapper" v-if="pageShow">
+    <div class="table-wrapper">
       <Table :columns="tableColumns" :data="tableData" ref="table"></Table>
       <div class="export">
       <Upload
@@ -37,7 +37,7 @@
         action="http://192.168.0.6:9080/jiahuan/doctor/excel/import">
         <Button type="info" size="small"><Icon type="ios-cloud-upload-outline"></Icon> <span style="padding-left:0.2rem">导入数据</span> </Button>
       </Upload>
-        <Button type="info" size="small" @click="exportTable"><Icon type="ios-download-outline"></Icon> <span style="padding-left:0.2rem">导出数据</span> </Button>
+        <Button type="info" size="small" @click="exportTable" v-if="pageShow"><Icon type="ios-download-outline"></Icon> <span style="padding-left:0.2rem" >导出数据</span> </Button>
       </div>
     </div>
     <div class="page-nav" v-if="pageShow">
@@ -194,6 +194,8 @@ export default {
             this.pageSizeOptions.push(res.data.totalRecord)
           }
         } else {
+          this.tableColumns = []
+          this.tableData = []
           this.pageShow = false
           this.$Message.error(res.message)
         }
