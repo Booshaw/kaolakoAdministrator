@@ -213,7 +213,12 @@ export default {
       })
     },
     handleSuccess(res, file) { // 文件上传成功钩子
-      this.$Message.info('操作成功')
+      this.$Notice.success({
+        title: '患者数据导入',
+        desc: '上传excel数据成功',
+        duration: 0
+      })
+      this._getPatient()
     },
     searchTalbe() {
       this._getPatient()
