@@ -87,6 +87,9 @@ export function parseTime(time, cFormat) {
   if (arguments.length === 0) {
     return null
   }
+  if (typeof time === 'string') {
+    return time.slice(0, 10)
+  }
   const format = cFormat || '{y}-{m}-{d}'
   let date
   if (typeof time === 'object') {
@@ -114,7 +117,6 @@ export function parseTime(time, cFormat) {
   })
   return timeStr
 }
-
 export function formatTime(time, option) {
   time = +time * 1000
   const d = new Date(time)
