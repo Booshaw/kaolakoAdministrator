@@ -19,6 +19,9 @@ const mutations = {
   },
   [types.SET_ARTICLEID](state, id) {
     state.articleId = id
+  },
+  [types.SET_PATIENTONFOLLOW](state, patientOnFollow) {
+    state.patientOnFollow = patientOnFollow
   }
 }
 export default mutations

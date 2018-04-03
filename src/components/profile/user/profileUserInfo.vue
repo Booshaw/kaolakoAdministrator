@@ -148,8 +148,9 @@
             </Button>
           </Poptip>
         </div>
-        <div class="add-follow-up" v-if="usertype === '医生用户' && !checkBasicInformation">
-          <Button type="info" shape="circle" @click="addFollowupModal = !addFollowupModal">创建随访</Button>
+        <div class="add-follow-up">
+          <Button type="info" shape="circle" @click.stop="addFollowupModal = !addFollowupModal" v-if="usertype === '医生用户' && !checkBasicInformation">创建随访</Button>
+          <Button type="info" shape="circle" @click.stop="addMedicalRecord" v-if="patientOnFollow === this.$route.query.id">添加随访检查档案</Button>
           <div></div>
         </div>
       </div>
@@ -490,7 +491,7 @@
                       <Option value ="1">住院记录</Option>
                       <Option value ="2">门诊记录</Option>
                       <Option value ="3">体检报告</Option>
-                      <Option value ="4" v-if="usertype === '医生用户'">随访记录</Option>
+                      <Option value ="4">随访记录</Option>
                     </Select>
                   </FormItem>
                 </i-col>
@@ -683,10 +684,10 @@
           <i-col :lg="8" :xs="24" :md="8" :sm="12">
             <FormItem label="档案类型">
               <Select v-model="medicalRecordData.type">
-                <Option value ="1">住院记录</Option>
-                <Option value ="2">门诊记录</Option>
-                <Option value ="3">体检报告</Option>
-                <Option value ="4" v-if="usertype === '医生用户'">随访记录</Option>
+                <Option value ="1" v-if="!patientOnFollowIs">住院记录</Option>
+                <Option value ="2" v-if="!patientOnFollowIs">门诊记录</Option>
+                <Option value ="3" v-if="!patientOnFollowIs">体检报告</Option>
+                <Option value ="4" v-if="patientOnFollowIs">随访记录</Option>
               </Select>
             </FormItem>
           </i-col>
@@ -809,6 +810,7 @@ export default {
 
       //   }
       // ], // 健康档案类型
+      selectFollowType: false, // 健康档案创建时是否显示随访记录选项
       addFollowupModal: false, // 随访Modal
       followupDefaultData: {
         patientId: this.$route.query.id,
@@ -975,11 +977,13 @@ export default {
   created() {
     this._getDict()// 获取数据字典
     this._getPatientInfo()
-    console.log(this.usertype)
+
     // this._getPatientDetail()
   },
   mounted() {
     // this._getPatientInfo()
+    console.log(this.patientOnFollow)
+    console.log(this.$route.query.id)
   },
   // activated() {
   //   this._getPatientInfo()
@@ -1326,8 +1330,16 @@ export default {
   computed: {
     ...mapGetters([
         'token',
-        'usertype'
-      ])
+        'usertype',
+        'patientOnFollow'
+      ]),
+    patientOnFollowIs() {
+      if (this.patientOnFollow === this.$route.query.id) {
+        return true
+      } else {
+        return false
+      }
+    }
   },
   watch: {
     basicInformation: {

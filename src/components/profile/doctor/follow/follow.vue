@@ -5,6 +5,9 @@
         <div v-if="item.status < 2" class="upload-follow">
           <i class="ivu-icon ivu-icon-edit edit-icon" @click.stop="show(index)">修改</i>
         </div>
+        <div v-if="item.status > 2 && item.status < 4" class="upload-follow">
+          <i class="ivu-icon ivu-icon-edit edit-icon" @click.stop="addFollowData(item)">录入</i>
+        </div>
         <span class="time">
           <p class="follow-data">{{item.planDate | parseTime()}}</p>
           <p class="ampm">{{item.ampm === '1'? '上午': '下午'}}</p>
@@ -87,11 +90,15 @@
   </div>
 </template>
 <script>
+import * as types from '../../../../store/mutations-types'
+// import { mapState } from 'vuex'
 import { getDict, getFollowList } from 'api/getData'
 import { upload } from 'api/upload'
 export default {
   data() {
     return {
+      patientOnFollow: true,
+      addFollowMedal: false,
       step: null, // timestep时间步骤计数器,来自后端请求status
       followListData: [], // 随访列表数据
       followModalData: [], // 随访修改临时数据
@@ -277,10 +284,21 @@ export default {
           this.$Message.error(res.message)
         }
       })
+    },
+    addFollowData(item) {
+      console.log(item)
+      this.$store.commit(types.SET_PATIENTONFOLLOW, item.patientId)
+      this.$router.push({
+        path: '/u/p',
+        query: {
+          id: item.patientId
+        }
+      })
     }
   },
-  computed: {
-  },
+  // computed: mapState({
+  //   patientOnFollow: state => state.patientOnFollow
+  // }),
   filters: {
   }
 }
@@ -354,10 +372,11 @@ export default {
           font-size 0.875rem
           span
             text-align center
-            margin-right 1rem
+            margin 0 0.5rem
             border 1px solid #c0c4cc
             border-radius 4px
             padding 0.1rem
+            line-height 1.6rem
         .hospital
           text-align left
           margin-bottom 1rem

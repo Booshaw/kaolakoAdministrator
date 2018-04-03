@@ -3,6 +3,7 @@ const state = {
   token: null,
   title: '',
   usertype: null,
-  articles: {}
+  articles: {},
+  patientOnFollow: null
 }
 export default state
