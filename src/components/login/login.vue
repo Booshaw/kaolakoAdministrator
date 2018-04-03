@@ -150,7 +150,7 @@ export default {
 .login-wrapper
   position relative
   height 100%
-  margin-top 2rem
+  margin-top 4.75rem
   .login-content
     position relative
     width 80%
