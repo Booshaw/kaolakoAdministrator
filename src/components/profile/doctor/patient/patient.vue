@@ -178,7 +178,7 @@ export default {
     _getPatient() {
       let params = {
         keyword: this.patient.keyword,
-        item: this.patient.value,
+        item: this.patient.item,
         valueMin: this.patient.valueMin,
         valueMax: this.patient.valueMax,
         page: this.page,
