@@ -229,7 +229,7 @@ export default {
           })
         }
     },
-    handleError(res,file) {
+    handleError(res, file) {
       this.$Notice.error({
         title: '上传失败',
         desc: `${res.message}`,
