@@ -22,6 +22,21 @@
     <div class="table-wrapper" v-if="pageShow">
       <Table :columns="tableColumns" :data="tableData" ref="table"></Table>
       <div class="export">
+      <Upload
+        ref="uploadTable"
+        :headers= "{
+          authorization: this.token
+        }"
+        :show-upload-list="false"
+        :default-file-list="defaultList"
+        :on-success="handleSuccess"
+        :max-size="20480"
+        :on-format-error="handleFormatError"
+        :on-exceeded-size="handleMaxSize"
+        :before-upload="handleBeforeUpload"
+        action="http://192.168.0.6:9080/jiahuan/doctor/excel/import">
+        <Button type="info" size="small"><Icon type="ios-cloud-upload-outline"></Icon> <span style="padding-left:0.2rem">导入数据</span> </Button>
+      </Upload>
         <Button type="info" size="small" @click="exportTable"><Icon type="ios-download-outline"></Icon> <span style="padding-left:0.2rem">导出数据</span> </Button>
       </div>
     </div>
@@ -32,6 +47,7 @@
 </template>
 <script>
 import {getPatient} from 'api/getData'
+import {mapGetters} from 'vuex'
 export default {
   data () {
     return {
@@ -149,7 +165,9 @@ export default {
     ],
     tableColumns: [],
     tableData: [],
-    pageSizeOptions: [20, 30, 50]
+    pageSizeOptions: [20, 30, 50],
+    uploadTableModel: false,
+    defaultList: []
     }
   },
   created() {
@@ -181,6 +199,20 @@ export default {
         }
       })
     },
+    // 文件上传
+    handleBeforeUpload() { // 上传前钩子
+    },
+    handleFormatError() { // 格式化检查钩子
+    },
+    handleMaxSize(file) {
+      this.$Notice.warning({
+        title: '文件超出限制大小',
+        desc: '文件  ' + file.name + '不能超过20M.'
+      })
+    },
+    handleSuccess(res, file) { // 文件上传成功钩子
+      this.$Message.info('操作成功')
+    },
     searchTalbe() {
       this._getPatient()
     },
@@ -193,7 +225,16 @@ export default {
       this.$refs.table.exportCsv({
         filename: `患者导出数据`
       })
+    },
+    uploadTable() {
+
     }
+  },
+  computed: {
+    ...mapGetters([
+        'token',
+        'usertype'
+      ])
   }
 }
 </script>
@@ -209,4 +250,6 @@ export default {
     text-align left
   .page-nav
     margin-top 2rem
+  .ivu-upload
+    display inline-block
 </style>

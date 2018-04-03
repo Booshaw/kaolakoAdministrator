@@ -86,3 +86,10 @@ export function getPatient(params) {
     return Promise.resolve(res.data)
   })
 }
+// 导入上传患者数据
+export function uploadPatient(params) {
+  const url = debug ? '/doctor/excel/import' : `${serverUrl}doctor/excel/import`
+  return axios.post(url, params).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
