@@ -81,6 +81,11 @@ const routes = [
     path: '/articles',
     name: 'articles',
     component: Articles,
+    meta: {
+      title: '健康讲堂',
+      keepAlive: false,
+      requireAuth: false
+    },
     children: [
       // {
       //   path: '/',
@@ -90,24 +95,22 @@ const routes = [
       {
         path: 'prevent_disease',
         name: 'prevent_disease',
-        component: PreventDisease
-        // children: [
-        //   {
-        //     path: ':id',
-        //     component: ArticleDetail
-        //   }
-        // ]
+        component: PreventDisease,
+        meta: {
+          title: '健康讲堂',
+          keepAlive: false,
+          requireAuth: false
+        }
       },
       {
         path: 'treatment',
         name: 'treatment',
-        component: Treatment
-        // children: [
-        //   {
-        //     path: ':id',
-        //     component: ArticleDetail
-        //   }
-        // ]
+        component: Treatment,
+        meta: {
+          title: '健康讲堂',
+          keepAlive: false,
+          requireAuth: false
+        }
       }
     ]
   },
