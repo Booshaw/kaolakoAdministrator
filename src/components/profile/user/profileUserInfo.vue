@@ -521,12 +521,12 @@
               </Row>
               <FormItem label="是否新发现慢性病">
                 <Select v-model="item.newDisease" multiple not-found-text="暂无数据">
-                    <Option v-for="(i, index1) in newDiseaseList" :value="i.id" :key="index1">{{ i.diseaseName }}</Option>
+                    <Option v-for="(i, index1) in dict.disease" :value="i.id" :key="index1">{{ i.diseaseName }}</Option>
                   </Select>
               </FormItem>
               <FormItem label="是否针对慢性病">
                 <Select v-model="item.targetDisease" multiple not-found-text="暂无数据">
-                    <Option v-for="(i, index1) in targetDiseaseList" :value="i.id" :key="index1">{{ i.diseaseName }}</Option>
+                    <Option v-for="(i, index1) in dict.disease" :value="i.id" :key="index1">{{ i.diseaseName }}</Option>
                   </Select>
               </FormItem>
               <FormItem label="检查项目" v-model="item.checkupList">
