@@ -31,6 +31,7 @@
         :default-file-list="defaultList"
         :on-success="handleSuccess"
         :max-size="20480"
+        :on-error="handleError"
         :on-format-error="handleFormatError"
         :on-exceeded-size="handleMaxSize"
         :before-upload="handleBeforeUpload"
@@ -213,12 +214,27 @@ export default {
       })
     },
     handleSuccess(res, file) { // 文件上传成功钩子
-      this.$Notice.success({
-        title: '患者数据导入',
-        desc: '上传excel数据成功',
+      if (res.code === '200') {
+        this.$Notice.success({
+          title: '患者数据导入',
+          desc: '上传excel数据成功',
+          duration: 0
+        })
+        this._getPatient()
+        } else {
+          this.$Notice.error({
+            title: '上传失败',
+            desc: `${res.message}`,
+          duration: 0
+          })
+        }
+    },
+    handleError(res,file) {
+      this.$Notice.error({
+        title: '上传失败',
+        desc: `${res.message}`,
         duration: 0
       })
-      this._getPatient()
     },
     searchTalbe() {
       this._getPatient()
