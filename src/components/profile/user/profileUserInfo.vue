@@ -315,12 +315,12 @@
                 <Option v-for="(item, index) in dict.disease" :value="item.id" :key="index">{{ item.diseaseName }}</Option>
               </Select>
             </FormItem>
-            <FormItem label="家中有无相关疾病">
+            <FormItem label="家族有无相关疾病">
               <Select v-model="familyHistory.familyDisease" multiple>
                 <Option v-for="(d, index12) in dict.disease" :value="d.id" :key="index12">{{ d.diseaseName }}</Option>
               </Select>
             </FormItem>
-            <FormItem label="家中有无传染病史">
+            <FormItem label="家族有无传染病史">
               <Select v-model="familyHistory.familyGeneticDisease" multiple not-found-text="下滑更多选项" placeholder="若无慢性病可忽略此项,可下拉多选">
                   <Option v-for="(i, index1) in dict.disease" :value="i.id" :key="index1">{{ i.diseaseName }}</Option>
                 </Select>
@@ -353,13 +353,13 @@
             </li>
           </ul>
           <ul class="disease-list">
-            <span class="f-title">家中有无相关疾病记载:</span>
+            <span class="f-title">家族有无相关疾病记载:</span>
             <li v-for="(item, index) in familyHistory.familyDisease" :key="index">
               <span class="label-wrapper">{{diseaseNameFilter(item)}}</span>
             </li>
           </ul>
           <ul class="disease-list">
-            <span class="f-title">家中有无传染病及遗传病史:</span>
+            <span class="f-title">家族有无传染病及遗传病史:</span>
             <li v-for="(item, index) in familyHistory.familyGeneticDisease" :key="index">
               <span class="label-wrapper">{{diseaseNameFilter(item)}}</span>
             </li>
@@ -490,7 +490,7 @@
                       <Option value ="1">住院记录</Option>
                       <Option value ="2">门诊记录</Option>
                       <Option value ="3">体检报告</Option>
-                      <Option value ="3">随访记录</Option>
+                      <Option value ="4" v-if="usertype === '医生用户'">随访记录</Option>
                     </Select>
                   </FormItem>
                 </i-col>
@@ -686,7 +686,7 @@
                 <Option value ="1">住院记录</Option>
                 <Option value ="2">门诊记录</Option>
                 <Option value ="3">体检报告</Option>
-                <Option value ="4">随访记录</Option>
+                <Option value ="4" v-if="usertype === '医生用户'">随访记录</Option>
               </Select>
             </FormItem>
           </i-col>
@@ -804,6 +804,11 @@ import {mapGetters} from 'vuex'
 export default {
   data() {
     return {
+      // medicalRecordDataTypeList: [
+      //   {
+
+      //   }
+      // ], // 健康档案类型
       addFollowupModal: false, // 随访Modal
       followupDefaultData: {
         patientId: this.$route.query.id,
@@ -970,6 +975,7 @@ export default {
   created() {
     this._getDict()// 获取数据字典
     this._getPatientInfo()
+    console.log(this.usertype)
     // this._getPatientDetail()
   },
   mounted() {
