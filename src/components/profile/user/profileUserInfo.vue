@@ -1120,6 +1120,7 @@ export default {
       },
     // 既往史修改确认提交
     uploadPastMedicalHistory () {
+      this.addPastMedical()
       let url = '/patient/history/update'
       let params = {
         patientId: this.$route.query.id,
@@ -1298,6 +1299,9 @@ export default {
           diseaseHospital: diseaseHospital
         }
       })
+      this.diseaseTime = ''
+      this.diseaseId = ''
+      this.diseaseHospital = ''
     },
       //  疾病名称转换
     diseaseNameFilter(value) {
