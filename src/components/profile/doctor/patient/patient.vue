@@ -218,14 +218,14 @@ export default {
         this.$Notice.success({
           title: '患者数据导入',
           desc: '上传excel数据成功',
-          duration: 0
+          duration: 5
         })
         this._getPatient()
         } else {
           this.$Notice.error({
             title: '上传失败',
             desc: `${res.message}`,
-          duration: 0
+          duration: 5
           })
         }
     },
@@ -233,7 +233,7 @@ export default {
       this.$Notice.error({
         title: '上传失败',
         desc: `${res.message}`,
-        duration: 0
+        duration: 5
       })
     },
     searchTalbe() {
