@@ -93,3 +93,10 @@ export function uploadPatient(params) {
     return Promise.resolve(res.data)
   })
 }
+// 官网首页数据获取
+export function getIndex(params) {
+  const url = debug ? '/web/index' : `${serverUrl}web/index`
+  return axios.post(url, params).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
