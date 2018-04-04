@@ -100,3 +100,31 @@ export function getIndex(params) {
     return Promise.resolve(res.data)
   })
 }
+// 官网首页团队获取
+export function getTeamList(params) {
+  const url = debug ? '/web/studio' : `${serverUrl}web/studio`
+  return axios.post(url, params).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// 官网首页服务项目获取
+export function getServiceList(params) {
+  const url = debug ? '/web/service' : `${serverUrl}web/service`
+  return axios.post(url, params).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// 官网首页评估获取
+export function getEvaluate(params) {
+  const url = debug ? '/web/evaluate' : `${serverUrl}web/evaluate`
+  return axios.post(url, params).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// 官网首页智库获取
+export function getKb(params) {
+  const url = debug ? '/web/kb' : `${serverUrl}web/kb`
+  return axios.post(url, params).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}

@@ -12,43 +12,29 @@
       <div class="team-content">
         <!--search-->
         <div class="search">
-          <Form ref="formUser" :model="formSearch" inline>
-            <FormItem>
-              <Cascader :data="city" v-model="formSearch.selectCity" size="small" filterable placeholder="选择所在地"></Cascader>
-            </FormItem>
-            <FormItem>
-              <Select v-model="formSearch.adept" placeholder="选择主治" size="small">
-                  <Option value="wangyisheng">王医生</Option>
-                  <Option value="lidaoshi">李大师</Option>
-                  <Option value="taylor">泰勒</Option>
-              </Select>
-          </FormItem>
-          <FormItem>
-              <Select v-model="formSearch.rating" placeholder="评级" size="small">
-                  <Option value="1">1</Option>
-                  <Option value="2">2</Option>
-                  <Option value="3">3</Option>
-              </Select>
-          </FormItem>
+          <Cascader :data="city" change-on-select @on-change="changeArea" v-model="selectCity" trigger="hover" size="small" filterable placeholder="服务区域" style="width:25%;display:inline-block;"></Cascader>
+          <Select v-model="skilledDiseaseId" size="small" clearable style="width:15%;display:inline-block;margin-right:0.5rem" placeholder="擅长疾病">
+            <Option v-for="(item, index) in disease" :value="item.id" :key="index">{{item.diseaseName}}</Option>
+          </Select>
           <Button type="info" shape="circle" icon="ios-search" size="small" @click="search">搜索</Button>
-          </Form>
         </div>
         <!--team-->
-        <div class="j-team">
+        <div class="j-team" v-if="teamList && teamList.length > 0">
           <ul>
             <li v-for="(i, index1) in teamList" :key="index1">
               <div class="j-team-item">
-                <img v-lazy="i.teamImage" alt="">
-                <p class="leader">首席专家:{{i.teamLeader}}</p>
-                <p class="intro">{{i.teamDesc}}</p>
+                <img v-lazy="i.logo" :alt="i.introduction">
+                <p class="leader">首席专家:{{i.realName}}</p>
+                <p class="intro">{{i.introduction}}</p>
               </div>
             </li>
           </ul>
         </div>
         <!--page-->
-        <div class="page-nav" v-show="teamList">
-          <Page :total="100" size="small" show-total  @on-change="change"></Page>
+        <div class="pages-wrapper" v-if="pageShow">
+          <Page :total="totalRecord" size="small" transfer show-elevator show-sizer @on-change="pageNum" @on-page-size-change="pageSizeNum"></Page>
         </div>
+        <div class="no-result" v-if="!teamList">Opps...暂无数据</div>
       </div>
     </div>
     <jfooter class="j-footer"></jfooter>
@@ -58,82 +44,69 @@
 import Jnav from 'components/nav/nav'
 import Jfooter from 'base/footer/footer'
 /* eslint-disable */
-import { getIndex } from 'api/teamList'
+import { getTeamList, getDict } from 'api/getData'
 export default {
   data() {
     return {
       teamList: [], // team页列表数据
-      formSearch: { // 查询表单数据
-        selectCity: [], // 选择的城市
-        adept: '', // 擅长的主治方向
-        rating: '' // 健管团队的评分
-      },
-      city: [ // 城市列表
-        {
-          value: 'beijing',
-          label: '北京',
-          children: [
-            {
-              value: 'gugong',
-              label: '故宫'
-            },
-            {
-              value: 'tiantan',
-              label: '天坛'
-            },
-            {
-              value: 'wangfujing',
-              label: '王府井'
-            }
-          ]
-        },
-        {
-          value: 'jiangsu',
-          label: '江苏',
-          children: [
-            {
-              value: 'nanjing',
-              label: '南京',
-              children: [
-                {
-                  value: 'fuzimiao',
-                  label: '夫子庙'
-                }
-              ]
-            },
-            {
-              value: 'suzhou',
-              label: '苏州',
-              children: [
-                {
-                  value: 'zhuozhengyuan',
-                  label: '拙政园'
-                },
-                {
-                  value: 'shizilin',
-                  label: '狮子林'
-                }
-              ]
-            }
-          ]
-        }
-      ]
+      selectCity: [], // 团队服务区域
+      page: 1, // 默认一页
+      pageSize: 8, // 默认每页8条
+      pageShow: false, // 翻页条是否显示
+      dataLoadError: false, // 数据加载失败
+      totalRecord: 0, // 团队总数
+      skilledDiseaseId: '', // 擅长疾病 
+      city: [],
+      disease: [] // 擅长疾病列表
     }
   },
-  mounted() {
+  created() {
+    this._getDict()
     this._getTeamList() // 执行获取team页数据
   },
   methods: {
-    _getTeamList() { // 获取/team页数据
-      getIndex().then(res => {
-        this.teamList = res.data.teamlist
+    _getDict() {
+      const params = {
+        dictType: [
+          'area', 'disease'
+        ]
+      }
+      getDict(params).then(res => {
+        if (res.code === '200') {
+          this.city = res.data.area
+          this.disease = res.data.disease
+        }
       })
     },
-    change(page) { // 分页插件获取点击page页码
-      console.log(page)
+    _getTeamList() { // 获取/team页数据
+      let params = {
+        page: this.page,
+        pageSize: this.pageSize,
+        serviceAreaId: this.selectCity.pop(),
+        skilledDiseaseId: this.skilledDiseaseId
+      }
+      getTeamList(params).then((res) => {
+        if (res.code === '200') {
+          this.teamList = res.data.pageData
+          this.pageShow = true
+          this.totalRecord = res.data.totalRecord
+        } else {
+          this.$Message.error(res.message)
+          this.pageShow = false
+        }
+      })
     },
+    pageNum(page) { // 分页插件获取点击page页码
+      this.page = page
+      this._getTeamList()
+    },
+    pageSizeNum(size) {
+      this.pageSize = size
+      this._getTeamList()
+    },
+    changeArea() {},
     search() {
-      console.log(this.formSearch)
+      this._getTeamList()
     }
   },
   components: {
@@ -230,11 +203,16 @@ export default {
                 line-height 1.5rem
                 no-wrap(3,1.6rem)
                 padding 0.5rem
-        .page-nav
+        .pages-wrapper
           // position relative
           margin-top 2rem
           color #7e8c8d
           padding-top 4rem
+      .no-result
+        position: absolute
+        width: 100%
+        top: 30%
+        transform: translateY(-50%)
     .j-footer
       flex 0 0 auto
 </style>
