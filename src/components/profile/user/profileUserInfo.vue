@@ -150,6 +150,7 @@
         </div>
         <div class="add-follow-up">
           <Button type="info" shape="circle" @click.stop="addFollowupModal = !addFollowupModal" v-if="usertype === '医生用户' && !checkBasicInformation">创建随访</Button>
+          <Button type="primary"  shape="circle"  @click.stop="addMedicalRecord">新增健康档案</Button>
           <Button type="info" shape="circle" @click.stop="addMedicalRecord" v-if="patientOnFollow === this.$route.query.id">添加随访检查档案</Button>
           <div></div>
         </div>
@@ -549,7 +550,7 @@
             </Form>
           </div>
           <div class="add-mecical-record-wrapper">
-            <Button type="primary" @click="addMedicalRecord">新增健康档案</Button>
+            
           </div>
         </div>
       </div>
@@ -1260,11 +1261,11 @@ export default {
           for (let i in pastObj) {
             if (pastObj[i].diseaseId === obj[j].id) {
               this.targetDiseaseList.push(obj[j])
-            } else {
-              this.newDiseaseList.push(obj[j])
+              obj.splice(j, 1)
             }
           }
         }
+        this.newDiseaseList = obj
       } else {
         this.newDiseaseList = obj
       }
