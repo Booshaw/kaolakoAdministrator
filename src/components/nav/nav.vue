@@ -17,11 +17,6 @@
         <ul class="ul-wrapper">
           <router-link class="logo border-1px" to="/" tag="li" @click.native="hiddenNav">JIAHUAN</router-link>
           <router-link class="border-1px" to="/" exact tag="li" @click.native="hiddenNav">首页</router-link>
-          <router-link class="border-1px" to="/team" tag="li" @click.native="hiddenNav">健管团队</router-link>
-          <router-link class="border-1px" to="/service" tag="li" @click.native="hiddenNav">服务项目</router-link>
-          <router-link class="border-1px" to="/evaluate" tag="li" @click.native="hiddenNav">健康评估</router-link>
-          <router-link class="border-1px" to="/kb" tag="li" @click.native="hiddenNav">诊疗智库</router-link>
-          <router-link class="border-1px" to="/articles/prevent_disease" tag="li" @click.native="hiddenNav">健康讲堂</router-link>
           <router-link class="login border-1px" to="/login" tag="li" @click.native="toInfoPage">
           <span v-if="!token">登录</span>
           <svg class="j-icon" aria-hidden="true" v-if="token">
@@ -41,44 +36,6 @@ import { mapState } from 'vuex'
 export default {
   data() {
     return {
-      menu: [
-        {
-          path: '/',
-          title: 'JIAHUAN'
-        },
-        {
-          path: '/homePage',
-          title: '首页'
-        },
-        {
-          path: '/team',
-          title: '健管团队'
-        },
-        {
-          path: '/service',
-          title: '健管团队'
-        },
-        {
-          path: '/estimate',
-          title: '健康评估'
-        },
-        {
-          path: '/library',
-          title: '诊疗智库'
-        },
-        {
-          path: '/articles',
-          title: '健康讲堂'
-        },
-        {
-          path: '/login',
-          title: '登录'
-        },
-        {
-          path: '/regin',
-          title: '注册'
-        }
-      ],
       toggleNav: false
     }
   },
@@ -95,16 +52,10 @@ export default {
     toInfoPage() {
       let usertype = window.localStorage.getItem('usertype')
       let token = window.localStorage.getItem('token')
-      if (usertype === '家庭用户' && token) {
+      if (token) {
         this.isLogin = true
         this.$router.push({
-          path: '/u',
-          activeClass: 'router-link-active'
-        })
-      } else if (usertype === '医生用户') {
-        this.isLogin = true
-        this.$router.push({
-          path: '/d',
+          path: '/',
           activeClass: 'router-link-active'
         })
       } else {
@@ -113,7 +64,7 @@ export default {
           path: '/login'
         })
       }
-      console.log(`${usertype} 获取本地存储的用户类型`)
+      // console.log(`${usertype} 获取本地存储的用户类型`)
       console.log(`${token} 本地token`)
       this.hiddenNav()
     },
