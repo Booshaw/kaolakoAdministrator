@@ -14,8 +14,14 @@ const routes = [
     component: HomePage,
     meta: {
       title: '首页',
-      keepAlive: true
+      keepAlive: true,
+      requireAuth: true
     }
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login
   },
   {
     name: 'error',

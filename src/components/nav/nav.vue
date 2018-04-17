@@ -15,7 +15,7 @@
     <transition name="slide">
       <div class="nav-items" v-show="toggleNav" ref="toggle">
         <ul class="ul-wrapper">
-          <router-link class="logo border-1px" to="/" tag="li" @click.native="hiddenNav">JIAHUAN</router-link>
+          <router-link class="logo border-1px" to="/" tag="li" @click.native="hiddenNav">KAOLAKO</router-link>
           <router-link class="border-1px" to="/" exact tag="li" @click.native="hiddenNav">首页</router-link>
           <router-link class="login border-1px" to="/login" tag="li" @click.native="toInfoPage">
           <span v-if="!token">登录</span>
@@ -50,7 +50,6 @@ export default {
   }),
   methods: {
     toInfoPage() {
-      let usertype = window.localStorage.getItem('usertype')
       let token = window.localStorage.getItem('token')
       if (token) {
         this.isLogin = true
