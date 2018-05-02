@@ -3,7 +3,7 @@
     <div class="main">
       <div class="login-wrapper">
         <div class="input">
-          <h1>KAOLAKO</h1>
+          <h1>Administrator</h1>
         </div>
         <div class="input">
           <i-input v-model="username" placeholder="用户名" ></i-input>
@@ -25,7 +25,7 @@ import { sendLogin } from 'api/login'
 export default {
   data() {
     return {
-      token: null,
+      token: '已登录',
       username: null,
       password: null,
       rules: {
@@ -65,39 +65,14 @@ export default {
         // console.log(res.getAllResponseHeaders())
         // console.log(res)
         if (res.data.code === '200') {
-          this.token = res.headers.authorization
-          // console.log(this.token)
-          if (this.token) {
-          this.$store.commit(types.LOGIN, this.token)
-          let redirectUser = decodeURIComponent(
-            this.$route.query.redirect || '/'
-          )
-        }
+          // this.token = res.headers.Cookie
+          this.$router.push({
+            path: '/'
+          })
         } else {
         this.$Message.error(`ERROR${res.data.message}`)
         }
       })
-      // if (this.token) {
-      //     this.$store.commit(types.LOGIN, this.token)
-      //     this.$store.commit(types.USERTYPE, this.userType)
-      //     let redirectUser = decodeURIComponent(
-      //       this.$route.query.redirect || '/userInfo'
-      //     )
-      //     // let redirectUser = this.$route.query.redirect || '/userInfo'
-      //     let redirectDoctor = decodeURIComponent(
-      //       this.$route.query.redirect || '/doctorInfo'
-      //     )
-      //     console.log(`token:${this.token}`)
-      //     if (this.userType === '家庭用户') {
-      //       this.$router.push({
-      //         path: '/userInfo'
-      //       })
-      //     } else {
-      //       this.$router.push({
-      //         path: redirectDoctor
-      //       })
-      //     }
-      //   }
     }
   },
   components: {
@@ -118,7 +93,7 @@ export default {
       top 40%
       left 50%
       transform translate(-50%, -40%)
-      width 30%
+      width 25%
       height 400px
       margin 48px auto
       // background #ffffff

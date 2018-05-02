@@ -11,6 +11,13 @@ import axios from './utils/request'
 import fastclick from 'fastclick'
 import * as filters from './utils/filter'
 import VueLazyLoad from 'vue-lazyload'
+import VueQuillEditor from 'vue-quill-editor'
+// require styles
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
+Vue.use(VueQuillEditor)
 Vue.prototype.axios = axios
 Vue.config.productionTip = false
 Vue.use(VueLazyLoad, {

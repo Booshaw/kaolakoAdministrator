@@ -1,454 +1,201 @@
 <template>
-  <div class="homepage-wrapper">
-    <jnav></jnav>
-    <div class="main">
-      <div class="slider-wrapper">
-        <div class="slider-content">
-          <j-slider :banner="category"></j-slider>
-        </div>
-      </div>
-      <div class="content-wrapper">
-        <!--team-->
-        <!-- <div class="j-team" v-show="teamList">
-          <row type="flex" align="middle">
-            <i-col span="22" class="title-wrapper">
-              <span class="title">健管团队</span>
-            </i-col>
-            <i-col span="2">
-              <span class="more">更多</span>
-            </i-col>
-          </row>
-          <Row class="j-team-wrapper">
-            <i-col :lg="12" :xs="24" :sm="24" v-for="(item, index) in teamList" :key="index">
-              <div class="team">
-                <div class="left">
-                  <img :src="item.teamImage" :alt="item.teamLeader">
-                </div>
-                <div class="right">
-                  <ul class="right-item">
-                    <li class="leader">
-                      首席专家:{{item.teamLeader}}
-                    </li>
-                    <li class="action" v-html="item.action"></li>
-                    <li class="team-info-title">团队介绍:</li>
-                    <li class="team-desc">{{item.teamDesc}}</li>
-                    <li class="team-for">服务会员200名,团队成员10名</li>
-                    <li>5颗星</li>
-                  </ul>
-                </div>
-              </div>
-            </i-col>
-          </Row>
-        </div> -->
-        <!--team-->
-        <div class="h-team">
-          <Row class="title">
-            <i-col span="22" class="title-wrapper">
-              <span class="title">健管团队</span>
-            </i-col>
-          </Row>
-          <Row>
-            <i-col :lg="6" :md="12" :sm="12" :xs="12" v-for="(i, index1) in webIndex" :key="index1" class="item">
-              <div class="j-team-item">
-                <img v-lazy="i.logo" alt="">
-                <p class="leader">首席专家:{{i.realName}}</p>
-                <p class="intro">{{i.introduction}}</p>
-              </div>
-            </i-col>
-          </Row>
-        </div>
-        <!--service-->
-        <div class="j-service-wrapper">
-          <row class="title">
-            <i-col span="22" class="title-wrapper">
-              <span class="title">服务项目</span>
-            </i-col>
-          </row>
-          <row class="item-wrapper">
-            <i-col :lg="6" :md="12" :sm="12" :xs="12" class="item" v-for="(item, index) in service" :key="index">
-              <div class="box">
-                <a href="#">
-                <svg class=" icon j-icon" aria-hidden="true">
-                  <use :xlink:href="item.icon"></use>
-                </svg>
-                <p class="title">{{item.ctitle}}</p>
-                <p class="desc">{{item.cparagraph}}</p>
-              </a>
-              </div>
-            </i-col>
-          </row>
-        </div>
-        <!--service-category-->
-        <j-category :category="category"></j-category>
-
-        <!--therapeutic schedule-->
-        <div class="j-therapeutic-schedule">
-          <row>
-            <i-col span="22" class="title-wrapper">
-              <span class="title">诊疗智库</span>
-            </i-col>
-          </row>
-          <row class="item-wrapper">
-            <i-col :lg="4" :md="12" :sm="12" :xs="12" class="item">
-              <div class="box">
-                <a href="#">
-                <svg class=" icon j-icon" aria-hidden="true">
-                  <use xlink:href="#icon-accessory"></use>
-                </svg>
-                <p>诊治指南库</p>
-              </a>
-              </div>
-            </i-col><i-col :lg="4" :md="12" :sm="12" :xs="12" class="item">
-              <div class="box">
-                <a href="#">
-                <svg class=" icon j-icon" aria-hidden="true">
-                  <use xlink:href="#icon-label"></use>
-                </svg>
-                <p>典型病例</p>
-              </a>
-              </div>
-            </i-col><i-col :lg="4" :md="12" :sm="12" :xs="12" class="item">
-              <div class="box">
-                <a href="#">
-                <svg class=" icon j-icon" aria-hidden="true">
-                  <use xlink:href="#icon-manage"></use>
-                </svg>
-                <p>问诊表库</p>
-              </a>
-              </div>
-            </i-col><i-col :lg="4" :md="12" :sm="12" :xs="12" class="item">
-              <div class="box">
-                <a href="#">
-                <svg class=" icon j-icon" aria-hidden="true">
-                  <use xlink:href="#icon-accessory"></use>
-                </svg>
-                <p>用药手册</p>
-              </a>
-              </div>
-            </i-col><i-col :lg="4" :md="12" :sm="12" :xs="12" class="item">
-              <div class="box">
-                <a href="#">
-                <svg class=" icon j-icon" aria-hidden="true">
-                  <use xlink:href="#icon-workbench"></use>
-                </svg>
-                <p>随访模板库</p>
-              </a>
-              </div>
-            </i-col><i-col :lg="4" :md="12" :sm="12" :xs="12" class="item">
-              <div class="box">
-                <a href="#">
-                <svg class=" icon j-icon" aria-hidden="true">
-                  <use xlink:href="#icon-accessory"></use>
-                </svg>
-                <p>医学计算器</p>
-              </a>
-              </div>
-            </i-col>
-          </row>
-        </div>
-        <!--articles-->
-        <!-- <div class="j-article-wrapper">
-          <row>
-            <i-col span="22" class="title-wrapper">
-              <span class="title">健康讲堂</span>
-            </i-col>
-          </row>
-          <row>
-            <ul>
-              <li v-for="(item, index) in articles" :key="index">
-                <i-col :lg="8" :xs="24" :md="24" :sm="24" class="articles-category">
-                  <row class="title">
-                    <i-col span="20">
-                      <p class="text">{{item.precaution_title}}</p>
-                    </i-col>
-
-                  </row>
-                <div class="articles">
-                  <div class="left">
-                    <svg class=" icon j-icon" aria-hidden="true">
-                      <use :xlink:href="item.icon"></use>
-                    </svg>
-                  </div>
-                  <div class="right">
-                    <ul v-for="(c, index1) in item.article" :key="index1">
-                      <li><p>{{c.ctitle}}</p></li>
-                    </ul>
-                  </div>
-                </div>
-                </i-col>
-              </li>
-            </ul>
-          </row>
-        </div> -->
-      </div>
-      <div class="loading-wrapper" v-show="!category">
-        <Spin fix></Spin>
-      </div>
-    </div>
-    <jfooter></jfooter>
+  <div class="layout">
+    <Layout>
+      <Sider ref="side1" hide-trigger collapsible :collapsed-width="90" v-model="isCollapsed">
+          <i-menu active-name="1-1" theme="dark" width="auto" :class="menuitemClasses">
+            <Submenu name="1">
+              <template slot="title">
+                <Icon type="ios-paper"></Icon>
+                <span>内容管理</span>
+              </template>
+              <MenuItem name="1-1">
+                <router-link to="/article" tag="li" class="nav-item">
+                  <Icon type="pricetags"></Icon>
+                  <span>文章管理</span>
+                </router-link>
+              </MenuItem>
+              <MenuItem name="1-2">
+                <router-link to="/course" tag="li" class="nav-item">
+                  <Icon type="social-youtube"></Icon>
+                  <span>课程管理</span>
+                </router-link>
+              </MenuItem>
+            </Submenu>
+             <Submenu name="2">
+              <template slot="title">
+                <Icon type="folder"></Icon>
+                <span>分类管理</span>
+              </template>
+              <MenuItem name="2-1">
+                <router-link to="/articleCategory" tag="li" class="nav-item">
+                  <Icon type="ios-pricetags"></Icon>
+                  <span>文章分类</span>
+                </router-link>
+              </MenuItem>
+              <MenuItem name="2-2">
+                <router-link to="/courseCategory" tag="li" class="nav-item">
+                  <Icon type="ios-videocam"></Icon>
+                  <span>课程分类</span>
+                </router-link>
+              </MenuItem>
+            </Submenu>
+            <Submenu name="3">
+              <template slot="title">
+                  <Icon type="person-stalker"></Icon>
+                  <span>用户管理</span>
+              </template>
+              <MenuItem name="3-1">
+                <Icon type="person"></Icon>
+                <router-link to="/user" tag="li" class="nav-item"> <span>用户管理</span> </router-link>
+              </MenuItem>
+              <MenuItem name="3-2">
+                <Icon type="ios-camera"></Icon>
+                <router-link to="/identification" tag="li" class="nav-item"> <span>认证管理</span> </router-link>
+              </MenuItem>
+            </Submenu>
+            <Submenu name="4">
+              <template slot="title">
+                  <Icon type="social-html5"></Icon>
+                  <span>网页配置</span>
+              </template>
+              <MenuItem name="4-1">
+                <Icon type="android-image"></Icon>
+                <router-link to="/" tag="li" class="nav-item"> <span>轮播配置</span> </router-link>
+              </MenuItem>
+              <MenuItem name="4-2">
+                <Icon type="android-contact"></Icon>
+                <router-link to="/" tag="li" class="nav-item"> <span>名师推荐</span> </router-link>
+              </MenuItem>
+              <MenuItem name="4-3">
+                <Icon type="ios-paw"></Icon>
+                <router-link to="/" tag="li" class="nav-item"> <span>微二维码</span> </router-link>
+              </MenuItem>
+            </Submenu>
+            <Submenu name="5">
+              <template slot="title">
+                <Icon type="social-google"></Icon>
+                <span>SEO</span>
+              </template>
+              <MenuItem name="5-1">
+                <Icon type="android-compass"></Icon>
+                <router-link to="/" tag="li" class="nav-item"> <span>全局设置</span> </router-link>
+              </MenuItem>
+            </Submenu>
+          </i-menu>
+      </Sider>
+      <Layout>
+          <Header :style="{padding: 0}" class="layout-header-bar">
+              <Icon @click.native="collapsedSider" :class="rotateIcon" class="nav-icon" type="navicon-round" size="24"></Icon>
+              <span class="title">Administrator</span>
+              <span class="logout" @click="logOut">退出</span>
+          </Header>
+          <Content class="content-wrapper">
+            <div class="main">
+              <router-view></router-view>
+            </div>
+          </Content>
+      </Layout>
+    </Layout>
   </div>
 </template>
 <script>
-import Jnav from 'components/nav/nav'
-import Jfooter from 'base/footer/footer'
-import JSlider from 'base/slider/slider'
-import JCategory from 'base/category/category'
-import { getIndex } from 'api/getData'
+import * as types from '../../store/mutations-types'
+// import { mapState } from 'vuex'
 export default {
   data() {
     return {
-      webIndex: [],
-      articles: {},
-      category: [],
-      service: []
+      isCollapsed: false
     }
   },
-  mounted() {
-    this._getIndex()
+  computed: {
+    rotateIcon() {
+      return ['menu-icon', this.isCollapsed ? 'rotate-icon' : '']
+    },
+    menuitemClasses() {
+      return ['menu-item', this.isCollapsed ? 'collapsed-menu' : '']
+    }
   },
   methods: {
-    _getIndex() {
-      getIndex().then(res => {
-        if (res.code === '200') {
-          this.webIndex = res.data.webIndex
-          this.category = res.data.category
-          this.service = res.data.service
-        }
+    collapsedSider() {
+      this.$refs.side1.toggleCollapse()
+    },
+    logOut() {
+      this.$store.commit(types.LOGOUT)
+      this.$router.push({
+        path: '/login'
       })
     }
-  },
-  components: {
-    JSlider,
-    JCategory,
-    Jnav,
-    Jfooter
   }
 }
 </script>
 <style lang="stylus">
-@import '~common/stylus/mixin'
-.icon
-  width 1em
-  height 1em
-  vertical-align -0.15em
-  fill currentColor
-  overflow hidden
-.loading-wrapper
-  position fixed
-  height 100%
-  width 100%
-  left 0
-  right 0
-  top 0
-  bottom 0
-  background #ffffff
-.homepage-wrapper
+.layout
+  border 1px solid #d7dde4
+  background #f5f7f9
   position relative
-  display flex
-  flex-direction column
-  .main
-    flex 1
-    margin-top 3.75rem
-    .slider-wrapper
-      position: relative
-      width: 100%
-      height: 0
-      padding-top: 50%
-      overflow: hidden
-      .slider-content
-        position: absolute
-        top: 0
-        left: 0
-        width: 100%
-        height: 100%
-    .content-wrapper
-      width 80%
-      margin 0 auto
-      margin-top 3.75rem
-      @media screen and (max-width: 1024px )
-        width 100%
-        padding 0.5rem
-      .h-team
-        position relative
-        text-align left
-        margin 0 auto
-        .title-wrapper
-          text-align left
-          margin-bottom 2.5rem
-          padding 1rem
-          .title
-            display inline-block
-            font-size 1.5rem
-            color #2d2f33
-            text-align left
-            padding-left 0.625rem
-            border-left 3px solid #2ca9e3
-          .more
-            text-align right
-            font-size 0.875rem
-        .item
-          padding 0.5rem
-          .j-team-item
-            padding 0.2rem
-            text-align center
-            background url('./usernotloginbg.png') center
-            background-size cover
-            border-radius 0.4rem
-            transition 0.1s all linear
-            &:hover
-              box-shadow 0 8px 12px 0 rgba(7,17,27,0.2)
-            img
-              width 5.5rem
-              height 5.5rem
-              border-radius 50%
-              margin 1rem
-            .leader
-              text-align center
-              margin 1rem
-            .intro
-              text-align left
-              font-size 0.875rem
-              line-height 1.5rem
-              no-wrap(3,1.5rem)
-              // padding 1rem
-              margin 0.5rem
-      .j-article-wrapper
-        margin-top 6.23rem
-        // margin-bottom 6.23rem
-        @media screen and (max-width: 420px )
-          padding 0.5rem
-          margin-top 2rem
-        .title-wrapper
-          text-align left
-          .title
-            display inline-block
-            font-size 1.5rem
-            color #2d2f33
-            text-align left
-            padding-left 0.625rem
-            border-left 3px solid #2ca9e3
-          .more
-            text-align right
-            font-size 0.875rem
-        .articles-category
-          margin-top 2rem
-          overflow hidden
-          .title
-            text-align left
-            margin-bottom 1rem
-            font-size 0.875rem
-            .text
-              margin 0.5rem
-              font-size 1rem
-          .articles
-            display flex
-            flex-direction row
-            font-size 1rem
-            .left
-              .j-icon
-                width 7.5rem
-                height 7.5rem
-                // vertical-align -0.09rem
-                color #ffffff
-                background-color #61dfe1
-                // padding 1.5rem
-                border-radius 4px
-                text-align center
-              .title
-                text-align left
-                margin-bottom 1rem
-            .right
-              margin-left 1.2rem
-              li
-                position relative
-                // text-overflow ellipsis
-                // white-space nowrap
-                font-size 0.875rem
-                text-align left
-                padding-right 1rem
-                line-height 1.9rem
-                height 1.9rem
-                display -webkit-box
-                -webkit-box-orient vertical
-                -webkit-line-clamp 1
-                overflow hidden
-      .j-service-wrapper
-        margin-top 6.23rem
-        @media screen and (max-width: 420px )
-          margin-top 2rem
-        .title
-          @media screen and (max-width: 420px )
-            padding-left 1rem
-            padding-right 1rem
-          .title-wrapper
-            text-align left
-            .title
-              display inline-block
-              font-size 1.5rem
-              color #2d2f33
-              text-align left
-              padding-left 0.625rem
-              border-left 3px solid #2ca9e3
-            .more
-              text-align right
-              font-size 0.875rem
-        .item-wrapper
-          margin-top 2.5rem
-          overflow hidden
-          .item
-            padding 0.5rem
-            .box
-              // margin-top 2.5rem
-              padding 0.5rem
-              // margin 0.5rem
-              // border 1px solid #eeeeee
-              background #ffffff
-              transition .3s all linear
-              &:hover
-                // box-shadow 2px 2px 2px #eeeeee
-                box-shadow: 0 8px 16px 0 rgba(7, 17, 27, 0.1)
-              .j-icon
-                  width 4rem
-                  height 4rem
-                  vertical-align -0.09rem
-                  color #61dfe1
-                  border-radius 4px
-              .title
-                padding 1rem
-                font-size 1.125rem
-              .desc
-                padding 0.2rem
-                font-size 0.875rem
-                line-height 1.4rem
-                text-align left
-                color #878d99
-                no-wrap(3,1.4rem)
-      .j-therapeutic-schedule
-        margin 6.23rem 0
-        @media screen and (max-width: 420px )
-          margin 1rem 0
-        .title-wrapper
-          text-align left
-          @media screen and (max-width: 420px )
-            padding 1rem
-          .title
-            display inline-block
-            font-size 1.5rem
-            color #2d2f33
-            text-align left
-            padding-left 0.625rem
-            border-left 3px solid #2ca9e3
-        .item-wrapper
-          margin-top 2rem
-          .item
-            padding 1rem
-            .box
-              border 1px solid #eeeeee
-              transition .3s all linear
-              p
-                display inline-block
-                line-height 3rem
-              &:hover
-                // box-shadow 2px 2px 2px #eeeeee
-                box-shadow: 0 8px 16px 0 rgba(7, 17, 27, 0.1)
+  border-radius 4px
+  overflow hidden
+  height 100%
+  .ivu-layout
+    height 100%
+  .nav-item
+    display inline-block
+    padding 12px 48px
+    margin -12px -48px
+  .layout-header-bar
+    background #fff
+    box-shadow 0 1px 1px rgba(0, 0, 0, 0.1)
+    .nav-icon
+      float left
+      margin 10px
+    .title
+      font-size 36px
+      text-align center
+      font-weight 700
+      color #2d8cf0
+    .logout
+      margin-left 24px
+  .content-wrapper
+    display flex
+    flex-direction column
+    height 100%
+    .main
+      flex 1
+      margin 32px auto
+      width 90%
+  .layout-logo-left
+    width 90%
+    height 30px
+    background #5b6270
+    border-radius 3px
+    margin 15px auto
+  .menu-icon
+    transition all 0.3s
+  .rotate-icon
+    transform rotate(-90deg)
+  .menu-item
+    span
+      display inline-block
+      overflow hidden
+      width 69px
+      text-overflow ellipsis
+      white-space nowrap
+      vertical-align bottom
+      transition width 0.2s ease 0.2s
+  .menu-item
+    i
+      transform translateX(0px)
+      transition font-size 0.2s ease, transform 0.2s ease
+      vertical-align middle
+      font-size 16px
+  .collapsed-menu
+    span
+      width 0px
+      transition width 0.2s ease
+  .collapsed-menu
+    i
+      transform translateX(5px)
+      transition font-size 0.2s ease 0.2s, transform 0.2s ease 0.2s
+      vertical-align middle
+      font-size 14px
 </style>

@@ -7,7 +7,6 @@ const mutations = {
   [types.LOGOUT](state) {
     localStorage.removeItem('token')
     state.token = null
-    state.usertype = null
   },
   [types.TITLE](state, data) {
     state.title = data

@@ -30,6 +30,7 @@ module.exports = {
     'eol-last': 0,
     'space-before-function-paren': 0,
     "ignoreEOLComments": 0,
-    "ignoreComments": 0
+    "ignoreComments": 0,
+    "vue/no-parsing-error": [2, { "x-invalid-end-tag": false }]
   }
 }
