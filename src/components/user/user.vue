@@ -10,7 +10,7 @@
         <Button type="primary" size="small" icon="ios-compose-outline">创建</Button>
         <Button type="error" size="small" icon="ios-trash-outline">删除</Button>
        </div>
-        <Table border ref="selection" :columns="tableColumns" :data="tableData" @on-select="select"></Table>
+        <Table border ref="selection" :loading="loading" :columns="tableColumns" :data="tableData" @on-select="select"></Table>
     </div>
     <div class="pages-wrapper" v-if="pageShow">
       <Page :total="totalRecord" size="small" transfer show-elevator show-sizer @on-change="pageNum" @on-page-size-change="pageSizeNum"></Page>
@@ -27,6 +27,7 @@ export default {
       totalRecord: 20, // 总条数
       page: 1, // 页数
       pageSize: 10, // 每页/条
+      loading: true, // 表格数据加载
       tableColumns: [
         {
           type: 'selection',

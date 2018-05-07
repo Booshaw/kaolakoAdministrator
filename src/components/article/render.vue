@@ -12,10 +12,10 @@
         <Button type="error" size="small" icon="reply-all">撤销推荐</Button>
         <Button type="error" size="small" icon="ios-trash-outline">删除</Button>
        </div>
-        <Table border ref="selection" :columns="tableColumns" :data="tableData" @on-select="select" @on-row-click="toArticleDetail"></Table>
+        <Table border ref="selection" :loading="loading" :columns="tableColumns" :data="tableData" @on-select="select" @on-row-click="toArticleDetail"></Table>
     </div>
     <div class="pages-wrapper" v-if="pageShow">
-      <Page :total="totalRecord" size="small" transfer show-elevator show-sizer @on-change="pageNum" @on-page-size-change="pageSizeNum"></Page>
+      <Page :total="totalRecord"  size="small" transfer show-elevator show-sizer @on-change="pageNum" @on-page-size-change="pageSizeNum"></Page>
     </div>
   </div>
 </template>
@@ -29,6 +29,7 @@ export default {
       totalRecord: 20, // 总条数
       page: 1, // 页数
       pageSize: 10, // 每页/条
+      loading: true, // 加载loading
       tableColumns: [
         {
           type: 'selection',
@@ -97,6 +98,7 @@ export default {
         if (res.code === 200) {
           this.tableData = res.data.articleList
           this.pageShow = true
+          this.loading = false
           console.log(this.tableData)
         }
       })

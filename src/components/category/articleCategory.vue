@@ -36,6 +36,7 @@
           <i-input v-model="categoryAddData.name" style="width:100%" placeholder="请确认添加字段唯一"></i-input>
         </div>
       </Modal>
+      <Spin size="large" fix v-if="spinShow"></Spin>
     </div>
   </div>
 </template>
@@ -52,6 +53,7 @@ export default {
       categoryUploadModal: false, // 修改分类modal
       categoryAddModal: false, // 添加分类modal
       uploadData: {}, // 修改分类存放数据
+      spinShow: true, // 数据加载loading
       categoryAddData: {
         type: null,
         name: '',
@@ -71,6 +73,7 @@ export default {
         if (res.code === 200) {
           this.tagList = res.data.tagList
           this.categoryList = res.data.categoryList
+          this.spinShow = false
         }
       })
     },

@@ -4,7 +4,7 @@
        <div class="render">
          <h2 class="title">认证管理</h2>
        </div>
-        <Table border ref="selection" :columns="tableColumns" :data="tableData" @on-select="select" @on-row-click="toIdentificationDetail"></Table>
+        <Table border ref="selection" :loading="loading" :columns="tableColumns" :data="tableData" @on-select="select" @on-row-click="toIdentificationDetail"></Table>
     </div>
     <div class="pages-wrapper" v-if="pageShow">
       <Page :total="totalRecord" size="small" transfer show-elevator show-sizer @on-change="pageNum" @on-page-size-change="pageSizeNum"></Page>
@@ -19,6 +19,7 @@ export default {
       searchTitle: '', // 按文章标题查询
       pageShow: false, // 分页导航是否显示
       totalRecord: 20, // 总条数
+      loading: true, // 表格数据加载动画
       page: 1, // 页数
       pageSize: 10, // 每页/条
       tableColumns: [
@@ -70,6 +71,7 @@ export default {
         if (res.code === 200) {
           this.tableData = res.data.articleList
           this.pageShow = true
+          this.loading = false
           console.log(this.tableData)
         }
       })

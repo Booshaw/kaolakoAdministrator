@@ -12,7 +12,7 @@
         <Button type="error" size="small" icon="reply-all">取消发布</Button>
         <Button type="error" size="small" icon="ios-trash-outline">删除</Button>
        </div>
-        <Table border ref="selection" :columns="tableColumns" :data="tableData" @on-select="select" @on-row-click="toVideoDetail"></Table>
+        <Table border ref="selection" :loading="loading" :columns="tableColumns" :data="tableData" @on-select="select" @on-row-click="toVideoDetail"></Table>
     </div>
     <div class="pages-wrapper" v-if="pageShow">
       <Page :total="totalRecord" size="small" transfer show-elevator show-sizer @on-change="pageNum" @on-page-size-change="pageSizeNum"></Page>
@@ -26,7 +26,8 @@ export default {
     return {
       searchTitle: '', // 按文章标题查询
       pageShow: false, // 分页导航是否显示
-      totalRecord: 20, // 总条数
+      totalRecord: 20, // 总条数,
+      loading: true, // 表格加载
       page: 1, // 页数
       pageSize: 10, // 每页/条
       tableColumns: [
@@ -97,6 +98,7 @@ export default {
         if (res.code === 200) {
           this.tableData = res.data.articleList
           this.pageShow = true
+          this.loading = false
           console.log(this.tableData)
         }
       })
