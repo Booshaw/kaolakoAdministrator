@@ -6,7 +6,7 @@ import router from '../router'
 // axios 配置
 axios.defaults.timeout = 5000;
 // axios.defaults.baseURL = '/api'
-axios.defaults.baseURL = 'https://easy-mock.com/mock/5ac20177470d657aa5c1dd51/kaolako'
+axios.defaults.baseURL = ''
 axios.defaults.withCredentials = true
 
 // http request 拦截器
