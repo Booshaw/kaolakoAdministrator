@@ -70,7 +70,7 @@ export default {
             path: '/'
           })
         } else {
-        this.$Message.error(`ERROR${res.data.message}`)
+        this.$Notice.error(`ERROR${res.data.message}`)
         }
       })
     }

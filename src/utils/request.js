@@ -20,14 +20,14 @@ axios.interceptors.request.use(
 // http response 拦截器
 axios.interceptors.response.use(
     response => {
-        if (response.data.code === '403') {
-            // 403 清除token信息并跳转到登录页面
-            store.commit(types.LOGOUT);
-            router.replace({
-                path: '/login',
-                query: {redirect: router.currentRoute.fullPath}
-            })
-        }
+        // if (response.data.code === '403') {
+        //     // 403 清除token信息并跳转到登录页面
+        //     store.commit(types.LOGOUT);
+        //     router.replace({
+        //         path: '/login',
+        //         query: {redirect: router.currentRoute.fullPath}
+        //     })
+        // }
         return response;
     },
     error => {
