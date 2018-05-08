@@ -4,7 +4,7 @@
       <div class="box">
         <span>标题</span>
         <i-input v-model="title" placeholder="请输入标题" :maxlength="80"></i-input>
-        <i-switch v-model="isRecommend" @on-change="setRecommend" size="small" :true-value="1" :false-value="0">
+        <i-switch v-model="status" @on-change="setStatus" size="small" :true-value="1" :false-value="0">
         </i-switch>
         <span class="is-recommend">推荐</span>
       </div>
@@ -46,7 +46,7 @@
           :before-upload="handleBeforeUpload"
           action="http://kaola.eaon.win:8080/kaola/common/file/upload">
           <div class="logo-img">
-            <img height="400" width="220" :src="thumbnailUrl" alt="手记缩略图" v-if="thumbnailUrl">
+            <img height="400" width="220" :src="defaultList[0].thumbnailUrl" alt="手记缩略图" v-if="thumbnailUrl">
             <div v-else>上传手记封面图</div>
             <div class="upload-list-cover">
               <Icon type="camera"></Icon>
@@ -68,7 +68,7 @@
 </template>
 <script>
 // import hljs from 'highlight.js'
-import { getData } from 'api/getData'
+import { getArticleDetail } from 'api/getData'
 import { upload } from 'api/upload'
 // import Quill from 'quill'
 // import VueQuillEditor, { Quill } from 'vue-quill-editor'
@@ -80,14 +80,60 @@ export default {
   data() {
     return {
       title: '', // 文章标题
-      isRecommend: 0, // 是否推荐
-      tagList: [], // 标签列表
-      categoryList: [], // 分类列表
-      tagCurrent: [], // 选中标签列表
+      status: 0, // 是否推荐
+      categoryList: [
+        {
+          name: '公务员',
+          id: 1
+        },
+        {
+          name: '事业单位',
+          id: 2
+        },
+          {
+          name: '农信社',
+          id: 3
+        },
+        {
+          name: '教师公招',
+          id: 4
+        },
+          {
+          name: '公安招警',
+          id: 5
+        },
+        {
+          name: '金融银行',
+          id: 6
+        }
+      ], // 分类列表
+      tagList: [
+        {
+          name: '行测',
+          id: 1
+        },
+        {
+          name: '申论',
+          id: 2
+        },
+        {
+          name: '结构化面试',
+          id: 3
+        },
+        {
+          name: 'xxx',
+          id: 4
+        },
+        {
+          name: 'nnn',
+          id: 5
+        }
+      ], // 标签列表
+      tagCurrent: [],
+      categoryCurrent: 1,
       loading: false, // 发布手记加载中
       thumbnail: '', // 缩略图id
       thumbnailUrl: '', // 缩略图url
-      categoryCurrent: 0,
       defaultList: [],
       content: '<p>I am Example</p>',
       editorOption: {
@@ -137,18 +183,26 @@ export default {
   },
   methods: {
     _getTagList() {
-      let params = {}
-      getData(params).then(res => {
-        if (res.code === 200) {
+      let params = {
+        id: this.$route.query.id
+      }
+      getArticleDetail(params).then(res => {
+        console.log(res)
+        if (res.code === '200') {
           // console.log(res)
-          this.tagList = res.data.tagList
-          this.categoryList = res.data.categoryList
-          this.title = res.data.articleDetail.title
-          this.content = res.data.articleDetail.content
-          this.tagCurrent = res.data.articleDetail.tag
-          this.categoryCurrent = res.data.articleDetail.category
-          this.thumbnailUrl = res.data.articleDetail.image
-          // this.defaultList.push(res.data.articleDetail.image)
+          // this.tagList = res.data.tag
+          // this.categoryList = res.data.category
+          this.title = res.data.title
+          this.content = res.data.content
+          this.tagCurrent = res.data.tag
+          this.categoryCurrent = res.data.category
+          this.thumbnailUrl = res.data.thumbnailUrl
+          this.status = res.data.status
+          let obj = {
+            thumbnailUrl: ''
+          }
+          obj.thumbnailUrl = res.data.thumbnailUrl
+          this.defaultList.push(obj)
         }
       })
     },
@@ -229,12 +283,12 @@ export default {
       // 文件上传成功钩子
       if (res.code === '200') {
         this.$Notice.success({
-          title: '患者数据导入',
-          desc: '上传excel数据成功',
+          title: '修改文章缩略图',
+          desc: '操作成功',
           duration: 5
         })
-        this.thumbnailUrl = res.data.url
-        this.thumbnail = res.data.id
+        this.defaultList[0].thumbnailUrl = res.data.url
+        console.log(this.defaultList)
       } else {
         this.$Notice.error({
           title: '上传失败',
@@ -255,7 +309,7 @@ export default {
         path: '/'
       })
     },
-    setRecommend(status) {
+    setStatus(status) {
       console.log(status)
     }
   },

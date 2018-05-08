@@ -1,11 +1,19 @@
 import axios from 'axios'
 const debug = process.env.NODE_ENV !== 'production'
 const serverUrl = 'https://easy-mock.com/mock/5ac20177470d657aa5c1dd51/kaolako'
+const serverApi = 'http://api.kaolako.com/kaola'
 
 // 获取文章列表
 export function getArticleList(params) {
-  const url = debug ? 'https://easy-mock.com/mock/5ac20177470d657aa5c1dd51/kaolako/article' : `${serverUrl}/article`
+  const url = debug ? 'http://api.kaolako.com/kaola/web/article/list' : `${serverApi}/web/article/list`
   return axios.get(url, params).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// 获取文章详情数据
+export function getArticleDetail(params) {
+  const url = debug ? 'http://api.kaolako.com/kaola/web/article/get' : `${serverUrl}/web/article/get`
+  return axios.post(url, params).then((res) => {
     return Promise.resolve(res.data)
   })
 }
