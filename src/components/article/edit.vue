@@ -21,15 +21,15 @@
         </div>
       </div>
       <div class="box">
-        <span>标签</span> <span>{{tagCurrent.length}}/3</span>
-        <ul>
-          <li v-for="(item, index) in tagList" :key="index" @click="selectTagGrou(item)" :class="{selectTagClass: (tagCurrent.indexOf(item.id))!== -1}">{{item.name}}</li>
-        </ul>
-      </div>
-      <div class="box">
         <span>分类</span>
         <ul>
           <li v-for="(item, index) in categoryList" :key="index" @click="selectCategory(item)" :class="{selectTagClass: item.id === categoryCurrent}">{{item.name}}</li>
+        </ul>
+      </div>
+      <div class="box">
+        <span>标签</span> <span>{{tagCurrent.length}}/3</span>
+        <ul>
+          <li v-for="(item, index) in tagList" :key="index" @click="selectTagGrou(item)" :class="{selectTagClass: (tagCurrent.indexOf(item.id))!== -1}">{{item.name}}</li>
         </ul>
       </div>
       <div class="box">
@@ -68,7 +68,7 @@
 </template>
 <script>
 // import hljs from 'highlight.js'
-import { getArticleDetail } from 'api/getData'
+import { getArticleDetail, getData } from 'api/getData'
 import { upload } from 'api/upload'
 // import Quill from 'quill'
 // import VueQuillEditor, { Quill } from 'vue-quill-editor'
@@ -81,54 +81,8 @@ export default {
     return {
       title: '', // 文章标题
       status: 0, // 是否推荐
-      categoryList: [
-        {
-          name: '公务员',
-          id: 1
-        },
-        {
-          name: '事业单位',
-          id: 2
-        },
-          {
-          name: '农信社',
-          id: 3
-        },
-        {
-          name: '教师公招',
-          id: 4
-        },
-          {
-          name: '公安招警',
-          id: 5
-        },
-        {
-          name: '金融银行',
-          id: 6
-        }
-      ], // 分类列表
-      tagList: [
-        {
-          name: '行测',
-          id: 1
-        },
-        {
-          name: '申论',
-          id: 2
-        },
-        {
-          name: '结构化面试',
-          id: 3
-        },
-        {
-          name: 'xxx',
-          id: 4
-        },
-        {
-          name: 'nnn',
-          id: 5
-        }
-      ], // 标签列表
+      categoryList: [], // 分类列表
+      tagList: [], // 标签列表
       tagCurrent: [],
       categoryCurrent: 1,
       loading: false, // 发布手记加载中
@@ -166,7 +120,7 @@ export default {
   },
   created() {
     this._getTagList() // 获取文章标签列表
-    // this._getArticleDetail() // 获取文章详情
+    this._getArticleDetail() // 获取文章详情
   },
   computed: {
     // selectTag(item) {
@@ -183,6 +137,16 @@ export default {
   },
   methods: {
     _getTagList() {
+      let params = {}
+      getData(params).then(res => {
+        if (res.code === 200) {
+          // console.log(res)
+          this.tagList = res.data.tagList
+          this.categoryList = res.data.categoryList
+        }
+      })
+    },
+    _getArticleDetail() {
       let params = {
         id: this.$route.query.id
       }
