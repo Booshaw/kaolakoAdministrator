@@ -4,7 +4,7 @@
       <div class="box">
         <span class="t">标题</span>
         <i-input v-model="title" placeholder="请输入标题" :maxlength="80" style="width:80%"></i-input>
-        <i-switch v-model="isRecommend" @on-change="setRecommend" size="small" :true-value="1" :false-value="0">
+        <i-switch v-model="status" @on-change="setStatus" size="small" :true-value="1" :false-value="0">
         </i-switch>
         <span class="is-recommend">推荐</span>
       </div>
@@ -56,7 +56,7 @@
         </Upload>
       </div>
       <div>
-        <Button type="error" :loading="loading" @click="updateArticle">
+        <Button type="error" :loading="loading" @click="createArticle">
           <span v-if="!loading">发布手记</span>
           <span v-else>Loading...</span>
         </Button>
@@ -73,14 +73,14 @@
 // import ImageResize from 'quill-image-resize-module'
 // Quill.register('modules/imageDrop', ImageDrop)
 // Quill.register('modules/imageResize', ImageResize)
-import {getData} from 'api/getData'
-import {upload} from 'api/upload'
+import { getData } from 'api/getData'
+import { uploadArticle } from 'api/upload'
 export default {
   data() {
     return {
       title: '', // 文章标题
       tagList: [], // 标签列表
-      isRecommend: 0, // 是否推荐
+      status: 0, // 是否推荐
       categoryList: [], // 分类列表
       tagCurrent: [], // 选中标签列表
       loading: false, // 发布手记加载中
@@ -168,10 +168,17 @@ export default {
       this.tagCurrent = Object.assign(this.tagCurrent.slice(0, 3))
       console.log(this.tagCurrent)
     },
-    updateArticle() {
+    createArticle() {
       this.loading = true
-      let params = {}
-      upload(params).then(res => {
+      let params = {
+        title: this.title,
+        status: this.status,
+        thumbnail: this.thumbnail,
+        category: this.categoryCurrent,
+        tag: this.tagCurrent,
+        content: this.content
+      }
+      uploadArticle(params).then(res => {
         if (res.code === '200') {
           this.loading = false
           this.$Notice.info('操作成功')
@@ -256,12 +263,11 @@ export default {
         path: '/'
       })
     },
-    setRecommend(status) {
+    setStatus(status) {
       console.log(status)
     }
   },
-  components: {
-  }
+  components: {}
 }
 </script>
 <style lang="stylus">
