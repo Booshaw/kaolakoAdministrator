@@ -3,37 +3,49 @@
     <div class="edit-container">
       <Button type="info" icon="plus" size="small" @click="categoryAddModal = !categoryAddModal">添加分类</Button>
       <div class="box">
-        <span>视频分类</span>
+        <span>课程分类</span>
         <ul>
-          <li v-for="(item, index) in categoryList" :key="index" @click="selectCategory(item)">{{item.name}}</li>
+          <li v-for="(item, index) in categoryList" :key="index" @click="selectCategory(item)">{{item.name}}
+          </li>
         </ul>
       </div>
-      <div class="box">
+      <!-- <div class="box">
         <span>标签</span>
         <ul>
           <li v-for="(item, index) in tagList" :key="index" @click="selectCategory(item)">{{item.name}}</li>
         </ul>
-      </div>
+      </div> -->
       <Modal
         v-model="categoryUploadModal"
-        title="分类管理"
-        @on-ok="categoryUpload"
-        transfer
-        :loading="loading">
+        width="360">
         <i-input v-model="uploadData.name"></i-input>
+        <p slot="header" style="color:#f60;text-align:center">
+            <Icon type="information-circled"></Icon>
+            <span>确认修改</span>
+        </p>
+        <div style="text-align:center">
+            <p>如填写内容为空则会删除此项</p>
+        </div>
+        <div slot="footer">
+            <i-button type="error" size="large" long :loading="loading" @click="categoryUpload">确定</i-button>
+        </div>
       </Modal>
       <Modal
         v-model="categoryAddModal"
-        title="分类管理"
-        @on-ok="categoryAdd"
-        transfer
-        :loading="loading">
+        width="360">
         <div>
           <Select v-model="categoryAddData.type" style="width:100%;margin-bottom:32px" placeholder="选择添加类型">
-            <Option :value = "1">分类</Option>
-            <Option :value = "2">标签</Option>
+            <Option :value = 1>分类</Option>
+            <!-- <Option :value = 2>标签</Option> -->
           </Select>
           <i-input v-model="categoryAddData.name" style="width:100%" placeholder="请确认添加字段唯一"></i-input>
+        </div>
+          <p slot="header" style="color:#f60;text-align:center">
+            <Icon type="information-circled"></Icon>
+            <span>确认添加</span>
+        </p>
+        <div slot="footer">
+            <i-button type="primary" size="large" long :loading="loading" @click="categoryAdd">添加</i-button>
         </div>
       </Modal>
       <Spin size="large" fix v-if="spinShow"></Spin>
@@ -41,7 +53,7 @@
   </div>
 </template>
 <script>
-import { getData } from 'api/getData'
+import { getCategoryTag } from 'api/getData'
 import { updateCategory } from 'api/upload'
 export default {
   data() {
@@ -53,13 +65,12 @@ export default {
       categoryUploadModal: false, // 修改分类modal
       categoryAddModal: false, // 添加分类modal
       uploadData: {}, // 修改分类存放数据
-      spinShow: true, // 加载动画
+      spinShow: true, // 数据加载loading
       categoryAddData: {
-        type: null,
+        type: 1,
         name: '',
-        action: 2
-      }, // 添加分类初始数据
-      type: null // 分类操作添加类型
+        action: 1 // 1课程,2文章
+      } // 添加分类初始数据
     }
   },
   created() {
@@ -68,34 +79,67 @@ export default {
   computed: {},
   methods: {
     _getTagList() {
-      let params = {}
-      getData(params).then(res => {
-        if (res.code === 200) {
-          this.tagList = res.data.tagList
-          this.categoryList = res.data.categoryList
+      let params = {
+        dictType: ['courseCategory']
+      }
+      getCategoryTag(params).then(res => {
+        if (res.code === '200') {
+          this.categoryList = res.data.courseCategory.slice(1)
           this.spinShow = false
         }
       })
     },
     selectCategory(item) {
+      console.log(item)
       this.categoryUploadModal = true
       this.uploadData = item
     },
     categoryUpload() {
-      let params = this.uploadData
+      let params = {
+        id: this.uploadData.id,
+        isDelete: this.uploadData.name.length ? 0 : 1,
+        name: this.uploadData.name,
+        action: 1,
+        type: 1
+      }
       updateCategory(params).then(res => {
-        if (res.code === 200) {
+        if (res.code === '200') {
           this.loading = false
-          this.$Notice.info('操作成功')
+          this.categoryUploadModal = false
+          this.$Notice.info({
+            title: res.message,
+            desc: false
+          })
+          this._getTagList()
+        } else {
+          this.$Notice.error({
+            title: res.message,
+            desc: false
+          })
         }
       })
     },
     categoryAdd() {
-      let params = this.categoryAddData
+      let params = {
+        isDelete: 0,
+        name: this.categoryAddData.name,
+        action: 1,
+        type: this.categoryAddData.type
+      }
       updateCategory(params).then(res => {
-        if (res.code === 200) {
+        if (res.code === '200') {
           this.loading = false
-          this.$Notice.info('操作成功')
+          this.categoryAddModal = false
+          this.$Notice.info({
+            title: res.message,
+            desc: false
+          })
+          this._getTagList()
+        } else {
+          this.$Notice.error({
+            title: res.message,
+            desc: false
+          })
         }
       })
     }
@@ -126,8 +170,9 @@ export default {
         color #002500
         margin-right 8px
       li
+        position relative
         display inline-block
-        margin 8px 8px 0 0
+        margin 8px 16px 0 0
         background rgba(7, 17, 27, 0.05)
         color #4D555D
         padding 0 12px

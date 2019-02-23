@@ -67,7 +67,7 @@ export default {
         },
         {
           title: '作者',
-          key: 'nickName',
+          key: 'author',
           sortable: true,
           width: 100
         },

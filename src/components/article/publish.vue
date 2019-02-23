@@ -44,7 +44,7 @@
           :on-format-error="handleFormatError"
           :on-exceeded-size="handleMaxSize"
           :before-upload="handleBeforeUpload"
-          action="http://kaola.eaon.win:8080/kaola/common/file/upload">
+          action="http://cd.godo.pub:18080/kaola/common/file/upload">
           <div class="logo-img">
             <img height="400" width="220" :src="thumbnailUrl" alt="手记缩略图" v-if="thumbnailUrl">
             <div v-else>上传手记封面图</div>
@@ -73,7 +73,7 @@
 // import ImageResize from 'quill-image-resize-module'
 // Quill.register('modules/imageDrop', ImageDrop)
 // Quill.register('modules/imageResize', ImageResize)
-import { getData } from 'api/getData'
+import { getCategoryTag } from 'api/getData'
 import { uploadArticle } from 'api/upload'
 export default {
   data() {
@@ -144,13 +144,24 @@ export default {
     // }
   },
   methods: {
-    _getTagList() {
-      let params = {}
-      getData(params).then(res => {
-        if (res.code === 200) {
-          // console.log(res)
-          this.tagList = res.data.tagList
-          this.categoryList = res.data.categoryList
+    // _getTagList() {
+    //   let params = {}
+    //   getData(params).then(res => {
+    //     if (res.code === 200) {
+    //       // console.log(res)
+    //       this.tagList = res.data.tagList
+    //       this.categoryList = res.data.categoryList
+    //     }
+    //   })
+    // },
+     _getTagList() {
+      let params = {
+        dictType: ['articleCategory', 'articleTag']
+      }
+      getCategoryTag(params).then(res => {
+        if (res.code === '200') {
+          this.tagList = res.data.articleTag.splice(1)
+          this.categoryList = res.data.articleCategory.slice(1)
         }
       })
     },
@@ -181,7 +192,10 @@ export default {
       uploadArticle(params).then(res => {
         if (res.code === '200') {
           this.loading = false
-          this.$Notice.info('操作成功')
+          this.$Notice.info({
+            title: res.message,
+            desc: false
+          })
         }
       })
     },
@@ -213,7 +227,6 @@ export default {
       // console.log('editor focus!', editor)
     },
     onEditorReady(editor) {
-      console.log('editor ready!', editor)
     },
     onEditorChange({ editor, html, text }) {
       // console.log('editor change!', editor, html, text)
@@ -237,25 +250,22 @@ export default {
       // 文件上传成功钩子
       if (res.code === '200') {
         this.$Notice.success({
-          title: '患者数据导入',
-          desc: '上传excel数据成功',
-          duration: 5
+          title: res.message,
+          desc: false
         })
         this.thumbnailUrl = res.data.url
         this.thumbnail = res.data.id
       } else {
         this.$Notice.error({
-          title: '上传失败',
-          desc: `${res.message}`,
-          duration: 5
+          title: res.message,
+          desc: false
         })
       }
     },
     handleError(res, file) {
       this.$Notice.error({
-        title: '上传失败',
-        desc: `${res.message}`,
-        duration: 5
+        title: res.message,
+        desc: false
       })
     },
     backHome() {

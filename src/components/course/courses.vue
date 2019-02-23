@@ -20,7 +20,7 @@
   </div>
 </template>
 <script>
-import { getArticleList } from 'api/getData'
+import { getCourseList } from 'api/getData'
 export default {
   data() {
     return {
@@ -73,7 +73,7 @@ export default {
         },
         {
           title: '发布时间',
-          key: 'publishTime',
+          key: 'publishDate',
           sortable: true,
           width: 120
         },
@@ -89,23 +89,24 @@ export default {
     }
   },
   created() {
-    this._getArticleList()
+    this._getCourseList()
   },
   methods: {
-    _getArticleList() {
-      let params = {}
-      getArticleList(params).then(res => {
-        if (res.code === 200) {
-          this.tableData = res.data.articleList
+    _getCourseList() {
+      let params = {
+        page: this.page,
+        pageSize: this.pageSize
+      }
+      getCourseList(params).then(res => {
+        if (res.code === '200') {
+          this.tableData = res.data.pageData
           this.pageShow = true
           this.loading = false
-          console.log(this.tableData)
         }
       })
     },
     select(item) {
       this.selectList = item
-      console.log(this.selectList)
     },
     toVideoDetail(item) {
       this.$router.push({
@@ -115,11 +116,11 @@ export default {
     },
     pageNum(page) {
       this.page = page
-      this._getArticleList()
+      this._getCourseList()
     },
     pageSizeNum(size) {
       this.pageSize = size
-      this._getArticleList()
+      this._getCourseList()
     },
     createCourse() {
       this.$router.push({

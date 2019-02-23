@@ -44,7 +44,7 @@
           :on-format-error="handleFormatError"
           :on-exceeded-size="handleMaxSize"
           :before-upload="handleBeforeUpload"
-          action="http://kaola.eaon.win:8080/kaola/common/file/upload">
+          action="http://cd.godo.pub:18080/kaola/common/file/upload">
           <div class="logo-img">
             <img height="400" width="220" :src="defaultList[0].thumbnailUrl" alt="手记缩略图" v-if="thumbnailUrl">
             <div v-else>上传手记封面图</div>
@@ -68,8 +68,8 @@
 </template>
 <script>
 // import hljs from 'highlight.js'
-import { getArticleDetail, getData } from 'api/getData'
-import { upload } from 'api/upload'
+import { getArticleDetail, getCategoryTag } from 'api/getData'
+import { uploadArticleAdmin } from 'api/upload'
 // import Quill from 'quill'
 // import VueQuillEditor, { Quill } from 'vue-quill-editor'
 // import { ImageDrop } from 'quill-image-drop-module'
@@ -89,7 +89,7 @@ export default {
       thumbnail: '', // 缩略图id
       thumbnailUrl: '', // 缩略图url
       defaultList: [],
-      content: '<p>I am Example</p>',
+      content: '',
       editorOption: {
         // some quill options
         modules: {
@@ -137,12 +137,14 @@ export default {
   },
   methods: {
     _getTagList() {
-      let params = {}
-      getData(params).then(res => {
-        if (res.code === 200) {
-          // console.log(res)
-          this.tagList = res.data.tagList
-          this.categoryList = res.data.categoryList
+      let params = {
+        dictType: ['articleCategory', 'articleTag']
+      }
+      getCategoryTag(params).then(res => {
+        if (res.code === '200') {
+          this.tagList = res.data.articleTag.splice(1)
+          this.categoryList = res.data.articleCategory.slice(1)
+          this.spinShow = false
         }
       })
     },
@@ -158,8 +160,8 @@ export default {
           // this.categoryList = res.data.category
           this.title = res.data.title
           this.content = res.data.content
-          this.tagCurrent = res.data.tag
-          this.categoryCurrent = res.data.category
+          this.tagCurrent = res.data.tagArray
+          this.categoryCurrent = res.data.categoryId
           this.thumbnailUrl = res.data.thumbnailUrl
           this.status = res.data.status
           let obj = {
@@ -187,11 +189,24 @@ export default {
     },
     updateArticle() {
       this.loading = true
-      let params = {}
-      upload(params).then(res => {
+      let params = {
+        id: this.$route.query.id,
+        title: this.title,
+        content: this.content,
+        tag: this.tagCurrent,
+        category: this.categoryCurrent,
+        thumbnailUrl: this.defaultList[0].thumbnailUrl,
+        thumbnail: this.defaultList[0].thumbnail,
+        status: this.status
+      }
+      uploadArticleAdmin(params).then(res => {
         if (res.code === '200') {
           this.loading = false
-          this.$Notice.info('操作成功')
+          this.$Notice.info({
+            title: res.message,
+            desc: false
+          })
+          this.$router.back()
         }
       })
     },
@@ -213,7 +228,7 @@ export default {
     //   console.log(this.tagCurrent)
     // },
     selectCategory(item) {
-      this.categoryCurrent = item.id
+      // this.categoryCurrent = item.id
       // console.log(item)
     },
     onEditorBlur(editor) {
@@ -223,7 +238,7 @@ export default {
       // console.log('editor focus!', editor)
     },
     onEditorReady(editor) {
-      console.log('editor ready!', editor)
+      // console.log('editor ready!', editor)
     },
     onEditorChange({ editor, html, text }) {
       // console.log('editor change!', editor, html, text)
@@ -252,6 +267,7 @@ export default {
           duration: 5
         })
         this.defaultList[0].thumbnailUrl = res.data.url
+        this.defaultList[0].thumbnail = res.data.id
         console.log(this.defaultList)
       } else {
         this.$Notice.error({
@@ -274,7 +290,7 @@ export default {
       })
     },
     setStatus(status) {
-      console.log(status)
+      // console.log(status)
     }
   },
   components: {}

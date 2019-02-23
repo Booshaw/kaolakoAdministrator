@@ -4,6 +4,13 @@
       <div class="box">
         <span class="t">课程标题</span>
         <i-input v-model="sectionData[0].title" placeholder="请输入标题" :maxlength="80" style="width:80%"></i-input>
+        <i-switch v-model="courseInfo.status" size="small" :true-value="1" :false-value="0">
+        </i-switch>
+        <span class="is-recommend">推荐</span>
+      </div>
+        <div class="box">
+        <span class="t">课程简介</span>
+        <i-input v-model="courseInfo.description" placeholder="课程描述" :maxlength="80" style="width:80%" type="textarea" :autosize="{minRows: 2,maxRows: 5}"></i-input>
       </div>
       <div class="box">
         <span class="t">课程分类</span>
@@ -11,12 +18,12 @@
           <li v-for="(item, index) in categoryList" :key="index" @click="selectCategory(item)" :class="{selectTagClass: item.id === courseInfo.categoryCurrent}">{{item.name}}</li>
         </ul>
       </div>
-      <div class="box">
+      <!-- <div class="box">
         <span class="t">课程标签</span>
         <ul>
           <li v-for="(item, index) in tagList" :key="index" @click="selectTagGrou(item)" :class="{selectTagClass: item.id === courseInfo.tagCurrent}">{{item.name}}</li>
         </ul>
-      </div>
+      </div> -->
       <div class="box">
         <span class="t">课程封面</span>
         <Upload
@@ -29,7 +36,7 @@
           :on-format-error="handleFormatError"
           :on-exceeded-size="handleMaxSize"
           :before-upload="handleBeforeUpload"
-          action="http://kaola.eaon.win:8080/kaola/common/file/upload">
+          action="http://cd.godo.pub:18080/kaola/common/file/upload">
           <div class="logo-img">
             <img height="220" width="400" :src="courseInfo.thumbnailUrl" alt="手记缩略图" v-if="courseInfo.thumbnailUrl">
             <div v-else>上传课程封面图</div>
@@ -52,7 +59,7 @@
           :on-format-error="handleFormatError"
           :on-exceeded-size="handleMaxSize"
           :before-upload="handleBeforeUpload"
-          action="http://kaola.eaon.win:8080/kaola/common/file/upload">
+          action="http://cd.godo.pub:18080/kaola/common/file/upload">
           <div class="info-img">
             <img height="400" width="220" :src="courseInfo.informationUrl" alt="课程详细图" v-if="courseInfo.informationUrl">
             <div v-else>上传课程封面图</div>
@@ -65,19 +72,22 @@
       </div>
       <div class="box">
         <span class="t">授课老师</span>
-        <Select v-model="teacher" multiple>
-          <Option v-for="item in teacherList" :value="item.id" :key="item.id">{{ item.name }}</Option>
+        <Select v-model="courseInfo.teacher" multiple>
+          <Option v-for="item in teacherList" :value="item.value" :key="item.id">{{ item.realName }}</Option>
         </Select>
       </div>
       <div class="section-box">
         <span class="t">课程章节</span>
         <div class="input">
-          <i-input v-model="searchVideo" style="width:45%" placeholder="搜索上传视频">
-            <Button slot="append" icon="ios-search"></Button>
+          <i-input v-model="searchName" style="width:45%" placeholder="搜索上传视频">
+            <Button slot="append" icon="ios-search" @click="searchVideo">
+              <span v-if="!loadingSearch">查询</span>
+              <span v-else>loading...</span>
+            </Button>
           </i-input>
         </div>
         <div class="input">
-          <Table highlight-row ref="currentRowTable" :columns="columns3" :data="data1" size="small" @on-select="selectVideo"></Table>
+          <Table highlight-row ref="currentRowTable" :columns="columnsSearch" :data="searchResult" size="small" @on-select="selectVideo"></Table>
         </div>
         <div class="input">
           <i-input v-model="sectionAddData.title" placeholder="请输入章节标题,章标题不要选视频,添加小节必须且只能勾选一个视频" :maxlength="80"></i-input>
@@ -96,7 +106,7 @@
   </div>
 </template>
 <script>
-import { getData, getCourseDetail } from 'api/getData'
+import { getCategoryTag, getCourseDetail, getTeacherList, searchVideoHandle } from 'api/getData'
 import { createCourse } from 'api/upload'
 export default {
   data() {
@@ -104,20 +114,25 @@ export default {
       tagList: [], // 标签列表
       categoryList: [], // 分类列表
       loading: false, // 发布手记加载中
+      loadingSearch: false, // 查询视频加载
       courseInfo: {
-        isRecommend: 0, // 是否推荐
+        status: 0, // 是否推荐
         tagCurrent: [], // 选中标签列表
-        thumbnail: '', // 缩略图id
+        thumbnail: null, // 缩略图id
         thumbnailUrl: '', // 缩略图url
-        information: '', // 详情图id
+        information: null, // 详情图id
         informationUrl: '', // 详情图url
         categoryCurrent: 0,
         defaultListThumbnail: [], // 课程缩略图背景默认
-        defaultListInformation: [] // 课程详情图背景默认
+        defaultListInformation: [], // 课程详情图背景默认
+        description: '', // 课程描述
+        teacher: [] // 授课老师
+
       },
       sectionAddData: {
         title: '',
-        videoUrl: ''
+        videoId: '',
+        duration: ''
       },
       sectionTree: [
         // {
@@ -212,8 +227,8 @@ export default {
         type: 'ghost',
         size: 'small'
       },
-      searchVideo: '', // 搜索上传视频文件
-      columns3: [
+      searchName: '', // 搜索上传视频文件
+      columnsSearch: [
         {
           type: 'selection',
           width: 60,
@@ -221,74 +236,27 @@ export default {
         },
         {
           title: '视频id',
-          key: 'age',
-          width: '100'
+          key: 'videoId'
         },
         {
-          title: 'Name',
-          key: 'name'
+          title: '名称',
+          key: 'fileName'
         },
 
         {
           title: '上传日期',
-          key: 'date',
+          key: 'createTime',
           width: '120'
         }
       ],
-      data1: [
-        {
-          name: '农信社第一波',
-          age: 1800,
-          date: '2016-10-03',
-          videoUrl: 'www.baidu.com'
-        },
-        {
-          name: '农信社第二讲',
-          age: 2422,
-          date: '2016-10-01',
-          videoUrl: 'www.tencent.com'
-        },
-        {
-          name: '农信社第三讲',
-          age: 30444,
-          date: '2016-10-02',
-          videoUrl: 'www.immooc.com'
-        },
-        {
-          name: '农信社第四讲',
-          age: 2623,
-          date: '2016-10-04',
-          videoUrl: 'www.google.com'
-        }
-      ],
-      teacher: [], // 授课老师
-      teacherList: [
-        {
-          name: '张小龙',
-          id: '1244'
-        },
-        {
-          name: '张二龙',
-          id: '1242'
-        },
-        {
-          name: '张三龙',
-          id: '1243'
-        },
-        {
-          name: '张四龙',
-          id: '12434'
-        },
-        {
-          name: '张五龙',
-          id: '12435'
-        }
-      ]
+      searchResult: [], // 按名称查询结果
+      teacherList: []
     }
   },
   created() {
     this._getTagList() // 获取文章标签列表
     this._getCourseDetail()
+    this._getTeacherList()
     this.sectionData[0].children = this.sectionTree
     // console.log(this.cookie)
   },
@@ -307,25 +275,45 @@ export default {
   },
   methods: {
     _getTagList() {
-      let params = {}
-      getData(params).then(res => {
-        if (res.code === 200) {
-          // console.log(res)
-          this.tagList = res.data.tagList
-          this.categoryList = res.data.categoryList
+      let params = {
+        dictType: ['courseCategory']
+      }
+      getCategoryTag(params).then(res => {
+        if (res.code === '200') {
+          // this.tagList = res.data.articleTag.splice(1)
+          this.categoryList = res.data.courseCategory.slice(1)
+        }
+      })
+    },
+    _getTeacherList() {
+      let params = {
+        page: 1,
+        pageSize: 100,
+        nameOnly: true
+      }
+      getTeacherList(params).then(res => {
+        if (res.code === '200') {
+          this.teacherList = res.data
         }
       })
     },
     _getCourseDetail() {
-      let params = {}
+      let params = {
+        id: this.$route.query.id
+      }
       getCourseDetail(params).then(res => {
+        if (res.code === '200') {
+          console.log(res)
+        }
         this.sectionData[0].title = res.data.title
         this.courseInfo.tagCurrent = res.data.tag
-        this.courseInfo.categoryCurrent = res.data.category
+        this.courseInfo.categoryCurrent = res.data.categoryId
+        this.courseInfo.description = res.data.description
         this.courseInfo.informationUrl = res.data.informationUrl
         this.courseInfo.thumbnailUrl = res.data.thumbnailUrl
         this.sectionData[0].children = res.data.sectionList
-        this.teacher = res.data.teacher
+        // this.courseInfo.status = res.data.status
+        this.courseInfo.teacher = res.data.teacher
       })
     },
     selectTagGrou(item) {
@@ -335,17 +323,23 @@ export default {
       this.loading = true
       let params = {
         title: this.sectionData[0].title,
-        tag: this.courseInfo.tagCurrent,
+        description: this.courseInfo.description,
         category: this.courseInfo.categoryCurrent,
-        thumbnailUrl: this.courseInfo.thumbnailUrl,
-        informationUrl: this.courseInfo.information,
-        sectionList: this.sectionData[0].children,
-        teacher: this.teacher
+        thumbnail: this.courseInfo.thumbnail,
+        information: this.courseInfo.information,
+        section: this.sectionData[0].children,
+        teacher: this.courseInfo.teacher
       }
       createCourse(params).then(res => {
         if (res.code === '200') {
           this.loading = false
           this.$Notice.info('操作成功')
+        } else {
+          this.loading = false
+          this.$Notice.error({
+            title: res.message,
+            desc: false
+          })
         }
       })
     },
@@ -496,9 +490,31 @@ export default {
         ]
       )
     },
+    // 按名称搜索课程
+    searchVideo() {
+      console.log(this.searchName)
+      let params = {
+        fileName: this.searchName,
+        pageSize: 50
+      }
+      searchVideoHandle(params).then(res => {
+        this.loadingSearch = true
+        if (res.code === '200') {
+          this.searchResult = res.data.pageData
+          this.loadingSearch = false
+        } else {
+          this.loadingSearch = false
+          this.$Notice.error({
+            title: res.message,
+            desc: false
+          })
+        }
+      })
+    },
     selectVideo(status) {
       console.log(status)
-      this.sectionAddData.videoUrl = status[0].videoUrl
+      this.sectionAddData.videoId = status[0].videoId
+      this.sectionAddData.duration = status[0].duration
     },
     appendSectionTitle(data) {
       const children = data.children || []
@@ -513,11 +529,12 @@ export default {
       const children = data.children || []
       children.push({
         title: this.sectionAddData.title,
-        videoUrl: this.sectionAddData.videoUrl,
+        videoId: this.sectionAddData.videoId,
+        duration: this.sectionAddData.duration,
         expand: true
       })
       this.sectionAddData.title = ''
-      this.sectionAddData.videoUrl = ''
+      this.sectionAddData.videoId = ''
       this.$set(data, 'children', children)
     },
     remove(root, node, data) {
